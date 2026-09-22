@@ -1,21 +1,26 @@
 // App state and wiring. Everything else is pure functions; this is the part
 // that owns the current playthrough and talks to the DOM.
 
-import { QUESTIONS, POOL_VERSION } from '../data/questions.js';
-import { MODELS, MODELS_BY_ID, blurbFor } from '../data/models.js';
 import { AXIS_IDS } from '../data/axes.js';
+import { loadContent, blurbFor } from '../data/content.js';
 import { selectQuestions, applyUnlocks, QUIZ_LENGTH } from '../core/select.js';
 import { rankModels, normalizeUserVector, sumAnswers, dominantAxis } from '../core/score.js';
 import { mulberry32, newSeed } from '../core/rng.js';
 import { encodeRun, decodeRun, isReplayable, shareUrl } from '../core/url.js';
-import { renderIntro, renderQuestion, renderResult } from './render.js';
+import { renderIntro, renderQuestion, renderResult, renderError } from './render.js';
 
 const root = document.getElementById('app');
 
+/** Everything authored in content/ — questions, models and every visible word. */
+let content = null;
 let state = { phase: 'intro' };
 
 function startRun(seed = newSeed(), answers = []) {
-  const picked = applyUnlocks(selectQuestions(QUESTIONS, seed), QUESTIONS, answers);
+  const picked = applyUnlocks(
+    selectQuestions(content.questions, seed),
+    content.questions,
+    answers,
+  );
   state = { phase: 'quiz', seed, picked, answers, index: answers.length };
   if (state.index >= QUIZ_LENGTH) finish();
   else draw();
@@ -27,7 +32,7 @@ function answer(choice) {
 
   // An earlier answer can open a follow-up, so re-resolve the conditional slot
   // every time rather than only once.
-  const picked = applyUnlocks(state.picked, QUESTIONS, answers);
+  const picked = applyUnlocks(state.picked, content.questions, answers);
   const index = state.index + 1;
   state = { ...state, answers, picked, index };
 
@@ -45,7 +50,7 @@ function finish() {
   const questions = state.picked.map((p) => p.question);
   const rng = mulberry32(state.seed ^ 0x9e3779b9);
   const { userVector, results } = rankModels({
-    models: MODELS,
+    models: content.models,
     questions,
     choiceIndexes: state.answers,
     rng,
@@ -53,7 +58,7 @@ function finish() {
 
   const winner = results[0].model;
   const hash = encodeRun({
-    version: POOL_VERSION,
+    version: content.poolVersion,
     seed: state.seed,
     answers: state.answers,
     resultId: winner.id,
@@ -68,6 +73,7 @@ function finish() {
     userVector,
     hash,
   };
+
   // Some embeddings (sandboxed frames) refuse history writes. The result is
   // already rendered either way; only the address bar misses out.
   try {
@@ -80,7 +86,7 @@ function finish() {
 
 /** Show a result from a shared link we can't fully replay (pool has changed). */
 function showStoredResult(modelId) {
-  const model = MODELS_BY_ID[modelId];
+  const model = content.modelsById[modelId];
   if (!model) return false;
   state = {
     phase: 'result',
@@ -96,14 +102,17 @@ function showStoredResult(modelId) {
 }
 
 function draw() {
+  const { copy } = content;
+
   if (state.phase === 'intro') {
-    root.innerHTML = renderIntro();
+    root.innerHTML = renderIntro(copy);
   } else if (state.phase === 'quiz') {
     root.innerHTML = renderQuestion({
       question: state.picked[state.index].question,
       index: state.index,
       total: QUIZ_LENGTH,
       answered: state.answers[state.index],
+      copy,
     });
     tintFromAnswers();
   } else {
@@ -113,6 +122,7 @@ function draw() {
       blurb: state.blurb,
       userVector: state.userVector,
       shareHref: shareUrl(state.hash),
+      copy,
     });
     document.documentElement.style.setProperty('--tint-from', state.model.accent[0]);
     document.documentElement.style.setProperty('--tint-to', state.model.accent[1]);
@@ -148,7 +158,7 @@ async function copyShare(href) {
 
 root.addEventListener('click', async (event) => {
   const el = event.target.closest('[data-action]');
-  if (!el) return;
+  if (!el || !content) return;
   const { action } = el.dataset;
 
   if (action === 'start') startRun();
@@ -163,9 +173,9 @@ root.addEventListener('click', async (event) => {
     startRun();
   } else if (action === 'share') {
     const ok = await copyShare(el.dataset.href);
-    el.textContent = ok ? 'Copied' : 'Copy failed — select the address bar';
+    el.textContent = content.copy[ok ? 'result.shareDone' : 'result.shareFailed'];
     setTimeout(() => {
-      el.textContent = 'Copy your link';
+      el.textContent = content.copy['result.share'];
     }, 2000);
   }
 });
@@ -179,9 +189,17 @@ document.addEventListener('keydown', (event) => {
   if (n <= count) answer(n - 1);
 });
 
-function boot() {
+async function boot() {
+  try {
+    content = await loadContent();
+  } catch (error) {
+    console.error(error);
+    root.innerHTML = renderError(null);
+    return;
+  }
+
   const run = decodeRun();
-  if (isReplayable(run, POOL_VERSION)) {
+  if (isReplayable(run, content.poolVersion)) {
     startRun(run.seed, run.answers);
   } else if (run?.resultId && showStoredResult(run.resultId)) {
     // rendered a stored result

@@ -2,7 +2,7 @@
 //
 //   #v=1&s=<seed base36>&a=<one base36 digit per answer>&r=<model id>
 //
-// `v` is the pool version. Bump POOL_VERSION in src/data/questions.js whenever
+// `v` is the pool version. Bump the `version:` line in content/questions.md whenever
 // you edit questions, so old links don't replay against a changed pool and
 // silently produce a different result. When `v` doesn't match we skip the replay
 // and just render `r` — the result someone was actually shown.

@@ -4,18 +4,42 @@
 //   node scripts/validate.mjs            run every check
 //   node scripts/validate.mjs --runs 5e4 more Monte Carlo samples
 //
-// Run this after editing models.js or questions.js. It is the thing that keeps
+// Run this after editing anything in content/. It is the thing that keeps
 // "adding a model is a one-file edit" true six months from now: it catches a new
 // model that is unreachable, one that eats every result, and one that is a near
 // duplicate of a model you already had.
 
+import { readFileSync } from 'node:fs';
+import { fileURLToPath } from 'node:url';
+import { dirname, join } from 'node:path';
+
 import { AXES, AXIS_IDS } from '../src/data/axes.js';
-import { MODELS } from '../src/data/models.js';
-import { QUESTIONS, POOL_VERSION } from '../src/data/questions.js';
+import { parseModels, parseQuestions, parseInterface } from '../src/core/parse.js';
+
 import { selectQuestions, applyUnlocks, coverageOf, QUIZ_LENGTH, MIN_COVERAGE, SHAPE } from '../src/core/select.js';
 import { rankModels, zScoreModels, cosine } from '../src/core/score.js';
 import { mulberry32 } from '../src/core/rng.js';
 import { encodeRun, decodeRun } from '../src/core/url.js';
+
+// Read the same Markdown the browser fetches, through the same parsers, so the
+// two can never drift. A parse error here names the file and line.
+const CONTENT = join(dirname(fileURLToPath(import.meta.url)), '..', 'content');
+const readContent = (name) => readFileSync(join(CONTENT, name), 'utf8');
+
+let MODELS;
+let QUESTIONS;
+let POOL_VERSION;
+let COPY;
+try {
+  MODELS = parseModels(readContent('models.md'));
+  const pool = parseQuestions(readContent('questions.md'));
+  QUESTIONS = pool.questions;
+  POOL_VERSION = pool.version;
+  COPY = parseInterface(readContent('interface.md'));
+} catch (error) {
+  console.error(`\n  content error\n  \u2717 ${error.message}\n`);
+  process.exit(1);
+}
 
 const args = process.argv.slice(2);
 const argValue = (flag, fallback) => {
@@ -50,7 +74,7 @@ function checkSchema() {
     if (!m.blurbs?.some((b) => b.when === '*')) {
       fail(`model "${m.id}" needs a '*' fallback blurb (every other variant is conditional)`);
     }
-    if (!Array.isArray(m.accent) || m.accent.length !== 2) fail(`model "${m.id}" needs accent: [from, to]`);
+    if (!Array.isArray(m.accent) || m.accent.length !== 2) fail(`model "${m.id}" needs two accent colours`);
     if (!m.tagline) fail(`model "${m.id}" has no tagline`);
     const magnitude = Math.hypot(...AXIS_IDS.map((a) => m.axes?.[a] ?? 0));
     if (magnitude < 0.45) {
@@ -97,6 +121,36 @@ function checkSchema() {
   }
 }
 
+// ── 1b. interface copy ───────────────────────────────────────────────────────
+
+/** Every string render.js looks up must exist, with only placeholders we fill. */
+const REQUIRED_COPY = {
+  'intro.eyebrow': [], 'intro.title': [], 'intro.lede': [], 'intro.button': [], 'intro.fine': [],
+  'quiz.progress': ['n', 'total'], 'quiz.whimsy': [], 'quiz.back': [],
+  'result.eyebrow': [], 'result.youAre': [], 'result.rare': [], 'result.chart': [],
+  'result.rising': ['name', 'tagline'], 'result.share': [], 'result.shareDone': [],
+  'result.shareFailed': [], 'result.restart': [], 'result.fine': [],
+  'site.footer': [], 'error.title': [], 'error.body': [],
+};
+
+function checkInterfaceCopy() {
+  for (const [key, allowed] of Object.entries(REQUIRED_COPY)) {
+    const text = COPY[key];
+    if (!text) {
+      fail(`content/interface.md is missing "## ${key}" — the app looks that string up by name`);
+      continue;
+    }
+    for (const [, placeholder] of text.matchAll(/\{(\w+)\}/g)) {
+      if (!allowed.includes(placeholder)) {
+        fail(`"${key}" uses {${placeholder}}, which is never filled in. Allowed here: ${allowed.length ? allowed.map((a) => `{${a}}`).join(', ') : 'none'}.`);
+      }
+    }
+  }
+  for (const key of Object.keys(COPY)) {
+    if (!(key in REQUIRED_COPY)) warn(`content/interface.md has "## ${key}", which nothing displays`);
+  }
+}
+
 // ── 2. questions must never name a model ─────────────────────────────────────
 
 function checkNoModelNames() {
@@ -104,11 +158,11 @@ function checkNoModelNames() {
   for (const m of MODELS) {
     const needle = new RegExp(`\\b${m.id.replace(/[-]/g, '[- ]?')}\\b`);
     if (needle.test(source)) {
-      fail(`questions.js mentions "${m.id}" — questions measure traits, models claim them. Remove it, or adding models stops being a one-file edit.`);
+      fail(`content/questions.md mentions "${m.id}" — questions measure traits, models claim them. Remove it, or adding models stops being a one-file edit.`);
     }
     const nameNeedle = new RegExp(`\\b${m.name.toLowerCase()}\\b`);
     if (m.name.length > 3 && nameNeedle.test(source)) {
-      fail(`questions.js mentions the model name "${m.name}"`);
+      fail(`content/questions.md mentions the model name "${m.name}"`);
     }
   }
 }
@@ -347,9 +401,10 @@ function checkDeterminism() {
 
 // ── run ──────────────────────────────────────────────────────────────────────
 
-console.log('\n  which-model-are-you · validating %d models, %d questions', MODELS.length, QUESTIONS.length);
+console.log('\n  which-model-are-you · validating %d models, %d questions, %d copy strings', MODELS.length, QUESTIONS.length, Object.keys(COPY).length);
 
 checkSchema();
+checkInterfaceCopy();
 checkNoModelNames();
 checkPoolBalance();
 checkDistinct();

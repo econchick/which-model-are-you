@@ -8,10 +8,26 @@ Plain HTML, CSS and ES modules. No build step, no dependencies, no backend.
 
 ```sh
 python3 -m http.server 8000     # then open http://localhost:8000
-node scripts/validate.mjs       # after editing any content
+node scripts/validate.mjs       # after editing anything in content/
 ```
 
-A server is required — ES modules don't load over `file://`.
+A server is required — the app fetches its content files, and ES modules don't
+load over `file://`.
+
+## Everything you'd want to edit is in `content/`
+
+| File | What's in it |
+| --- | --- |
+| `content/models.md` | The roster: one block per model, with its blurbs |
+| `content/questions.md` | The question pool |
+| `content/interface.md` | Every other word the app shows |
+
+They're Markdown, so prose is just prose — no quotes to balance, no escaping,
+apostrophes and quotation marks safe. The mechanics (axis weights, tags) sit on
+one compact line per item, out of the way of the writing.
+
+Nothing else contains user-facing text: `render.js` looks up every string by
+name from `interface.md`, and the validator fails if one it needs is missing.
 
 ---
 
@@ -19,32 +35,46 @@ A server is required — ES modules don't load over `file://`.
 
 This is the thing the whole design is bent around. It's one edit to one file.
 
-1. Open `src/data/models.js` and copy an existing block.
+1. Open `content/models.md` and copy an existing block.
 2. Give it five axis values between -1 and +1. Be specific: a model whose vector
    hovers near zero has no personality and will rarely win anything. The
    validator warns you if you've done this.
 3. Write its blurbs in its own voice.
 4. Run `node scripts/validate.mjs`.
 
-You do **not** touch `questions.js`. Questions measure traits; models claim
+You do **not** touch `questions.md`. Questions measure traits; models claim
 traits. Nothing in the question pool knows a model exists — the validator fails
-the build if a question so much as mentions one by name.
+if a question so much as mentions one by name.
 
-```js
-{
-  id: 'fable',
-  name: 'Fable',
-  accent: ['#6d5bd0', '#f0b67f'],
-  axes: { rigor: -0.2, terse: -0.85, speed: -0.8, earnest: 0.35, solitary: -0.35 },
-  tags: ['bread', 'nocturnal', 'longform'],
-  gravity: 0,
-  tagline: 'Takes the long way on purpose',
-  blurbs: [{ when: 'terse', text: `...` }, { when: '*', text: `...` }],
-}
+```md
+## fable — Fable
+lab: Anthropic
+accent: #6d5bd0, #f0b67f
+axes: rigor -0.2, terse -0.85, speed -0.8, earnest 0.35, solitary -0.35
+tags: bread, nocturnal, longform
+tagline: Takes the long way on purpose
+
+### when: terse
+You were given a perfectly good straight road and you took the switchback,
+because you wanted to see the valley from above.
+
+### when: *
+You are the long answer to a short question.
 ```
 
-`blurbs[].when` selects a variant by the axis the player leaned on hardest, so
-the same result reads differently on a retake. Always include a `'*'` fallback.
+`### when:` selects a variant by the axis the player leaned on hardest, so the
+same result reads differently on a retake. Always include a `when: *` fallback.
+Blank lines separate paragraphs; `**bold**` and `*italic*` work.
+
+Writing a question looks like this — the last two fields are optional:
+
+```md
+## whim-emoji [whimsy]
+Choose an emoji. No context. No take-backs.
+
+- bread | 🍞 | earnest 0.18, solitary -0.12, speed -0.12 | tags: bread
+- ginger | 🫚 | earnest -0.22, rigor 0.12, solitary 0.16 | tags: ginger
+```
 
 ## The five axes
 
@@ -118,6 +148,8 @@ from now. It checks the schema and the no-model-names rule, then simulates
   answer changes it *more often* — the invariant that says the quiz is playful
   but not arbitrary
 - a seed replays to an identical run, so share links are honest
+- every string the interface looks up exists, and uses only placeholders that
+  actually get filled in
 
 It prints a win-rate histogram, which is the tuning dashboard.
 
@@ -141,21 +173,28 @@ weighted toward a neglected pole.
 
 ## Sharing
 
-A whole run fits in a ~20-character hash: `#v=1&s=<seed>&a=<answers>&r=<model>`.
-The seed replays the exact question draw. Bump `POOL_VERSION` in `questions.js`
-whenever you edit questions — old links then fall back to showing the stored
-result rather than silently replaying against a changed pool.
+A whole run fits in a ~20-character hash: `#v=2&s=<seed>&a=<answers>&r=<model>`.
+The seed replays the exact question draw. Bump the `version:` line near the top
+of `content/questions.md` whenever you edit questions — old links then fall back
+to showing the stored result rather than silently replaying against a changed
+pool.
 
 ## Layout
 
 ```
 index.html
 styles/app.css
-src/data/     axes.js · models.js · questions.js   ← content lives here
-src/core/     rng.js · select.js · score.js · url.js
+content/      models.md · questions.md · interface.md   ← everything you edit
+src/data/     axes.js · content.js
+src/core/     parse.js · rng.js · select.js · score.js · url.js
 src/ui/       app.js · render.js · sigil.js
 scripts/      validate.mjs
 ```
+
+The browser fetches the content files; the validator reads the same ones off
+disk and runs them through the same parsers in `src/core/parse.js`, so the two
+can't drift. A malformed file fails with the filename, the line number, and what
+was expected.
 
 The result sigil is drawn procedurally from the axis vectors, so a new model
 gets its own constellation without anyone drawing one.

@@ -2,7 +2,7 @@
 //
 // Answers add weights here; models declare a target vector here. Nothing else
 // in the app knows about models by name, which is what makes adding a new model
-// a one-file edit (see src/data/models.js).
+// a one-file edit (see content/models.md).
 //
 // Values run -1 .. +1. `pos` is the +1 pole, `neg` is the -1 pole.
 //
