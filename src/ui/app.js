@@ -68,7 +68,13 @@ function finish() {
     userVector,
     hash,
   };
-  history.replaceState(null, '', hash);
+  // Some embeddings (sandboxed frames) refuse history writes. The result is
+  // already rendered either way; only the address bar misses out.
+  try {
+    history.replaceState(null, '', hash);
+  } catch {
+    /* no-op */
+  }
   draw();
 }
 
@@ -149,7 +155,11 @@ root.addEventListener('click', async (event) => {
   else if (action === 'answer') answer(Number(el.dataset.index));
   else if (action === 'back') back();
   else if (action === 'restart') {
-    history.replaceState(null, '', window.location.pathname);
+    try {
+      history.replaceState(null, '', window.location.pathname);
+    } catch {
+      /* no-op */
+    }
     startRun();
   } else if (action === 'share') {
     const ok = await copyShare(el.dataset.href);
