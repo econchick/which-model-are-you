@@ -11,6 +11,25 @@ python3 -m http.server 8000     # then open http://localhost:8000
 node scripts/validate.mjs       # after editing anything in content/
 ```
 
+## Status: early, and meant to be rewritten
+
+The machinery is built and tested; the writing is a first pass. Expect to change
+most of it.
+
+- **5 models, roughly a third of the intended roster.** Fable, Haiku, Astra,
+  DeepSeek and ELIZA are seeds — enough to exercise the scoring and set a tone,
+  not the final cast.
+- **The blurb voices are unreviewed.** They're the whole payoff, and they haven't
+  had a pass from anyone but their author. Astra in particular is written from an
+  archetype rather than first-hand knowledge.
+- **30 questions.** Enough for real variety, short of the pool this wants.
+- **Win rates are lumpy** — Astra takes ~33% of runs. With only five models that's
+  expected, and it should flatten as the roster fills out. Watch the histogram
+  from the validator as you add models rather than tuning around it now.
+
+None of that blocks playing it. Keep the validator green and iterate on the
+content.
+
 A server is required — the app fetches its content files, and ES modules don't
 load over `file://`.
 
