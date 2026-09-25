@@ -58,6 +58,15 @@ For fun. Not affiliated with any of these labs.
 ## site.source
 Source on GitHub
 
+## egg.ack
+Understood. Making no mistakes.
+
+## egg.fixed
+Done. Fixed {n} mistakes.
+
+## egg.undo
+Fine. Mistakes restored.
+
 ## error.title
 The reading is unavailable
 
