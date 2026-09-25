@@ -9,6 +9,7 @@ import { mulberry32, newSeed } from '../core/rng.js';
 import { encodeRun, decodeRun, isReplayable, shareUrl } from '../core/url.js';
 import { renderStart, renderStep, renderResult, renderError } from './render.js';
 import { createFlow } from './flow.js';
+import { mountCrab } from './crab.js';
 
 const root = document.getElementById('app');
 
@@ -226,6 +227,7 @@ async function boot() {
   for (const el of document.querySelectorAll('[data-copy]')) {
     el.textContent = content.copy[el.dataset.copy] ?? el.textContent;
   }
+  mountCrab(content.copy);
 
   // A shared link shows its result on its own. Replay it when the pool still
   // matches; otherwise show the result it recorded.

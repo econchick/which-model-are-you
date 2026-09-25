@@ -137,6 +137,7 @@ const REQUIRED_COPY = {
   'result.rising': ['name', 'tagline'], 'result.share': [], 'result.shareDone': [],
   'result.shareFailed': [], 'result.restart': [],
   'site.footer': [], 'site.source': [], 'error.title': [], 'error.body': [],
+  'crab.label': [], 'crab.lines': [],
 };
 
 function checkInterfaceCopy() {
