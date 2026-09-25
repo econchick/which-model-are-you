@@ -249,7 +249,7 @@ styles/app.css
 content/      models.md · questions.md · interface.md   ← everything you edit
 src/data/     axes.js · content.js
 src/core/     parse.js · rng.js · select.js · score.js · url.js
-src/ui/       app.js · egg.js · flow.js · render.js · sigil.js · wires.js
+src/ui/       app.js · flow.js · render.js · sigil.js · wires.js
 scripts/      validate.mjs
 ```
 
