@@ -151,11 +151,17 @@ The pool is ~30; each run draws 10 into a fixed *shape*:
 opener → core → core → core → whimsy → core → core → conditional → whimsy → closer
 ```
 
-The shape is why a run feels composed rather than shuffled. Within each slot the
-draw is greedy on whichever axis has been measured least so far, with seeded
-randomness over the top few candidates — so runs differ without ever leaving a
-trait unmeasured. One level of branching: an answer can unlock a follow-up that
-fills the conditional slot.
+The shape is why a run feels composed rather than shuffled. Within each slot any
+question from that section can come up, with odds weighted toward whatever
+measures the axes this run has measured least so far — so runs differ, and a
+final pass swaps in a better question if a trait still came out under-measured.
+One level of branching: an answer can unlock a follow-up that fills the
+conditional slot.
+
+The weighting is deliberately gentle. An earlier version only ever chose from
+the top three candidates, and since the same heavily-weighted questions were
+always on top, half the pool — both follow-ups included — was never asked. The
+validator now fails if any question is asked too rarely.
 
 ## The validator is the point
 
@@ -166,6 +172,8 @@ from now. It checks the schema and the no-model-names rule, then simulates
 - every model is **reachable** (wins often enough) and none **dominates**
 - no two models are near-duplicates that would shadow each other
 - every axis gets enough coverage in every possible draw
+- every question in the pool actually gets asked, and every follow-up can
+  actually be unlocked
 - flipping a whimsy answer changes the result *sometimes*, and flipping a core
   answer changes it *more often* — the invariant that says the quiz is playful
   but not arbitrary
@@ -195,11 +203,11 @@ weighted toward a neglected pole.
 
 ## Sharing
 
-A whole run fits in a ~20-character hash: `#v=2&s=<seed>&a=<answers>&r=<model>`.
+A whole run fits in a ~20-character hash: `#v=3&s=<seed>&a=<answers>&r=<model>`.
 The seed replays the exact question draw. Bump the `version:` line near the top
-of `content/questions.md` whenever you edit questions — old links then fall back
-to showing the stored result rather than silently replaying against a changed
-pool.
+of `content/questions.md` whenever you edit questions or change how they're
+drawn in `src/core/select.js` — old links then fall back to showing the stored
+result rather than silently replaying against a changed pool.
 
 ## Layout
 

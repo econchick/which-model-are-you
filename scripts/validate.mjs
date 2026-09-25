@@ -48,6 +48,7 @@ const argValue = (flag, fallback) => {
 };
 const RUNS = argValue('--runs', 20000);
 const COVERAGE_RUNS = argValue('--coverage-runs', 2000);
+const DRAW_RUNS = argValue('--draw-runs', 10000);
 
 const failures = [];
 const warnings = [];
@@ -221,8 +222,8 @@ function checkDistinct() {
 
 // ── simulation helper ────────────────────────────────────────────────────────
 
-/** Play one full run, answering with `choose(question, index)`. */
-function playRun(seed, choose) {
+/** Draw a run's questions and answer them with `choose(question, index)`, follow-ups included. */
+function drawRun(seed, choose) {
   let picked = selectQuestions(QUESTIONS, seed);
   const answers = [];
   for (let i = 0; i < QUIZ_LENGTH; i++) {
@@ -230,6 +231,12 @@ function playRun(seed, choose) {
     answers.push(choose(picked[i].question, i));
   }
   picked = applyUnlocks(picked, QUESTIONS, answers);
+  return { picked, answers };
+}
+
+/** Play one full run, answering with `choose(question, index)`, and score it. */
+function playRun(seed, choose) {
+  const { picked, answers } = drawRun(seed, choose);
   const questions = picked.map((p) => p.question);
   const { results, userVector } = rankModels({
     models: MODELS,
@@ -325,6 +332,52 @@ function checkCoverage() {
   }
 }
 
+// ── 5b. every question gets asked ────────────────────────────────────────────
+
+/**
+ * A question the draw never picks is dead weight, and a follow-up nobody can
+ * unlock is worse, because it looks like content. For a while half the pool was
+ * in that state and nothing noticed — the draw only ever chose from the top few
+ * candidates, and the same heavy-weighted questions were always on top.
+ */
+function checkDrawRates() {
+  const rng = mulberry32(4242);
+  const asked = Object.fromEntries(QUESTIONS.map((q) => [q.id, 0]));
+  for (let i = 0; i < DRAW_RUNS; i++) {
+    const seed = (rng() * 4294967296) >>> 0;
+    for (const p of drawRun(seed, uniformChooser(rng)).picked) asked[p.question.id]++;
+  }
+  const pct = (q) => (asked[q.id] / DRAW_RUNS) * 100;
+
+  console.log('\n  how often each question is asked, over %s runs', DRAW_RUNS.toLocaleString());
+  for (const section of ['opener', 'core', 'whimsy', 'closer']) {
+    const pool = QUESTIONS.filter((q) => !q.unlockOnly && q.section === section);
+    const slots = SHAPE.filter((s) => (s === 'conditional' ? 'core' : s) === section).length;
+    // Relative to an even share, like the win-rate bands, so it holds as the pool grows.
+    const floor = ((slots / pool.length) * 100) * 0.2;
+    const rows = pool.map((q) => ({ q, pct: pct(q) })).sort((a, b) => a.pct - b.pct);
+    const least = rows[0];
+    const most = rows[rows.length - 1];
+    console.log(`  ${section.padEnd(12)} ${least.pct.toFixed(1).padStart(5)}–${most.pct.toFixed(1)}%   least: ${least.q.id}`);
+    for (const { q, pct: p } of rows.filter((r) => r.pct < floor)) {
+      fail(`"${q.id}" is asked in only ${p.toFixed(1)}% of runs (floor ${floor.toFixed(1)}%). Its options carry so little weight that the draw almost never picks it.`);
+    }
+  }
+
+  const followUps = QUESTIONS.filter((q) => q.unlockOnly);
+  if (followUps.length) {
+    console.log(`  follow-ups   ${followUps.map((q) => `${q.id} ${pct(q).toFixed(1)}%`).join(' · ')}`);
+  }
+  for (const q of followUps) {
+    if (pct(q) < FOLLOW_UP_FLOOR) {
+      fail(`follow-up "${q.id}" is unlocked in only ${pct(q).toFixed(2)}% of runs (floor ${FOLLOW_UP_FLOOR}%). The question that opens it is rarely asked, or the answer that opens it is rarely picked.`);
+    }
+  }
+}
+
+/** A follow-up is one answer to one question, so it's always rare; this is the "rare, not never" line. */
+const FOLLOW_UP_FLOOR = 1;
+
 // ── 6. the silly questions matter, but not too much ──────────────────────────
 
 function checkSensitivity() {
@@ -410,6 +463,7 @@ checkPoolBalance();
 checkDistinct();
 if (failures.length === 0) {
   checkCoverage();
+  checkDrawRates();
   checkReachability();
   checkSensitivity();
   checkDeterminism();

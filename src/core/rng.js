@@ -29,11 +29,12 @@ export function newSeed() {
   return (Math.random() * 4294967296) >>> 0;
 }
 
-/** Pick one element, weighted by index position (earlier = likelier). */
-export function pickWeighted(rng, items, falloff = 0.55) {
+/** Pick one element, with odds in proportion to its weight. */
+export function pickByWeight(rng, items, weightOf) {
   if (items.length === 0) return undefined;
-  const weights = items.map((_, i) => Math.pow(falloff, i));
+  const weights = items.map(weightOf);
   const total = weights.reduce((s, w) => s + w, 0);
+  if (!(total > 0)) return items[Math.floor(rng() * items.length)];
   let r = rng() * total;
   for (let i = 0; i < items.length; i++) {
     r -= weights[i];

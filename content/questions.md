@@ -18,10 +18,11 @@ A question may open a follow-up with `unlocks: option-id -> question-id`.
 **Never mention a model by name in this file.** Questions measure traits and
 models claim them; the validator fails if that slips.
 
-Bump `version` whenever you edit questions, so old share links don't replay
-against a pool that changed under them.
+Bump `version` whenever you edit questions (or change how they're drawn, in
+`src/core/select.js`), so old share links don't replay against a pool that
+changed under them.
 
-version: 2
+version: 3
 
 <!-- Openers — question 1. Easy to answer, sets the tone. -->
 

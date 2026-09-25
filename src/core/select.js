@@ -6,7 +6,7 @@
 // as a palate cleanser, and land on a closer.
 
 import { AXIS_IDS, zeroVector } from '../data/axes.js';
-import { mulberry32, pickWeighted } from './rng.js';
+import { mulberry32, pickByWeight } from './rng.js';
 
 export const SHAPE = [
   'opener',
@@ -25,6 +25,14 @@ export const QUIZ_LENGTH = SHAPE.length;
 
 /** Every axis must accumulate at least this much possible signal across a run. */
 export const MIN_COVERAGE = 1.2;
+
+/**
+ * How hard the draw leans toward the most useful question. Squaring the value
+ * makes a question twice as useful four times as likely — a real preference,
+ * but every question in the pool still gets asked. (Picking only from the top
+ * few, which this replaced, meant half the pool was never asked at all.)
+ */
+const PREFERENCE = 2;
 
 /** The most a question could move each axis, whichever option you pick. */
 function questionReach(q) {
@@ -69,13 +77,12 @@ export function selectQuestions(pool, seed) {
 
   for (const slot of SHAPE) {
     const section = slot === 'conditional' ? 'core' : slot;
-    const eligible = drawable
-      .filter((q) => q.section === section && !used.has(q.id))
-      .sort((a, b) => marginalValue(b, coverage) - marginalValue(a, coverage));
+    const eligible = drawable.filter((q) => q.section === section && !used.has(q.id));
 
-    // Top-3 with a falloff: usually the most useful question, sometimes the
-    // runner-up. Enough drift to make runs differ, not enough to starve an axis.
-    const chosen = pickWeighted(rng, eligible.slice(0, 3));
+    // Any eligible question can come up, the useful ones more often. That's
+    // what makes runs differ; repairCoverage below makes sure none of them
+    // leaves an axis unmeasured.
+    const chosen = pickByWeight(rng, eligible, (q) => marginalValue(q, coverage) ** PREFERENCE);
     if (!chosen) {
       throw new Error(`question pool exhausted for section "${section}"`);
     }
