@@ -1,5 +1,5 @@
-// Screen rendering. Pure: each function returns HTML for one screen, and
-// app.js owns the state and the event wiring.
+// Rendering. Pure: each function returns the HTML for one step of the chart,
+// flow.js puts the steps on the page, and app.js owns the state.
 //
 // Every visible word comes in through `copy` (content/interface.md) — there are
 // no hardcoded strings below, so changing wording never means editing render
@@ -46,24 +46,29 @@ const fillHtml = (template, values) =>
     key in values ? values[key] : whole,
   );
 
-export function renderIntro(copy) {
+/** The top of the chart: the title, and the button every wire starts from. */
+export function renderStart(copy) {
   return `
-    <section class="screen screen--intro" aria-labelledby="intro-title">
+    <section class="screen start" aria-labelledby="intro-title">
       <h1 id="intro-title" class="display" tabindex="-1">${line(copy['intro.title'])}</h1>
-      <button class="btn btn--primary" data-action="start">${line(copy['intro.button'])}</button>
+      <button class="btn btn--primary" data-action="start" data-wire>${line(copy['intro.button'])}</button>
     </section>`;
 }
 
-export function renderQuestion({ question, index, total, answered, copy }) {
+/**
+ * One question in the chart. `data-wire` marks what a wire leaves from, and
+ * `.step-node` is where the wire from the previous answer arrives.
+ */
+export function renderStep({ question, index, total, copy }) {
+  const id = `q-${index}`;
   const options = question.options
     .map(
       (opt, i) => `
       <li>
-        <button class="option${answered === i ? ' is-chosen' : ''}"
-                data-action="answer" data-index="${i}"
-                role="radio" aria-checked="${answered === i}">
-          <span class="option-key" aria-hidden="true">${i + 1}</span>
-          <span class="option-label">${escape(opt.label)}</span>
+        <button class="answer" data-action="answer" data-step="${index}" data-index="${i}"
+                data-wire role="radio" aria-checked="false">
+          <span class="answer-key" aria-hidden="true">${i + 1}</span>
+          <span class="answer-label">${escape(opt.label)}</span>
         </button>
       </li>`,
     )
@@ -75,30 +80,20 @@ export function renderQuestion({ question, index, total, answered, copy }) {
     : '';
 
   return `
-    <section class="screen screen--quiz" aria-labelledby="q-title">
-      <header class="quiz-head">
-        ${renderProgress(index, total, counter)}
-        <p class="eyebrow">${escape(counter)}${whimsy}</p>
-      </header>
-      <h2 id="q-title" class="display display--question" tabindex="-1">${escape(question.prompt)}</h2>
-      <ul class="options" role="radiogroup" aria-labelledby="q-title">${options}</ul>
-      <div class="quiz-foot">
-        ${index > 0 ? `<button class="btn btn--ghost" data-action="back">${line(copy['quiz.back'])}</button>` : ''}
-      </div>
+    <section class="question" aria-labelledby="${id}">
+      <span class="step-node" aria-hidden="true"></span>
+      <p class="eyebrow">${escape(counter)}${whimsy}</p>
+      <h2 id="${id}" class="display display--question" tabindex="-1">${escape(question.prompt)}</h2>
+      <ul class="answers" role="radiogroup" aria-labelledby="${id}"
+          style="--count:${question.options.length}">${options}</ul>
     </section>`;
 }
 
-function renderProgress(index, total, label) {
-  const dots = Array.from({ length: total }, (_, i) => {
-    const state = i < index ? ' is-done' : i === index ? ' is-current' : '';
-    return `<span class="dot${state}"></span>`;
-  }).join('');
-  return `<div class="progress" role="progressbar" aria-valuenow="${index + 1}"
-            aria-valuemin="1" aria-valuemax="${total}"
-            aria-label="${escape(label)}">${dots}</div>`;
-}
-
-export function renderResult({ model, runnerUp, blurb, userVector, shareHref, copy }) {
+/**
+ * The end of the chart. `standalone` is a result opened from a shared link,
+ * with no chart above it for a wire to arrive from.
+ */
+export function renderResult({ model, runnerUp, blurb, userVector, shareHref, standalone, copy }) {
   const [from, to] = model.accent;
   const rising = runnerUp
     ? fillHtml(copy['result.rising'], {
@@ -108,8 +103,9 @@ export function renderResult({ model, runnerUp, blurb, userVector, shareHref, co
     : '';
 
   return `
-    <section class="screen screen--result" aria-labelledby="result-title"
+    <section class="result${standalone ? ' screen' : ''}" aria-labelledby="result-title"
              style="--accent-from:${escape(from)}; --accent-to:${escape(to)}">
+      ${standalone ? '' : '<span class="step-node" aria-hidden="true"></span>'}
       <p class="eyebrow">${line(copy['result.eyebrow'])}</p>
       <div class="result-crown">
         ${renderSigil(model.axes, userVector, model.accent, model.id)}

@@ -22,9 +22,6 @@ Question {n} of {total}
 ## quiz.whimsy
 and yet
 
-## quiz.back
-Back
-
 ## result.eyebrow
 Your reading
 

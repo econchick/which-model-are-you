@@ -4,6 +4,9 @@ A ten-question personality quiz in the spirit of the ones in the back of teen
 magazines, except the answer is a language model and the blurb is written in
 that model's own voice. Some of the questions are about socks. They still count.
 
+It plays like those magazines' flowcharts, except the page only draws the next
+question once you've answered — each answer's line fades out until it's taken.
+
 Plain HTML, CSS and ES modules. No build step, no dependencies, no backend.
 
 ```sh
@@ -206,7 +209,7 @@ styles/app.css
 content/      models.md · questions.md · interface.md   ← everything you edit
 src/data/     axes.js · content.js
 src/core/     parse.js · rng.js · select.js · score.js · url.js
-src/ui/       app.js · render.js · sigil.js
+src/ui/       app.js · flow.js · render.js · sigil.js · wires.js
 scripts/      validate.mjs
 ```
 

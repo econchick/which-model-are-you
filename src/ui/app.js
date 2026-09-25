@@ -1,5 +1,5 @@
 // App state and wiring. Everything else is pure functions; this is the part
-// that owns the current playthrough and talks to the DOM.
+// that owns the current playthrough and decides what the chart shows.
 
 import { AXIS_IDS } from '../data/axes.js';
 import { loadContent, blurbFor } from '../data/content.js';
@@ -7,144 +7,178 @@ import { selectQuestions, applyUnlocks, QUIZ_LENGTH } from '../core/select.js';
 import { rankModels, normalizeUserVector, sumAnswers, dominantAxis } from '../core/score.js';
 import { mulberry32, newSeed } from '../core/rng.js';
 import { encodeRun, decodeRun, isReplayable, shareUrl } from '../core/url.js';
-import { renderIntro, renderQuestion, renderResult, renderError } from './render.js';
+import { renderStart, renderStep, renderResult, renderError } from './render.js';
+import { createFlow } from './flow.js';
 
 const root = document.getElementById('app');
 
+/** A new question ignores answers this soon after appearing — no answering it unseen. */
+const SETTLE_MS = 450;
+
 /** Everything authored in content/ — questions, models and every visible word. */
 let content = null;
-let state = { phase: 'intro' };
+let flow = null;
 
-function startRun(seed = newSeed(), answers = []) {
-  const picked = applyUnlocks(
-    selectQuestions(content.questions, seed),
-    content.questions,
-    answers,
-  );
-  state = { phase: 'quiz', seed, picked, answers, index: answers.length };
-  if (state.index >= QUIZ_LENGTH) finish();
-  else draw();
+/**
+ * `run` is the playthrough, null until Begin. `result` appears once all ten are
+ * answered, and from then on the chart is locked. `alone` is a result opened
+ * from a shared link, shown without a chart.
+ */
+let state = { run: null, result: null, alone: false };
+let settleUntil = 0;
+
+function begin() {
+  const seed = newSeed();
+  const base = selectQuestions(content.questions, seed);
+  const run = { seed, base, picked: applyUnlocks(base, content.questions, []), answers: [] };
+  state = { run, result: null, alone: false };
+  advance();
 }
 
-function answer(choice) {
-  const answers = state.answers.slice();
-  answers[state.index] = choice;
+/**
+ * Answer any question already on the page. The newest one moves the chart on;
+ * an earlier one just reroutes its wire, keeping the answers after it.
+ */
+function answer(step, choice) {
+  const { run } = state;
+  if (!run || state.result) return;
+  const newest = run.answers.length;
+  if (step > newest || run.answers[step] === choice) return;
+  if (step === newest && performance.now() < settleUntil) return;
 
-  // An earlier answer can open a follow-up, so re-resolve the conditional slot
-  // every time rather than only once.
-  const picked = applyUnlocks(state.picked, content.questions, answers);
-  const index = state.index + 1;
-  state = { ...state, answers, picked, index };
+  let answers = run.answers.slice();
+  answers[step] = choice;
 
-  if (index >= QUIZ_LENGTH) finish();
-  else draw();
+  // An earlier answer can open (or close) the follow-up slot, so re-resolve it
+  // from the original draw, and drop any answer given to a question that's no
+  // longer being asked.
+  const picked = applyUnlocks(run.base, content.questions, answers);
+  const changed = picked.findIndex((p, i) => p.question !== run.picked[i].question);
+  if (changed !== -1 && changed < answers.length) answers = answers.slice(0, changed);
+
+  state = { ...state, run: { ...run, picked, answers } };
+  if (answers.length === QUIZ_LENGTH) state.result = finish(state.run);
+
+  if (step === newest) advance();
+  else show();
 }
 
-function back() {
-  if (state.index === 0) return;
-  state = { ...state, index: state.index - 1 };
-  draw();
-}
-
-function finish() {
-  const questions = state.picked.map((p) => p.question);
-  const rng = mulberry32(state.seed ^ 0x9e3779b9);
+function finish({ seed, picked, answers }) {
+  const questions = picked.map((p) => p.question);
+  const rng = mulberry32(seed ^ 0x9e3779b9);
   const { userVector, results } = rankModels({
     models: content.models,
     questions,
-    choiceIndexes: state.answers,
+    choiceIndexes: answers,
     rng,
   });
 
-  const winner = results[0].model;
-  const hash = encodeRun({
-    version: content.poolVersion,
-    seed: state.seed,
-    answers: state.answers,
-    resultId: winner.id,
-  });
-
-  state = {
-    phase: 'result',
-    seed: state.seed,
-    model: winner,
-    runnerUp: results[1]?.model ?? null,
-    blurb: blurbFor(winner, dominantAxis(userVector), rng),
-    userVector,
-    hash,
-  };
+  const model = results[0].model;
+  const hash = encodeRun({ version: content.poolVersion, seed, answers, resultId: model.id });
 
   // Some embeddings (sandboxed frames) refuse history writes. The result is
-  // already rendered either way; only the address bar misses out.
+  // rendered either way; only the address bar misses out.
   try {
     history.replaceState(null, '', hash);
   } catch {
     /* no-op */
   }
-  draw();
+
+  return {
+    model,
+    runnerUp: results[1]?.model ?? null,
+    blurb: blurbFor(model, dominantAxis(userVector), rng),
+    userVector,
+    hash,
+  };
 }
 
-/** Show a result from a shared link we can't fully replay (pool has changed). */
-function showStoredResult(modelId) {
-  const model = content.modelsById[modelId];
-  if (!model) return false;
-  state = {
-    phase: 'result',
+/** A result from a shared link we can't fully replay (the pool has changed). */
+function storedResult(model) {
+  return {
     model,
     runnerUp: null,
     blurb: blurbFor(model, '*', mulberry32(1)),
     userVector: model.axes, // no answers to show, so chart the model itself
     hash: window.location.hash,
-    stale: true,
   };
-  draw();
-  return true;
 }
 
-function draw() {
-  const { copy } = content;
-
-  if (state.phase === 'intro') {
-    root.innerHTML = renderIntro(copy);
-  } else if (state.phase === 'quiz') {
-    root.innerHTML = renderQuestion({
-      question: state.picked[state.index].question,
-      index: state.index,
-      total: QUIZ_LENGTH,
-      answered: state.answers[state.index],
-      copy,
-    });
-    tintFromAnswers();
-  } else {
-    root.innerHTML = renderResult({
-      model: state.model,
-      runnerUp: state.runnerUp,
-      blurb: state.blurb,
-      userVector: state.userVector,
-      shareHref: shareUrl(state.hash),
-      copy,
-    });
-    document.documentElement.style.setProperty('--tint-from', state.model.accent[0]);
-    document.documentElement.style.setProperty('--tint-to', state.model.accent[1]);
+function restart() {
+  try {
+    history.replaceState(null, '', window.location.pathname);
+  } catch {
+    /* no-op */
   }
-  root.querySelector('h1, h2')?.focus?.();
+  state = { run: null, result: null, alone: false };
+  show({ instant: true });
+  window.scrollTo({ top: 0, behavior: 'auto' });
+  requestAnimationFrame(begin);
+}
+
+/** Put the chart on the page, as the state says it should be. */
+function show({ instant = false } = {}) {
+  const { copy } = content;
+  const { run, result, alone } = state;
+  const items = [];
+
+  if (!alone) {
+    items.push({ key: 'start', html: () => renderStart(copy), chosen: run ? 0 : null });
+  }
+  if (run) {
+    // Every answered question, plus the one waiting for an answer.
+    const shown = Math.min(run.answers.length + 1, QUIZ_LENGTH);
+    for (let i = 0; i < shown; i++) {
+      const { question } = run.picked[i];
+      items.push({
+        key: `${run.seed}:${i}:${question.id}`,
+        html: () => renderStep({ question, index: i, total: QUIZ_LENGTH, copy }),
+        chosen: run.answers[i] ?? null,
+      });
+    }
+  }
+  if (result) {
+    items.push({
+      key: `result:${result.hash}`,
+      html: () => renderResult({ ...result, shareHref: shareUrl(result.hash), standalone: alone, copy }),
+    });
+  }
+
+  tint();
+  return flow.sync(items, { instant, locked: Boolean(result) });
+}
+
+/** Show the chart with whatever just got added, and move the reader down to it. */
+function advance() {
+  const entered = show();
+  const newest = entered[entered.length - 1];
+  if (!newest) return;
+  flow.bringIntoView(newest);
+  newest.querySelector('h1, h2')?.focus({ preventScroll: true });
+  settleUntil = performance.now() + SETTLE_MS;
 }
 
 /**
- * Drift the background as the run takes shape. Purely atmospheric — it just
- * makes the page feel like it's listening.
+ * Drift the background as the run takes shape, and settle on the result's own
+ * colours at the end. Purely atmospheric — it makes the page feel like it's
+ * listening.
  */
-function tintFromAnswers() {
-  const answered = state.picked.slice(0, state.index).map((p) => p.question);
-  if (answered.length === 0) return;
-  const v = normalizeUserVector(
-    sumAnswers(answered, state.answers.slice(0, state.index)),
-    answered,
-  );
+function tint() {
+  const style = document.documentElement.style;
+  if (state.result) {
+    style.setProperty('--tint-from', state.result.model.accent[0]);
+    style.setProperty('--tint-to', state.result.model.accent[1]);
+    return;
+  }
+  const { run } = state;
+  const n = run?.answers.length ?? 0;
+  if (n === 0) return;
+  const answered = run.picked.slice(0, n).map((p) => p.question);
+  const v = normalizeUserVector(sumAnswers(answered, run.answers), answered);
   const lean = AXIS_IDS.reduce((s, id, i) => s + v[id] * (i + 1), 0);
   const hue = (250 + lean * 40 + 360) % 360;
-  document.documentElement.style.setProperty('--tint-from', `hsl(${hue.toFixed(0)} 70% 72%)`);
-  document.documentElement.style.setProperty('--tint-to', `hsl(${((hue + 48) % 360).toFixed(0)} 80% 82%)`);
+  style.setProperty('--tint-from', `hsl(${hue.toFixed(0)} 70% 72%)`);
+  style.setProperty('--tint-to', `hsl(${((hue + 48) % 360).toFixed(0)} 80% 82%)`);
 }
 
 async function copyShare(href) {
@@ -161,16 +195,12 @@ root.addEventListener('click', async (event) => {
   if (!el || !content) return;
   const { action } = el.dataset;
 
-  if (action === 'start') startRun();
-  else if (action === 'answer') answer(Number(el.dataset.index));
-  else if (action === 'back') back();
-  else if (action === 'restart') {
-    try {
-      history.replaceState(null, '', window.location.pathname);
-    } catch {
-      /* no-op */
-    }
-    startRun();
+  if (action === 'start') {
+    if (!state.run) begin();
+  } else if (action === 'answer') {
+    answer(Number(el.dataset.step), Number(el.dataset.index));
+  } else if (action === 'restart') {
+    restart();
   } else if (action === 'share') {
     const ok = await copyShare(el.dataset.href);
     el.textContent = content.copy[ok ? 'result.shareDone' : 'result.shareFailed'];
@@ -180,13 +210,15 @@ root.addEventListener('click', async (event) => {
   }
 });
 
-// 1–4 pick an answer; that's the whole keyboard story beyond native tabbing.
+// 1–4 answer the newest question; that's the whole keyboard story beyond
+// native tabbing.
 document.addEventListener('keydown', (event) => {
-  if (state.phase !== 'quiz') return;
+  const { run } = state;
+  if (!run || state.result || event.metaKey || event.ctrlKey || event.altKey) return;
   const n = Number(event.key);
   if (!Number.isInteger(n) || n < 1) return;
-  const count = state.picked[state.index].question.options.length;
-  if (n <= count) answer(n - 1);
+  const step = run.answers.length;
+  if (n <= run.picked[step].question.options.length) answer(step, n - 1);
 });
 
 async function boot() {
@@ -197,15 +229,21 @@ async function boot() {
     root.innerHTML = renderError(null);
     return;
   }
+  flow = createFlow(root);
 
-  const run = decodeRun();
-  if (isReplayable(run, content.poolVersion)) {
-    startRun(run.seed, run.answers);
-  } else if (run?.resultId && showStoredResult(run.resultId)) {
-    // rendered a stored result
-  } else {
-    draw();
+  // A shared link shows its result on its own. Replay it when the pool still
+  // matches; otherwise show the result it recorded.
+  const link = decodeRun();
+  if (isReplayable(link, content.poolVersion) && link.answers.length === QUIZ_LENGTH) {
+    const base = selectQuestions(content.questions, link.seed);
+    const picked = applyUnlocks(base, content.questions, link.answers);
+    state = { run: null, result: finish({ seed: link.seed, picked, answers: link.answers }), alone: true };
+  } else if (link?.resultId && content.modelsById[link.resultId]) {
+    state = { run: null, result: storedResult(content.modelsById[link.resultId]), alone: true };
   }
+
+  show({ instant: true });
+  root.querySelector('h1')?.focus({ preventScroll: true });
 }
 
 boot();
