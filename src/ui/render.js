@@ -105,16 +105,12 @@ export function renderStep({ question, index, total, copy }) {
     .join('');
 
   const counter = fill(copy['quiz.progress'], { n: index + 1, total });
-  const whimsy = question.section === 'whimsy'
-    ? `<span class="q-note">${line(copy['quiz.whimsy'])}</span>`
-    : '';
 
   return `
     <section class="question" aria-labelledby="${id}">
       <span class="step-node" aria-hidden="true"></span>
       <div class="bubble">
         <span class="q-badge" data-lane="${index % 4}" aria-hidden="true"><b>${index + 1}</b><small>/${total}</small></span>
-        ${whimsy}
         <p class="sr-only">${escape(counter)}</p>
         <h2 id="${id}" class="question-text" tabindex="-1">${escape(question.prompt)}</h2>
       </div>

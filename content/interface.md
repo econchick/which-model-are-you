@@ -25,9 +25,6 @@ Begin
 ## quiz.progress
 Question {n} of {total}
 
-## quiz.whimsy
-and yet
-
 ## result.eyebrow
 Your reading
 
