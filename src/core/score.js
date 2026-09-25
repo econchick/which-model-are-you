@@ -138,6 +138,16 @@ export function rankModels({ models, questions, choiceIndexes, rng }) {
   return { userVector, tagTotals, results };
 }
 
+/**
+ * The rising sign: the best-placed model from a different lab than the winner.
+ * Another member of the same family (Qwen3.8 Flash rising under Qwen3.8-Max)
+ * reads as a rerun of the result, not a second opinion.
+ */
+export function risingSign(results) {
+  const lab = results[0]?.model.lab;
+  return results.find((r) => r.model.lab !== lab)?.model ?? null;
+}
+
 /** The axis the user leaned hardest on — used to choose a blurb variant. */
 export function dominantAxis(userVector) {
   let best = AXIS_IDS[0];

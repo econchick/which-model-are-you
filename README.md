@@ -133,6 +133,10 @@ score(model) = cosine(yourVector, zScored(model.axes))
              + model.gravity
 ```
 
+The top score is the result. The "rising sign" under it is the best-placed model
+from a *different lab*, using each model's `lab:` line: a Qwen rising under a
+Qwen reads as the same answer twice.
+
 Three parts of that are load-bearing:
 
 **Why cosine, not distance.** Summed answers regress toward the middle. Under

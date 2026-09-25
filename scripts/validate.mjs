@@ -17,7 +17,7 @@ import { AXES, AXIS_IDS } from '../src/data/axes.js';
 import { parseModels, parseQuestions, parseInterface } from '../src/core/parse.js';
 
 import { pathFor, branchesFrom, coverageOf, QUIZ_LENGTH, MIN_COVERAGE, SHAPE } from '../src/core/select.js';
-import { rankModels, zScoreModels, cosine } from '../src/core/score.js';
+import { rankModels, zScoreModels, cosine, risingSign } from '../src/core/score.js';
 import { mulberry32 } from '../src/core/rng.js';
 import { encodeRun, decodeRun } from '../src/core/url.js';
 
@@ -77,6 +77,7 @@ function checkSchema() {
     }
     if (!Array.isArray(m.accent) || m.accent.length !== 2) fail(`model "${m.id}" needs two accent colours`);
     if (!m.tagline) fail(`model "${m.id}" has no tagline`);
+    if (!m.lab) fail(`model "${m.id}" has no lab — the rising sign is picked from a different lab, so every model needs one`);
     const magnitude = Math.hypot(...AXIS_IDS.map((a) => m.axes?.[a] ?? 0));
     if (magnitude < 0.45) {
       warn(`model "${m.id}" sits near the centre of the space (magnitude ${magnitude.toFixed(2)}) — it will rarely win anything. Give it stronger opinions.`);
@@ -281,11 +282,19 @@ const skewedChooser = (rng) => {
 function checkReachability() {
   const tally = Object.fromEntries(MODELS.map((m) => [m.id, 0]));
   const rng = mulberry32(12345);
+  let sameLab = 0;
 
   for (let i = 0; i < RUNS; i++) {
     const seed = (rng() * 4294967296) >>> 0;
     const chooser = i % 2 === 0 ? uniformChooser(rng) : skewedChooser(rng);
-    tally[playRun(seed, chooser).winner]++;
+    const run = playRun(seed, chooser);
+    tally[run.winner]++;
+    const rising = risingSign(run.results);
+    if (!rising || rising.lab === run.results[0].model.lab) sameLab++;
+  }
+
+  if (sameLab > 0) {
+    fail(`${sameLab} runs gave a rising sign from the winner's own lab — it should always come from a different one`);
   }
 
   // Bands are relative to an even split, so they stay meaningful as the roster

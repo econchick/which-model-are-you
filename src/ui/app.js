@@ -4,7 +4,7 @@
 import { AXIS_IDS } from '../data/axes.js';
 import { loadContent, blurbFor } from '../data/content.js';
 import { pathFor, QUIZ_LENGTH } from '../core/select.js';
-import { rankModels, normalizeUserVector, sumAnswers, dominantAxis } from '../core/score.js';
+import { rankModels, normalizeUserVector, sumAnswers, dominantAxis, risingSign } from '../core/score.js';
 import { mulberry32, newSeed } from '../core/rng.js';
 import { encodeRun, decodeRun, isReplayable, shareUrl } from '../core/url.js';
 import { renderStart, renderStep, renderResult, renderError } from './render.js';
@@ -77,7 +77,7 @@ function finish({ seed, picked, answers }) {
 
   return {
     model,
-    runnerUp: results[1]?.model ?? null,
+    runnerUp: risingSign(results),
     blurb: blurbFor(model, dominantAxis(userVector), rng),
     userVector,
     hash,
