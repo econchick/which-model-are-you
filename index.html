@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Soon</title>
+    <meta name="description" content="Something's on its way." />
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'><circle cx='8' cy='8' r='4' fill='%23888'/></svg>" />
+    <style>
+      :root {
+        --bg: #f6f4ef;
+        --ink: #2b2a28;
+        --dot: #b9b2a4;
+        color-scheme: light dark;
+      }
+      @media (prefers-color-scheme: dark) {
+        :root {
+          --bg: #141414;
+          --ink: #e8e5de;
+          --dot: #5e5a53;
+        }
+      }
+      * { margin: 0; }
+      html, body { height: 100%; }
+      body {
+        display: grid;
+        place-items: center;
+        padding: 0 16px;
+        background: var(--bg);
+        color: var(--ink);
+        font: 400 clamp(1.125rem, 2.4vw, 1.5rem) / 1.4 ui-serif, Georgia, "Times New Roman", serif;
+        -webkit-font-smoothing: antialiased;
+      }
+      main {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 1.25rem;
+        text-align: center;
+      }
+      .dot {
+        width: 0.5rem;
+        height: 0.5rem;
+        border-radius: 50%;
+        background: var(--dot);
+        animation: breathe 3.2s ease-in-out infinite;
+      }
+      @keyframes breathe {
+        0%, 100% { opacity: 0.35; transform: scale(0.85); }
+        50% { opacity: 1; transform: scale(1); }
+      }
+      @media (prefers-reduced-motion: reduce) {
+        .dot { animation: none; }
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <span class="dot" aria-hidden="true"></span>
+      <p>Something&rsquo;s on its way.</p>
+    </main>
+  </body>
+</html>
