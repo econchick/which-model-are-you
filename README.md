@@ -1,4 +1,4 @@
-# Which model are you?
+# What's your model?
 
 A ten-question personality quiz in the spirit of the ones in the back of teen
 magazines, except the answer is a language model and the blurb is written in
@@ -260,8 +260,8 @@ changed pool.
 Slack, iMessage and the rest build a preview from the `<meta>` tags of the page
 a link points at, fetched by a crawler that runs no JavaScript and never sees
 the `#hash`. So every model has a small static page of its own,
-`r/<model>/index.html`, with its own title ("I got Fable 5.1. Which model are
-you?"), the opening line of its reading, and a card image, `r/<model>/card.png`.
+`r/<model>/index.html`, with its own title ("I got Fable 5.1. What's your
+model?"), the opening line of its reading, and a card image, `r/<model>/card.png`.
 The page sends people straight on to the quiz, hash and all, and the quiz
 replays the run. Links to the quiz itself get `r/card.png`, its opening screen.
 

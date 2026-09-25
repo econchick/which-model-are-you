@@ -179,6 +179,23 @@ main {
   color: var(--yellow);
 }
 
+/* The strapline: scrawled under the title in marker, on a swipe of highlighter. */
+.subtitle {
+  margin: 1.3rem 0 0 0.2rem;
+  font-family: var(--hand);
+  font-size: clamp(1.55rem, 4.4vw, 2.2rem);
+  line-height: 1.25;
+  transform: rotate(-2deg);
+  transform-origin: left center;
+}
+
+.subtitle span {
+  padding: 0 0.3em;
+  background: linear-gradient(transparent 52%, var(--lime) 52%, var(--lime) 90%, transparent 90%);
+  -webkit-box-decoration-break: clone;
+  box-decoration-break: clone;
+}
+
 /* The start button is the starburst from the corner of the page. */
 .burst {
   position: relative;

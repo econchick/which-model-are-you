@@ -250,7 +250,7 @@ export function parseQuestions(text, file = 'content/questions.md') {
 
 // ── interface copy ───────────────────────────────────────────────────────────
 
-/** content/interface.md → { 'intro.title': 'Which model\nare you?', ... } */
+/** content/interface.md → { 'intro.title': 'What’s your\nmodel?', ... } */
 export function parseInterface(text, file = 'content/interface.md') {
   const found = blocks(text, file);
   const copy = {};

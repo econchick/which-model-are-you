@@ -79,6 +79,7 @@ const CARD_CSS = `
     line-height: 1.1;
     transform: rotate(-2deg);
     transform-origin: left center;
+    text-wrap: balance;
   }
   .pv-reading {
     margin: 0;
@@ -156,7 +157,10 @@ async function fontsReady(page) {
   return page.evaluate(async (families) => {
     const load = Promise.all(families.map((f) => document.fonts.load(`32px "${f}"`)));
     await Promise.race([load, new Promise((r) => setTimeout(r, 15000))]).catch(() => {});
-    return families.every((f) => document.fonts.check(`32px "${f}"`));
+    // check() alone passes when the font stylesheet never arrived at all (no
+    // faces to wait for), so also insist each family really loaded.
+    const loaded = (f) => [...document.fonts].some((face) => face.family.replace(/["']/g, '') === f && face.status === 'loaded');
+    return families.every((f) => loaded(f) && document.fonts.check(`32px "${f}"`));
   }, NEEDED_FONTS);
 }
 

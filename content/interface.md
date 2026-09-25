@@ -14,11 +14,14 @@ It works through them in order; after the last one it waves and goes back into
 hiding, and starts again from the top next time.
 
 ## intro.badge
-quiz
+quiz!
 
 ## intro.title
-Which model
-are you?
+What’s your
+model?
+
+## intro.subtitle
+Get in touch with your latent space
 
 ## intro.button
 Begin
@@ -60,7 +63,7 @@ For fun. Not affiliated with any of these labs.
 Source on GitHub
 
 ## preview.title
-I got {name}. Which model are you?
+I got {name}. What’s your model?
 
 ## preview.got
 I got

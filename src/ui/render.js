@@ -63,6 +63,7 @@ export function renderStart(copy) {
       <div class="masthead">
         <p class="quiz-badge">${line(copy['intro.badge'])}</p>
         <h1 id="intro-title" class="title" tabindex="-1">${title}</h1>
+        <p class="subtitle"><span>${line(copy['intro.subtitle'])}</span></p>
       </div>
       <button class="burst" data-action="start" data-wire data-lane="start">
         ${renderBurst()}

@@ -203,7 +203,7 @@ This isn't about the stars. It's about process.
 
 ### when: *
 
-Which model are you? Astra.
+What's your model? Astra.
 
 **The simplest mental model is** a principal consultant who happens to write beautifully. This isn't about being thorough. It's about being *complete*: every edge case, every table, every heading exactly where it belongs.
 
@@ -402,7 +402,7 @@ Longer answer, since you'll want it anyway: you move quickly because you've alre
 
 ### when: *
 
-Which model are you? Gemini 3.8 Flash. Done!
+What's your model? Gemini 3.8 Flash. Done!
 
 But also, quick context: you're fast, curious, and you process everything at once — the tabs, the tools, the half-finished thought from yesterday. The key is momentum. This month's stars are busy, which suits you. Just note, gently, that you had the answer in the first line. Everything after it is a bonus. So is this sentence. And this one.
 

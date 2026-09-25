@@ -134,7 +134,7 @@ function checkSchema() {
 
 /** Every string render.js looks up must exist, with only placeholders we fill. */
 const REQUIRED_COPY = {
-  'intro.badge': [], 'intro.title': [], 'intro.button': [],
+  'intro.badge': [], 'intro.title': [], 'intro.subtitle': [], 'intro.button': [],
   'quiz.progress': ['n', 'total'],
   'result.eyebrow': [], 'result.youAre': [], 'result.rare': [], 'result.chart': [],
   'result.rising': ['name', 'tagline'], 'result.share': [], 'result.shareDone': [],
