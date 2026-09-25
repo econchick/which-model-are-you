@@ -4,8 +4,9 @@ A ten-question personality quiz in the spirit of the ones in the back of teen
 magazines, except the answer is a language model and the blurb is written in
 that model's own voice. Some of the questions are about socks. They still count.
 
-It plays like those magazines' flowcharts, except the page only draws the next
-question once you've answered — each answer's line fades out until it's taken.
+It plays like those magazines' flowcharts: every answer leads to a different
+next question. Except the page only draws the next question once you've
+answered — each answer's line fades out until it's taken.
 
 Plain HTML, CSS and ES modules. No build step, no dependencies, no backend.
 
@@ -25,8 +26,10 @@ most of it.
 - **The blurb voices are unreviewed.** They're the whole payoff, and they haven't
   had a pass from anyone but their author. Astra in particular is written from an
   archetype rather than first-hand knowledge.
-- **30 questions.** Enough for real variety, short of the pool this wants.
-- **Win rates are lumpy** — Astra takes ~33% of runs. With only five models that's
+- **31 questions.** Enough for real variety, short of the pool this wants. The
+  fourth closer (`close-note`) was written in a hurry so the last step could
+  branch four ways; it's the likeliest to need a rewrite.
+- **Win rates are lumpy** — Astra takes ~31% of runs. With only five models that's
   expected, and it should flatten as the roster fills out. Watch the histogram
   from the validator as you add models rather than tuning around it now.
 
@@ -145,18 +148,31 @@ Nothing breaks; nothing is required.
 
 ## Question selection
 
-The pool is ~30; each run draws 10 into a fixed *shape*:
+The quiz is a flowchart over a pool of ~30 questions: every answer leads to a
+different next question, and a playthrough is one 10-question path through it,
+always in the same *shape*:
 
 ```
-opener → core → core → core → whimsy → core → core → conditional → whimsy → closer
+opener → core → core → core → whimsy → core → core → core → whimsy → closer
 ```
 
-The shape is why a run feels composed rather than shuffled. Within each slot any
-question from that section can come up, with odds weighted toward whatever
-measures the axes this run has measured least so far — so runs differ, and a
-final pass swaps in a better question if a trait still came out under-measured.
-One level of branching: an answer can unlock a follow-up that fills the
-conditional slot.
+The shape is why a run feels composed rather than shuffled: whichever answer you
+give, the next step is the same kind of question, and only which one changes.
+The chart is never stored. Each fork is drawn when a player reaches it, seeded by
+the answers that led there, so a path always forks the same way — which is what
+lets a share link replay it. At each fork the answers draw their next questions
+from the pool without repeats, with odds weighted toward whatever measures the
+axes this path has measured least so far.
+
+Branches can also be written by hand. An answer with an `unlocks:` rule leads
+straight to its follow-up whenever the next step is a core question; every other
+answer's next question is drawn. One level only — a follow-up can't unlock
+another.
+
+Every answer leading somewhere different means each kind of question needs a
+deep enough pool: the step before a closer can have four answers, so there must
+be at least four closers, and so on. The validator works out the minimum for
+each section and fails if one runs short.
 
 The weighting is deliberately gentle. An earlier version only ever chose from
 the top three candidates, and since the same heavily-weighted questions were
@@ -171,9 +187,9 @@ from now. It checks the schema and the no-model-names rule, then simulates
 
 - every model is **reachable** (wins often enough) and none **dominates**
 - no two models are near-duplicates that would shadow each other
-- every axis gets enough coverage in every possible draw
-- every question in the pool actually gets asked, and every follow-up can
-  actually be unlocked
+- every axis gets enough coverage along every path
+- every answer leads to a different next question, every question in the pool
+  actually gets asked, and every follow-up can actually be unlocked
 - flipping a whimsy answer changes the result *sometimes*, and flipping a core
   answer changes it *more often* — the invariant that says the quiz is playful
   but not arbitrary
@@ -203,8 +219,8 @@ weighted toward a neglected pole.
 
 ## Sharing
 
-A whole run fits in a ~20-character hash: `#v=3&s=<seed>&a=<answers>&r=<model>`.
-The seed replays the exact question draw. Bump the `version:` line near the top
+A whole run fits in a ~20-character hash: `#v=4&s=<seed>&a=<answers>&r=<model>`.
+The seed and answers replay the exact path through the chart. Bump the `version:` line near the top
 of `content/questions.md` whenever you edit questions or change how they're
 drawn in `src/core/select.js` — old links then fall back to showing the stored
 result rather than silently replaying against a changed pool.

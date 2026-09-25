@@ -3,7 +3,7 @@
 
 import { AXIS_IDS } from '../data/axes.js';
 import { loadContent, blurbFor } from '../data/content.js';
-import { selectQuestions, applyUnlocks, QUIZ_LENGTH } from '../core/select.js';
+import { pathFor, QUIZ_LENGTH } from '../core/select.js';
 import { rankModels, normalizeUserVector, sumAnswers, dominantAxis } from '../core/score.js';
 import { mulberry32, newSeed } from '../core/rng.js';
 import { encodeRun, decodeRun, isReplayable, shareUrl } from '../core/url.js';
@@ -29,15 +29,15 @@ let settleUntil = 0;
 
 function begin() {
   const seed = newSeed();
-  const base = selectQuestions(content.questions, seed);
-  const run = { seed, base, picked: applyUnlocks(base, content.questions, []), answers: [] };
+  const run = { seed, picked: pathFor(content.questions, seed, []), answers: [] };
   state = { run, result: null, alone: false };
   advance();
 }
 
 /**
- * Answer any question already on the page. The newest one moves the chart on;
- * an earlier one just reroutes its wire, keeping the answers after it.
+ * Answer any question already on the page. Every answer leads to a different
+ * next question, so changing an earlier one takes a different branch: the
+ * path below it is replaced, starting from where the new answer leads.
  */
 function answer(step, choice) {
   const { run } = state;
@@ -46,21 +46,11 @@ function answer(step, choice) {
   if (step > newest || run.answers[step] === choice) return;
   if (step === newest && performance.now() < settleUntil) return;
 
-  let answers = run.answers.slice();
-  answers[step] = choice;
-
-  // An earlier answer can open (or close) the follow-up slot, so re-resolve it
-  // from the original draw, and drop any answer given to a question that's no
-  // longer being asked.
-  const picked = applyUnlocks(run.base, content.questions, answers);
-  const changed = picked.findIndex((p, i) => p.question !== run.picked[i].question);
-  if (changed !== -1 && changed < answers.length) answers = answers.slice(0, changed);
-
+  const answers = [...run.answers.slice(0, step), choice];
+  const picked = pathFor(content.questions, run.seed, answers);
   state = { ...state, run: { ...run, picked, answers } };
   if (answers.length === QUIZ_LENGTH) state.result = finish(state.run);
-
-  if (step === newest) advance();
-  else show();
+  advance();
 }
 
 function finish({ seed, picked, answers }) {
@@ -234,10 +224,11 @@ async function boot() {
   // A shared link shows its result on its own. Replay it when the pool still
   // matches; otherwise show the result it recorded.
   const link = decodeRun();
-  if (isReplayable(link, content.poolVersion) && link.answers.length === QUIZ_LENGTH) {
-    const base = selectQuestions(content.questions, link.seed);
-    const picked = applyUnlocks(base, content.questions, link.answers);
-    state = { run: null, result: finish({ seed: link.seed, picked, answers: link.answers }), alone: true };
+  const replay = isReplayable(link, content.poolVersion) && link.answers.length === QUIZ_LENGTH
+    ? pathFor(content.questions, link.seed, link.answers)
+    : [];
+  if (replay.length === QUIZ_LENGTH) {
+    state = { run: null, result: finish({ seed: link.seed, picked: replay, answers: link.answers }), alone: true };
   } else if (link?.resultId && content.modelsById[link.resultId]) {
     state = { run: null, result: storedResult(content.modelsById[link.resultId]), alone: true };
   }

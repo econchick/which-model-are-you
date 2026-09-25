@@ -1,6 +1,7 @@
 # The question pool
 
-Ten questions are drawn per playthrough. Format:
+The quiz is a flowchart: each answer leads to a different next question, drawn
+from this pool, so a playthrough is one ten-question path through it. Format:
 
 ```
 ## question-id [section]
@@ -13,7 +14,13 @@ Sections are `opener`, `core`, `whimsy` and `closer`. Add `, unlock-only` to a
 section to keep a question out of the normal draw so it only appears as a
 follow-up. Weights and tags are optional; use `-` for no weights.
 
-A question may open a follow-up with `unlocks: option-id -> question-id`.
+A question may open a follow-up with `unlocks: option-id -> question-id`: that
+answer then leads straight to the follow-up, whenever the next step is a core
+question. That's also how to write a branch by hand — every other answer's next
+question is drawn.
+
+Each kind of question needs enough in the pool for every answer to lead
+somewhere different; the validator says so if a section runs short.
 
 **Never mention a model by name in this file.** Questions measure traits and
 models claim them; the validator fails if that slips.
@@ -22,7 +29,7 @@ Bump `version` whenever you edit questions (or change how they're drawn, in
 `src/core/select.js`), so old share links don't replay against a pool that
 changed under them.
 
-version: 3
+version: 4
 
 <!-- Openers — question 1. Easy to answer, sets the tone. -->
 
@@ -258,7 +265,16 @@ Last one. The day is over. What closes it?
 - someone | Telling someone how it went | terse -0.4, solitary -0.7
 - nothing | Nothing. It closes itself. | terse 0.7, earnest -0.3
 
-<!-- Follow-ups. Never drawn at random; only unlocked by an earlier answer.
+## close-note [closer]
+Last one. You find a note you wrote to yourself a year ago.
+
+- plan | A plan. You followed it. | rigor 0.4, earnest 0.3
+- drawing | A drawing. No idea why. | rigor -0.5, earnest -0.4, solitary 0.3
+- essay | Three pages. You read every one. | terse -0.6, speed -0.4
+- blank | It is blank. That tracks. | terse 0.3, earnest -0.4, solitary 0.4
+
+<!-- Follow-ups. Never drawn at random; only reached by the answer that
+     unlocks them.
      Keep these off any axis nothing else covers. -->
 
 ## follow-improvise [core, unlock-only]

@@ -16,7 +16,7 @@ import { dirname, join } from 'node:path';
 import { AXES, AXIS_IDS } from '../src/data/axes.js';
 import { parseModels, parseQuestions, parseInterface } from '../src/core/parse.js';
 
-import { selectQuestions, applyUnlocks, coverageOf, QUIZ_LENGTH, MIN_COVERAGE, SHAPE } from '../src/core/select.js';
+import { pathFor, branchesFrom, coverageOf, QUIZ_LENGTH, MIN_COVERAGE, SHAPE } from '../src/core/select.js';
 import { rankModels, zScoreModels, cosine } from '../src/core/score.js';
 import { mulberry32 } from '../src/core/rng.js';
 import { encodeRun, decodeRun } from '../src/core/url.js';
@@ -111,13 +111,18 @@ function checkSchema() {
     }
   }
 
-  // Enough questions to fill every slot shape asks for.
-  for (const section of new Set(SHAPE)) {
-    const needed = SHAPE.filter((s) => s === section).length;
-    const pool = QUESTIONS.filter((q) => !q.unlockOnly && q.section === (section === 'conditional' ? 'core' : section));
-    const required = section === 'conditional' ? needed + SHAPE.filter((s) => s === 'core').length : needed;
-    if (pool.length < required) {
-      fail(`only ${pool.length} drawable "${section === 'conditional' ? 'core' : section}" questions, need at least ${required}`);
+  // Every answer leads to a different next question, so each step needs as
+  // many unasked questions of its kind as the step before it has answers.
+  const widest = Math.max(...QUESTIONS.map((q) => q.options.length));
+  const required = {};
+  SHAPE.forEach((section, i) => {
+    const askedBefore = SHAPE.slice(0, i).filter((s) => s === section).length;
+    required[section] = Math.max(required[section] ?? 0, askedBefore + (i === 0 ? 1 : widest));
+  });
+  for (const [section, need] of Object.entries(required)) {
+    const have = QUESTIONS.filter((q) => !q.unlockOnly && q.section === section).length;
+    if (have < need) {
+      fail(`only ${have} "${section}" questions; need at least ${need} so every answer to the question before one can lead somewhere different. Add ${need - have} more.`);
     }
   }
 }
@@ -222,15 +227,20 @@ function checkDistinct() {
 
 // ── simulation helper ────────────────────────────────────────────────────────
 
-/** Draw a run's questions and answer them with `choose(question, index)`, follow-ups included. */
-function drawRun(seed, choose) {
-  let picked = selectQuestions(QUESTIONS, seed);
+/**
+ * Walk one path through the chart, answering with `choose(question, index)`.
+ * `onFork` sees every fork along the way: the next question for each answer.
+ */
+function drawRun(seed, choose, onFork) {
+  const picked = pathFor(QUESTIONS, seed, []);
   const answers = [];
   for (let i = 0; i < QUIZ_LENGTH; i++) {
-    picked = applyUnlocks(picked, QUESTIONS, answers);
     answers.push(choose(picked[i].question, i));
+    if (i === QUIZ_LENGTH - 1) break;
+    const branches = branchesFrom(QUESTIONS, seed, picked, answers);
+    onFork?.(picked[i].question, branches);
+    picked.push({ question: branches[answers[i]], slot: SHAPE[i + 1] });
   }
-  picked = applyUnlocks(picked, QUESTIONS, answers);
   return { picked, answers };
 }
 
@@ -311,10 +321,13 @@ function checkReachability() {
 function checkCoverage() {
   const rng = mulberry32(999);
   const worst = Object.fromEntries(AXIS_IDS.map((a) => [a, Infinity]));
+  const shared = new Set();
 
   for (let i = 0; i < COVERAGE_RUNS; i++) {
     const seed = (rng() * 4294967296) >>> 0;
-    const picked = selectQuestions(QUESTIONS, seed);
+    const { picked } = drawRun(seed, uniformChooser(rng), (question, branches) => {
+      if (new Set(branches.map((q) => q.id)).size < branches.length) shared.add(question.id);
+    });
     if (picked.length !== QUIZ_LENGTH) fail(`seed ${seed} produced ${picked.length} questions, expected ${QUIZ_LENGTH}`);
     const ids = new Set(picked.map((p) => p.question.id));
     if (ids.size !== picked.length) fail(`seed ${seed} repeated a question`);
@@ -322,7 +335,11 @@ function checkCoverage() {
     for (const a of AXIS_IDS) worst[a] = Math.min(worst[a], coverage[a]);
   }
 
-  console.log('\n  worst-case axis coverage over %s draws (minimum %s)', COVERAGE_RUNS.toLocaleString(), MIN_COVERAGE);
+  for (const id of shared) {
+    fail(`two answers to "${id}" can lead to the same next question — every answer should lead somewhere different`);
+  }
+
+  console.log('\n  worst-case axis coverage over %s paths (minimum %s)', COVERAGE_RUNS.toLocaleString(), MIN_COVERAGE);
   for (const axis of AXES) {
     const v = worst[axis.id];
     console.log(`  ${axis.id.padEnd(12)} ${v.toFixed(2)}${v < MIN_COVERAGE ? '  ← under-measured' : ''}`);
@@ -352,7 +369,7 @@ function checkDrawRates() {
   console.log('\n  how often each question is asked, over %s runs', DRAW_RUNS.toLocaleString());
   for (const section of ['opener', 'core', 'whimsy', 'closer']) {
     const pool = QUESTIONS.filter((q) => !q.unlockOnly && q.section === section);
-    const slots = SHAPE.filter((s) => (s === 'conditional' ? 'core' : s) === section).length;
+    const slots = SHAPE.filter((s) => s === section).length;
     // Relative to an even share, like the win-rate bands, so it holds as the pool grows.
     const floor = ((slots / pool.length) * 100) * 0.2;
     const rows = pool.map((q) => ({ q, pct: pct(q) })).sort((a, b) => a.pct - b.pct);
@@ -388,6 +405,8 @@ function checkSensitivity() {
   let coreFlips = 0;
   let coreTried = 0;
 
+  // Rescored on the same questions, so this measures an answer's own weight,
+  // not the different path it would also have led down.
   for (let i = 0; i < trials; i++) {
     const seed = (rng() * 4294967296) >>> 0;
     const base = playRun(seed, uniformChooser(rng));
@@ -442,6 +461,11 @@ function checkDeterminism() {
     if (a.winner !== b.winner) fail(`seed ${seed} is not deterministic: ${a.winner} vs ${b.winner}`);
     if (a.questions.map((q) => q.id).join() !== b.questions.map((q) => q.id).join()) {
       fail(`seed ${seed} selected different questions on replay`);
+    }
+    // What a share link does: rebuild the whole path from the seed and answers.
+    const replayed = pathFor(QUESTIONS, seed, a.answers).map((p) => p.question.id).join();
+    if (replayed !== a.questions.map((q) => q.id).join()) {
+      fail(`seed ${seed} walks a different path when replayed from its answers`);
     }
 
     const hash = encodeRun({ version: POOL_VERSION, seed, answers: a.answers, resultId: a.winner });

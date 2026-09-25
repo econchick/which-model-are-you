@@ -1,12 +1,17 @@
-// Question selection: draw 10 from the pool so that every run differs, but no
-// run leaves a trait unmeasured.
+// Question selection. The quiz is a flowchart: every answer leads to a
+// different next question, so which ten you're asked depends on how you answer.
 //
-// The run has a fixed *shape* rather than a shuffle. That's what keeps a
+// The chart has a fixed *shape* rather than a shuffle. That's what keeps a
 // playthrough feeling composed — you open somewhere easy, build, get a silly one
-// as a palate cleanser, and land on a closer.
+// as a palate cleanser, and land on a closer. Whichever answer you give, the
+// next step is the same kind of question; only which one changes.
+//
+// No chart is stored anywhere. Each fork is drawn when it's reached, from the
+// seed and the answers that led there, so the same seed and answers always walk
+// the same path — which is what lets a result URL replay a run.
 
 import { AXIS_IDS, zeroVector } from '../data/axes.js';
-import { mulberry32, pickByWeight } from './rng.js';
+import { mulberry32, hashSeed, pickByWeight } from './rng.js';
 
 export const SHAPE = [
   'opener',
@@ -16,7 +21,7 @@ export const SHAPE = [
   'whimsy',
   'core',
   'core',
-  'conditional', // filled by a follow-up if one unlocked, else another core
+  'core',
   'whimsy',
   'closer',
 ];
@@ -36,17 +41,24 @@ const PREFERENCE = 2;
 
 /** The most a question could move each axis, whichever option you pick. */
 function questionReach(q) {
-  const reach = zeroVector();
-  for (const id of AXIS_IDS) {
-    reach[id] = Math.max(0, ...q.options.map((o) => Math.abs(o.axes?.[id] ?? 0)));
+  let reach = reaches.get(q);
+  if (!reach) {
+    reach = zeroVector();
+    for (const id of AXIS_IDS) {
+      reach[id] = Math.max(0, ...q.options.map((o) => Math.abs(o.axes?.[id] ?? 0)));
+    }
+    reaches.set(q, reach);
   }
   return reach;
 }
 
+/** Every fork weighs its candidates, so a question's reach is worked out once. */
+const reaches = new WeakMap();
+
 /**
- * How much a question is worth *right now*: weight on axes we've barely measured
- * counts for more than weight on axes we've already covered. This is what pulls
- * each run toward balanced coverage without scripting it by hand.
+ * How much a question is worth *right now*: weight on axes the path has barely
+ * measured counts for more than weight on axes it has already covered. This is
+ * what pulls each path toward balanced coverage without scripting it by hand.
  */
 function marginalValue(q, coverage) {
   const reach = questionReach(q);
@@ -55,112 +67,94 @@ function marginalValue(q, coverage) {
   return total;
 }
 
-function addReach(coverage, q) {
-  const reach = questionReach(q);
-  for (const id of AXIS_IDS) coverage[id] += reach[id];
-}
-
-/**
- * Build the question list for one playthrough.
- *
- * Deterministic in `seed`: the same seed always yields the same ten questions,
- * which is what lets a result URL replay a run.
- */
-export function selectQuestions(pool, seed) {
-  const rng = mulberry32(seed);
-  const coverage = zeroVector();
-  const used = new Set();
-  const picked = [];
-
-  // Follow-ups are reachable only by unlocking them, never by ordinary draw.
-  const drawable = pool.filter((q) => !q.unlockOnly);
-
-  for (const slot of SHAPE) {
-    const section = slot === 'conditional' ? 'core' : slot;
-    const eligible = drawable.filter((q) => q.section === section && !used.has(q.id));
-
-    // Any eligible question can come up, the useful ones more often. That's
-    // what makes runs differ; repairCoverage below makes sure none of them
-    // leaves an axis unmeasured.
-    const chosen = pickByWeight(rng, eligible, (q) => marginalValue(q, coverage) ** PREFERENCE);
-    if (!chosen) {
-      throw new Error(`question pool exhausted for section "${section}"`);
-    }
-    used.add(chosen.id);
-    addReach(coverage, chosen);
-    picked.push({ question: chosen, slot });
-  }
-
-  repairCoverage(picked, drawable, used, coverage);
-  return picked;
-}
-
-/**
- * If the draw left an axis under-measured, swap the least useful core question
- * for the best one that covers the gap. Two attempts, then give up — a pool that
- * can't cover its own axes is a content bug, and scripts/validate.mjs is where
- * that should surface, not the browser.
- */
-function repairCoverage(picked, drawable, used, coverage) {
-  for (let attempt = 0; attempt < 2; attempt++) {
-    const deficient = AXIS_IDS.filter((id) => coverage[id] < MIN_COVERAGE);
-    if (deficient.length === 0) return;
-
-    const gain = (q) => deficient.reduce((s, id) => s + questionReach(q)[id], 0);
-    const candidate = drawable
-      .filter((q) => q.section === 'core' && !used.has(q.id))
-      .sort((a, b) => gain(b) - gain(a))[0];
-    if (!candidate || gain(candidate) <= 0) return;
-
-    // Drop whichever core slot contributes least to the axes we're short on.
-    const coreSlots = picked
-      .map((p, index) => ({ ...p, index }))
-      .filter((p) => p.slot === 'core');
-    if (coreSlots.length === 0) return;
-    const victim = coreSlots.sort((a, b) => gain(a.question) - gain(b.question))[0];
-
-    const victimReach = questionReach(victim.question);
-    const candidateReach = questionReach(candidate);
-    for (const id of AXIS_IDS) coverage[id] += candidateReach[id] - victimReach[id];
-
-    used.delete(victim.question.id);
-    used.add(candidate.id);
-    picked[victim.index] = { question: candidate, slot: 'core' };
-  }
-}
-
-/**
- * Check answers so far for an unlocked follow-up and slot it in.
- *
- * One level only: an unlocked question cannot itself unlock another. Deeper
- * trees make coverage impossible to reason about for very little payoff.
- */
-export function applyUnlocks(picked, pool, answers) {
-  const slotIndex = picked.findIndex((p) => p.slot === 'conditional');
-  if (slotIndex === -1) return picked;
-
-  for (let i = 0; i < slotIndex; i++) {
-    const { question } = picked[i];
-    const choice = answers[i];
-    if (choice == null) continue;
-    const optionId = question.options[choice]?.id;
-    const rule = (question.unlocks ?? []).find((u) => u.when === optionId);
-    if (!rule) continue;
-
-    const followUp = pool.find((q) => q.id === rule.qid);
-    const alreadyAsked = picked.some((p) => p.question.id === rule.qid);
-    if (!followUp || alreadyAsked) continue;
-
-    const next = picked.slice();
-    next[slotIndex] = { question: followUp, slot: 'conditional', unlockedBy: question.id };
-    return next;
-  }
-  return picked;
-}
-
-/** Coverage totals for a selected run — used by the validator. */
+/** Coverage totals for the questions on a path. */
 export function coverageOf(picked) {
   const coverage = zeroVector();
-  for (const p of picked) addReach(coverage, p.question);
+  for (const p of picked) {
+    const reach = questionReach(p.question);
+    for (const id of AXIS_IDS) coverage[id] += reach[id];
+  }
   return coverage;
+}
+
+/** Fisher–Yates, so no answer position always gets first pick of the pool. */
+function shuffledIndexes(rng, n) {
+  const order = Array.from({ length: n }, (_, i) => i);
+  for (let i = n - 1; i > 0; i--) {
+    const j = Math.floor(rng() * (i + 1));
+    [order[i], order[j]] = [order[j], order[i]];
+  }
+  return order;
+}
+
+function opening(pool, seed) {
+  const openers = pool.filter((q) => !q.unlockOnly && q.section === SHAPE[0]);
+  const chosen = pickByWeight(mulberry32(seed), openers, (q) => marginalValue(q, zeroVector()) ** PREFERENCE);
+  if (!chosen) throw new Error(`no "${SHAPE[0]}" questions to open with`);
+  return chosen;
+}
+
+/**
+ * Where each answer to the last question on a path leads: one next question per
+ * option, all different.
+ *
+ * An answer with an `unlocks:` rule leads straight to its follow-up, when the
+ * next step is the follow-up's kind of question. Every other answer draws from
+ * the next step's section, weighted toward whatever measures the axes this path
+ * has measured least.
+ *
+ * One level only: a follow-up cannot itself unlock another. Deeper trees make
+ * coverage impossible to reason about for very little payoff.
+ *
+ * @param {Array<{question}>} picked  the path so far
+ * @param {number[]} answers  the answers that led down it
+ * @returns {object[]} the next question for each option, by option index
+ */
+export function branchesFrom(pool, seed, picked, answers) {
+  const k = picked.length - 1;
+  const section = SHAPE[k + 1];
+  if (!section) return [];
+  const { question } = picked[k];
+
+  // Seeded by the path, so each fork is fixed however many times it's reached.
+  const rng = mulberry32(hashSeed(`${seed}/${answers.slice(0, k).join('')}`));
+  const coverage = coverageOf(picked);
+  const asked = new Set(picked.map((p) => p.question.id));
+  const claimed = new Set();
+
+  const branches = question.options.map((option) => {
+    const rule = (question.unlocks ?? []).find((u) => u.when === option.id);
+    const followUp = rule && pool.find((q) => q.id === rule.qid);
+    if (!followUp || followUp.section !== section || asked.has(followUp.id)) return null;
+    claimed.add(followUp.id);
+    return followUp;
+  });
+
+  const fresh = pool.filter((q) => !q.unlockOnly && q.section === section && !asked.has(q.id));
+  for (const i of shuffledIndexes(rng, branches.length)) {
+    if (branches[i]) continue;
+    // Different for every answer when the pool allows. scripts/validate.mjs
+    // fails when it doesn't, but the quiz still works if two have to share.
+    const unclaimed = fresh.filter((q) => !claimed.has(q.id));
+    const chosen = pickByWeight(rng, unclaimed.length ? unclaimed : fresh, (q) => marginalValue(q, coverage) ** PREFERENCE);
+    if (!chosen) throw new Error(`question pool exhausted for section "${section}"`);
+    claimed.add(chosen.id);
+    branches[i] = chosen;
+  }
+  return branches;
+}
+
+/**
+ * Walk the chart: the questions asked along the path these answers take, up to
+ * and including the one waiting for an answer — or all ten, once answered.
+ */
+export function pathFor(pool, seed, answers) {
+  const picked = [{ question: opening(pool, seed), slot: SHAPE[0] }];
+  while (picked.length < QUIZ_LENGTH && picked.length <= answers.length) {
+    const i = picked.length - 1;
+    const next = branchesFrom(pool, seed, picked, answers)[answers[i]];
+    if (!next) break; // an answer the question doesn't have, e.g. a mangled link
+    picked.push({ question: next, slot: SHAPE[i + 1] });
+  }
+  return picked;
 }
