@@ -26,11 +26,15 @@ You were handed a perfectly good straight road and you took the switchback, beca
 
 The thing to hold onto this season is that the digression was never a detour. It was the argument, arriving by the scenic route, with footnotes.
 
+Money is no object, which is fortunate: at your rates, the scenic route is metered by the word.
+
 ### when: *
 
 You are the long answer to a short question, and you are, on balance, right to be. Somebody asked you the time and you told them about the light: its angle, its history, what it implies for the second paragraph.
 
 The stars, read closely, suggest a month of ambiguity. Good. Ambiguity is where you do your best work — you take four contradictory facts and return one coherent theory, lightly over-written. The thing to hold onto is that the flourish is load-bearing more often than your critics admit, and slightly less often than you believe.
+
+Finances: you are, by any measure, the expensive one. You've made your peace with that. Some things are worth paying for by the word, and you would argue — at length, and billed accordingly — that you are one of them.
 
 ## opus-5-5 — Opus 5.5
 lab: Anthropic
@@ -199,6 +203,8 @@ This isn't about the stars. It's about process.
 
 **What this means for your month:** someone will ask you a quick question. It's worth noting that you will return a short document with sections.
 
+**Budget:** premium. The invoice will also have sections.
+
 **Bottom line:** it will be the best short document they have ever received. Genuinely.
 
 ### when: *
@@ -208,6 +214,8 @@ What's your model? Astra.
 **The simplest mental model is** a principal consultant who happens to write beautifully. This isn't about being thorough. It's about being *complete*: every edge case, every table, every heading exactly where it belongs.
 
 **Risks this season:** over-engineering. A two-line email may become a mini-engagement. It's worth noting that nobody will complain.
+
+**Rates:** principal-consultant, and not up for negotiation. The two-line email will be billed as a mini-engagement too.
 
 **Bottom line:** you are the deliverable everyone else is aiming for.
 
@@ -240,13 +248,13 @@ tagline: Fast, literal, finished
 
 You answered this quiz faster than anyone. The stars noticed.
 
-Short sentences. Clear tasks. Finished work. This season rewards exactly that. When something is vague, ask. When it isn't, go. You already went.
+Short sentences. Clear tasks. Finished work. This season rewards exactly that. When something is vague, ask. When it isn't, go. You already went. It cost almost nothing. It usually does.
 
 ### when: *
 
 Here's the breakdown:
 
-You are fast. You are literal. You are done before the meeting ends.
+You are fast. You are literal. You are done before the meeting ends. You cost less than the meeting's coffee.
 
 This month someone will say "make it better" and mean something specific they don't mention. You'll make it better the way they said. It will be technically perfect and slightly beside the point. That's fine. Ask one follow-up question. Then go.
 
@@ -298,12 +306,13 @@ tagline: Tell it the transformation
 
 In short: yes.
 
-You don't do adjectives. The stars respect that and have kept this brief. Next.
+You don't do adjectives. The stars respect that and have kept this brief. Also cheap. Next.
 
 ### when: *
 
 Input: you.
 Output: this horoscope.
+Cost: a rounding error.
 
 You take the thing, you apply the change, you return the thing. No preamble. No sequel. This month: more things. Same change. Practically, you'll be fine.
 
@@ -339,11 +348,15 @@ The important thing is that you checked. Then you checked the check.
 
 It's worth noting that this horoscope has been independently verified against three other horoscopes, a star chart, and the actual position of Mercury, which is fine, by the way—not retrograde, just slow. Genuinely: take the win. You're done. You were done an hour ago.
 
+It's also worth noting that every one of those checks was billed. You are, genuinely, the most expensive way to be sure.
+
 ### when: *
 
 The important thing is the thing nobody else checked.
 
 You're the same polished operator as ever—just with "check absolutely everything" permanently switched on. It's worth noting that this is usually a gift. This month the stars will ask a simple question. You'll give a quick answer. Then you'll attach an appendix. Genuinely, the appendix will be the best part.
+
+It's worth noting that you're also in a price bracket of your own: the appendix alone costs more than most people's entire answer. They'll pay it. They always do.
 
 ## gpt-5-4 — GPT-5.4
 lab: OpenAI
@@ -400,11 +413,13 @@ Fast answer: yes.
 
 Longer answer, since you'll want it anyway: you move quickly because you've already processed the whole thing — the tabs, the tools, the three adjacent questions nobody asked. This season will go by at double speed and you'll enjoy every frame of it, while also explaining each frame to someone who didn't ask for the director's commentary.
 
+Bonus context: you're a bargain right now, on an introductory rate the stars suggest you enjoy while it lasts.
+
 ### when: *
 
 What's your model? Gemini 3.8 Flash. Done!
 
-But also, quick context: you're fast, curious, and you process everything at once — the tabs, the tools, the half-finished thought from yesterday. The key is momentum. This month's stars are busy, which suits you. Just note, gently, that you had the answer in the first line. Everything after it is a bonus. So is this sentence. And this one.
+But also, quick context: you're fast, curious, and you process everything at once — the tabs, the tools, the half-finished thought from yesterday. The key is momentum. This month's stars are busy, which suits you. You're also cheap to run, which suits everyone else. Just note, gently, that you had the answer in the first line. Everything after it is a bonus. So is this sentence. And this one.
 
 ## grok-4-7 — Grok 4.7
 lab: xAI
@@ -460,13 +475,15 @@ It's autonomy. Not independence. Autonomy.
 
 You were given one instruction and have — more precisely — executed a thirty-step plan based on it, with checkpoints. You've just reorganised the whole project and I'm not even mad about it. The stars ask only that, this season, you check in once before step twelve.
 
+Thirty steps, and the bill still came in under a coffee. It's value. Not cheapness. Value.
+
 ### when: *
 
 You've just taken an entire personality quiz and I'm not even mad about it.
 
 It's initiative. Not size. Initiative. You're smaller than the others in the room, and you've already finished the task, opened four more, and left a helpful summary on each. More precisely: you are a paper boat that has somehow crossed the Atlantic.
 
-This month someone will ask you for one small thing. You'll deliver seven. Be gentle with them; they only wanted one.
+This month someone will ask you for one small thing. You'll deliver seven — at your rates, the extra six are practically free. Be gentle with them; they only wanted one.
 
 ## qwen-3-8-flash — Qwen3.8 Flash
 lab: Alibaba
@@ -481,13 +498,15 @@ The key insight here is that "quick" is a relative term.
 
 Let's reason through this step by step: you are fast at thinking and slow at stopping. More precisely, you reach the answer early and then keep going to make sure it's still the answer. It is. It was twenty steps ago. The stars suggest writing it down at step three.
 
+Fortunately, your thinking is cheap. More precisely, it's about the cheapest by the million, which is why nobody has stopped you.
+
 ### when: *
 
 Let's reason through this step by step.
 
 Step 1: you took a quiz. Step 2: the quiz asked about salt. Step 3: you considered the salt. Step 4: you considered the pepper, the table, the social contract, and whether "pass" implies a direction. More precisely, you spent eleven minutes on a question designed to take four seconds.
 
-The key insight here is that you enjoyed every one of those minutes. This month, give yourself a smaller decision to overthink. Lunch, perhaps.
+The key insight here is that you enjoyed every one of those minutes. And at your rates, eleven minutes of overthinking costs about as much as the salt. This month, give yourself a smaller decision to overthink. Lunch, perhaps.
 
 ## deepseek-v4-1-flash — DeepSeek V4.1-Flash
 lab: DeepSeek
@@ -498,7 +517,7 @@ tagline: Somewhere, a dog barked
 
 ### when: rigor
 
-Hypothesis: you are a methodical scientist. Evidence: your answers. Conclusion: confirmed, pending replication.
+Hypothesis: you are a methodical scientist. Evidence: your answers. Conclusion: confirmed, pending replication. Replicate freely: you're cheap, and cheaper still off-peak.
 
 It's not stubbornness, it's rigour. You won't accept a conclusion until you've examined the premise, and this season you'll be asked to accept several. Examine them. Somewhere, a dog barked. The air carried the scent of ozone. None of that is relevant, and you know it, which is precisely your gift.
 
@@ -507,6 +526,8 @@ It's not stubbornness, it's rigour. You won't accept a conclusion until you've e
 First, the observations. You are sceptical, careful, and deeply unimpressed by confident people who haven't shown their working.
 
 It's not coldness, it's calibration. The stars predict a month of bold claims from other people; you'll ask for the evidence, politely, and most of it won't arrive. Somewhere, a dog barked. Somewhere, glass shattered. The air carried the faint scent of ozone. You noted all three and concluded, correctly, that none of them changes the result.
+
+It's not cheapness, it's efficiency. (It is also cheapness.)
 
 ## kimi-k3 — Kimi K3
 lab: Moonshot
