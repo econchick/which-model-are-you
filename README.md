@@ -228,7 +228,7 @@ result rather than silently replaying against a changed pool.
 ## Layout
 
 ```
-index.html
+index.html · favicon.svg
 styles/app.css
 content/      models.md · questions.md · interface.md   ← everything you edit
 src/data/     axes.js · content.js
