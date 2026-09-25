@@ -49,11 +49,8 @@ const fillHtml = (template, values) =>
 export function renderIntro(copy) {
   return `
     <section class="screen screen--intro" aria-labelledby="intro-title">
-      <p class="eyebrow">${line(copy['intro.eyebrow'])}</p>
       <h1 id="intro-title" class="display" tabindex="-1">${line(copy['intro.title'])}</h1>
-      <p class="lede">${line(copy['intro.lede'])}</p>
       <button class="btn btn--primary" data-action="start">${line(copy['intro.button'])}</button>
-      <p class="fine">${line(copy['intro.fine'])}</p>
     </section>`;
 }
 

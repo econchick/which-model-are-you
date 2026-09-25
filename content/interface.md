@@ -9,22 +9,12 @@ spelled exactly as they are; anything else is just text.
 A blank line inside a block starts a new paragraph, and a single line break is
 kept as a line break — which is how the title breaks across two lines.
 
-## intro.eyebrow
-A reading in ten questions
-
 ## intro.title
 Which model
 are you?
 
-## intro.lede
-Some of these questions are serious. Some of them are about socks.
-All of them count.
-
 ## intro.button
-Begin the reading
-
-## intro.fine
-No accounts, no tracking, nothing leaves your browser.
+Begin
 
 ## quiz.progress
 Question {n} of {total}
