@@ -31,6 +31,9 @@ const prose = (text) =>
     )
     .join('');
 
+/** A label that's nothing but emoji, like 🍞: it's the whole answer, so it's shown big. */
+const EMOJI_ONLY = /^(?:\p{Extended_Pictographic}|\p{Emoji_Modifier}|\u200d|\ufe0f|\s)+$/u;
+
 /** Copy that is a single line of text, with line breaks honoured. */
 const line = (text) => escape(text).replace(/\n/g, '<br>');
 
@@ -91,7 +94,8 @@ export function renderStep({ question, index, total, copy }) {
     .map(
       (opt, i) => `
       <li>
-        <button class="answer" data-action="answer" data-step="${index}" data-index="${i}"
+        <button class="answer${EMOJI_ONLY.test(opt.label) ? ' answer--emoji' : ''}"
+                data-action="answer" data-step="${index}" data-index="${i}"
                 data-wire data-lane="${i}" role="radio" aria-checked="false">
           <span class="answer-key" aria-hidden="true">${i + 1}</span>
           <span class="answer-label">${escape(opt.label)}</span>

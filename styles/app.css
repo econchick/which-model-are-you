@@ -316,6 +316,11 @@ main {
   opacity: 0;
 }
 
+/* Begin gets no teaser line: its wire only appears once it's pressed. */
+.wire-stub[data-lane='start'] {
+  display: none;
+}
+
 .wire-route.is-drawing path {
   stroke-dasharray: 1;
   stroke-dashoffset: 1;
@@ -462,6 +467,11 @@ main {
 
 .answer:disabled {
   cursor: default;
+}
+
+.answer--emoji .answer-label {
+  font-size: 3.25rem;
+  line-height: 1.1;
 }
 
 .answer-key {
