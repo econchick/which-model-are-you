@@ -221,6 +221,12 @@ async function boot() {
   }
   flow = createFlow(root);
 
+  // The footer lives in index.html so it shows even if the content fails to
+  // load; once it has loaded, its words come from interface.md like the rest.
+  for (const el of document.querySelectorAll('[data-copy]')) {
+    el.textContent = content.copy[el.dataset.copy] ?? el.textContent;
+  }
+
   // A shared link shows its result on its own. Replay it when the pool still
   // matches; otherwise show the result it recorded.
   const link = decodeRun();

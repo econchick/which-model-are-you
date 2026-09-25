@@ -55,6 +55,9 @@ Read me again
 ## site.footer
 For fun. Not affiliated with any of these labs.
 
+## site.source
+Source on GitHub
+
 ## error.title
 The reading is unavailable
 

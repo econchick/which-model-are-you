@@ -828,6 +828,36 @@ main {
   color: var(--ink-soft);
 }
 
+.site-foot a {
+  color: inherit;
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 3px;
+  white-space: nowrap;
+}
+
+.site-foot a::before {
+  content: '·';
+  display: inline-block;
+  margin: 0 0.55em;
+}
+
+.site-foot a:hover {
+  color: var(--ink);
+}
+
+/* Too narrow for one line: give the link its own, without a stray dot. */
+@media (max-width: 520px) {
+  .site-foot a {
+    display: table;
+    margin: 0.4rem auto 0;
+  }
+
+  .site-foot a::before {
+    display: none;
+  }
+}
+
 /* Four across doesn't fit a phone. Stack the answers, and give their wires
    lanes in the left gutter instead (wires.js picks up the change on its own). */
 @media (max-width: 640px) {

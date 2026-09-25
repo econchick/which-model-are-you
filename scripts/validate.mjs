@@ -136,7 +136,7 @@ const REQUIRED_COPY = {
   'result.eyebrow': [], 'result.youAre': [], 'result.rare': [], 'result.chart': [],
   'result.rising': ['name', 'tagline'], 'result.share': [], 'result.shareDone': [],
   'result.shareFailed': [], 'result.restart': [],
-  'site.footer': [], 'error.title': [], 'error.body': [],
+  'site.footer': [], 'site.source': [], 'error.title': [], 'error.body': [],
 };
 
 function checkInterfaceCopy() {
