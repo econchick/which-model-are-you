@@ -871,8 +871,14 @@ main {
 
 .crab-button:hover,
 .crab-button:focus-visible,
-.crab.is-talking .crab-button {
+.crab.is-talking .crab-button,
+.crab.is-waving .crab-button {
   transform: translateY(6%);
+}
+
+/* After its goodbye it stays down, even under the pointer, until you move away. */
+.crab.is-resting .crab-button {
+  transform: translateY(70%);
 }
 
 .crab-button:focus-visible {
@@ -964,6 +970,16 @@ main {
 @keyframes snip-right {
   30% { transform: rotate(14deg); }
   65% { transform: rotate(-6deg); }
+}
+
+/* Goodbye: one claw up, waving, before it ducks back down (WAVE_MS in crab.js). */
+.crab.is-waving .crab-arm--right {
+  animation: wave 1100ms ease-in-out;
+}
+
+@keyframes wave {
+  15%, 55% { transform: rotate(-24deg); }
+  35%, 75% { transform: rotate(-4deg); }
 }
 
 /* The speech bubble, up and to the left, its tail pointing at the crab. */

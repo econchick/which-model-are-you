@@ -10,7 +10,8 @@ A blank line inside a block starts a new paragraph, and a single line break is
 kept as a line break — which is how the title breaks across two lines.
 
 `crab.lines` is the exception: one line per thing the crab in the corner says.
-It works through them in order and starts again from the top.
+It works through them in order; after the last one it waves and goes back into
+hiding, and starts again from the top next time.
 
 ## intro.badge
 quiz

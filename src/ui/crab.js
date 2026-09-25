@@ -1,7 +1,15 @@
 // The crab. It lives in the bottom-right corner with only its eyes and claws
 // over the edge; hover (or focus) and it climbs out, click and it says
-// something, keep clicking and it keeps going. Click anywhere else and it
-// goes back into hiding. Everything it says is in content/interface.md.
+// something, keep clicking and it keeps going. After its last line it waves
+// and goes back into hiding, and the next click starts again from the top.
+// Click anywhere else mid-way and it hides, but picks up where it left off.
+// Everything it says is in content/interface.md.
+
+/** How long the wave lasts before it ducks back down. Matches the CSS. */
+const WAVE_MS = 1100;
+
+/** Long enough to read the last line before the crab says goodbye. */
+const readTime = (line) => Math.max(2400, line.length * 55);
 
 const ART = `
   <svg class="crab-art" viewBox="0 0 120 100" aria-hidden="true">
@@ -51,23 +59,55 @@ export function mountCrab(copy) {
 
   // Carries on where it left off, so coming back gets you something new.
   let next = 0;
+  let goodbye = 0; // set while the last line is up and the wave is coming
+  let waving = false;
 
   function speak() {
-    bubble.textContent = lines[next];
-    next = (next + 1) % lines.length;
+    if (waving) return;
+    // The last line is up: a click just brings the goodbye forward.
+    if (goodbye) return farewell();
+    crab.classList.remove('is-resting');
+
+    const line = lines[next];
+    bubble.textContent = line;
     crab.classList.add('is-talking');
     button.setAttribute('aria-expanded', 'true');
     replay(bubble, 'is-new');
     replay(crab, 'is-snipping');
+
+    if (next === lines.length - 1) {
+      next = 0;
+      goodbye = setTimeout(farewell, readTime(line));
+    } else {
+      next += 1;
+    }
+  }
+
+  function farewell() {
+    clearTimeout(goodbye);
+    goodbye = 0;
+    waving = true;
+    crab.classList.remove('is-talking');
+    crab.classList.add('is-waving');
+    button.setAttribute('aria-expanded', 'false');
+    setTimeout(() => {
+      // Back down, even with the pointer still on it, until the pointer
+      // leaves or it's clicked again.
+      crab.classList.replace('is-waving', 'is-resting');
+      waving = false;
+    }, WAVE_MS);
   }
 
   function hide() {
+    clearTimeout(goodbye);
+    goodbye = 0;
     crab.classList.remove('is-talking');
     button.setAttribute('aria-expanded', 'false');
   }
 
   button.addEventListener('click', speak);
   bubble.addEventListener('click', speak);
+  button.addEventListener('pointerleave', () => crab.classList.remove('is-resting'));
   // Keep focus on the crab when the bubble is clicked, so it doesn't count as leaving.
   bubble.addEventListener('mousedown', (event) => event.preventDefault());
 
