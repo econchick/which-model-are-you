@@ -9,6 +9,9 @@ spelled exactly as they are; anything else is just text.
 A blank line inside a block starts a new paragraph, and a single line break is
 kept as a line break — which is how the title breaks across two lines.
 
+## intro.badge
+quiz
+
 ## intro.title
 Which model
 are you?
@@ -48,9 +51,6 @@ Copy failed — select the address bar
 
 ## result.restart
 Read me again
-
-## result.fine
-A different ten questions next time.
 
 ## site.footer
 For fun. Not affiliated with any of these labs.

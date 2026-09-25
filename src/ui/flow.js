@@ -30,9 +30,9 @@ export function createFlow(root) {
   const svg = flowEl.querySelector('.wires');
   const stepsEl = flowEl.querySelector('.flow-steps');
 
-  /** step element → its SVG group, fade gradient, stub paths and route path */
+  /** step element → its SVG group, fade gradient, stub tubes and route tube */
   const wires = new Map();
-  let gradients = 0;
+  let masks = 0;
   let animate = true;
 
   new ResizeObserver(() => draw()).observe(flowEl);
@@ -51,20 +51,32 @@ export function createFlow(root) {
     return { left, top, width, height, bottom: top + height };
   }
 
+  // Each wire is a tube: an ink edge with its answer's colour running down the
+  // middle, drawn as two paths along the same line.
+  const tube = (extra = '') => `<path class="wire-edge"${extra} /><path class="wire-core"${extra} />`;
+  const trace = (tubeEl, d) => {
+    for (const path of tubeEl.children) path.setAttribute('d', d);
+  };
+
   function wiresOf(step, count) {
     let w = wires.get(step);
     if (w && w.stubs.length === count) return w;
     w?.group.remove();
 
-    const id = `wire-fade-${++gradients}`;
+    // The stubs fade through a mask rather than a gradient stroke, so the fade
+    // works the same whatever colour a wire is.
+    const id = ++masks;
     const group = document.createElementNS(SVG, 'g');
     group.innerHTML = `
-      <linearGradient id="${id}" gradientUnits="userSpaceOnUse" x1="0" x2="0">
-        <stop class="wire-stop" offset="0" />
-        <stop class="wire-stop" offset="1" stop-opacity="0" />
+      <linearGradient id="wire-fade-${id}" gradientUnits="userSpaceOnUse" x1="0" x2="0">
+        <stop offset="0" stop-color="#fff" />
+        <stop offset="1" stop-color="#000" />
       </linearGradient>
-      ${`<path class="wire wire-stub" style="stroke:url(#${id})" />`.repeat(count)}
-      <path class="wire wire-route" pathLength="1" />`;
+      <mask id="wire-mask-${id}" maskUnits="userSpaceOnUse" x="-100000" y="-100000" width="200000" height="200000">
+        <rect x="-100000" y="-100000" width="200000" height="200000" fill="url(#wire-fade-${id})" />
+      </mask>
+      <g mask="url(#wire-mask-${id})">${`<g class="wire-stub">${tube()}</g>`.repeat(count)}</g>
+      <g class="wire-route">${tube(' pathLength="1"')}</g>`;
     svg.append(group);
 
     w = {
@@ -90,23 +102,25 @@ export function createFlow(root) {
       const nodeBox = node && boxOf(node);
       const target = nodeBox && { x: nodeBox.left + nodeBox.width / 2, y: nodeBox.top };
 
-      const { stubs, route, fade } = wiresFor(cards.map(boxOf), chosen, target);
+      const { stubs, route: taken, fade } = wiresFor(cards.map(boxOf), chosen, target);
       const w = wiresOf(step, cards.length);
       // A step's own wires wait for it to arrive, like the rest of it.
       w.group.classList.toggle('is-entering', step.classList.contains('is-entering'));
 
       w.gradient.setAttribute('y1', fade[0]);
       w.gradient.setAttribute('y2', fade[1]);
-      w.stubs.forEach((path, j) => {
-        path.setAttribute('d', stubs[j]);
-        path.classList.toggle('is-taken', chosen === j && Boolean(route));
-        path.classList.toggle('is-muted', chosen != null && chosen !== j);
+      w.stubs.forEach((stub, j) => {
+        trace(stub, stubs[j]);
+        stub.setAttribute('data-lane', cards[j].dataset.lane ?? '');
+        stub.classList.toggle('is-taken', chosen === j && Boolean(taken));
+        stub.classList.toggle('is-muted', chosen != null && chosen !== j);
       });
 
-      w.route.setAttribute('d', route);
+      trace(w.route, taken);
+      w.route.setAttribute('data-lane', chosen == null ? '' : cards[chosen]?.dataset.lane ?? '');
       // A route is "new" when it joins a different pair of things than before —
       // not when a resize merely moves its ends. Only new routes draw in.
-      const key = route ? `${step.dataset.key}:${chosen}>${next.dataset.key}` : '';
+      const key = taken ? `${step.dataset.key}:${chosen}>${next.dataset.key}` : '';
       if (w.route.dataset.key !== key) {
         w.route.dataset.key = key;
         w.route.classList.remove('is-drawing');

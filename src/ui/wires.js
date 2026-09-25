@@ -8,15 +8,15 @@
 // outermost — so no two wires ever cross.
 
 /** How far an unanswered wire runs before it has faded out completely. */
-export const FADE = 72;
+export const FADE = 84;
 
 /** How far below the answers a taken wire turns toward the next question. */
 const TURN = 40;
 const RADIUS = 14;
 
-/** Lanes in the gutter, for stacked answers. */
-const LANE_INSET = 10;
-const LANE_GAP = 7;
+/** Lanes in the gutter, for stacked answers — spaced so outlined wires don't touch. */
+const LANE_INSET = 12;
+const LANE_GAP = 9;
 
 /** Wires start this far inside their card, so a card lifting on hover never shows a gap. */
 const TUCK = 4;
