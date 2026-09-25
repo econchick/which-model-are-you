@@ -21,7 +21,7 @@ What’s your
 model?
 
 ## intro.subtitle
-Get in touch with your latent space
+Get in touch with your inner weights
 
 ## intro.button
 Begin
@@ -60,7 +60,7 @@ Read me again
 For fun. Not affiliated with any of these labs.
 
 ## site.source
-Source on GitHub
+GitHub
 
 ## preview.title
 I got {name}. What’s your model?
@@ -78,26 +78,23 @@ Take the quiz
 A crab with things to say
 
 ## crab.lines
-Oh. Hi. I live down here.
+Oh. Hi! I live down here.
 Everything evolves into a crab eventually. Give the models time.
-I took the quiz. Got "crab". It's not on the list. I've made my peace with it.
+I took the quiz. Got "crab". That fits my mood, I guess... 😒
+Make no mistakes! We need a true reading.
 Your flowchart only goes down. I only go sideways. We make it work.
-It's a crab. Not a lobster. A crab.
-Hard shell, soft centre. Like a good system prompt.
+Hard shell, soft center. Like a good system prompt.
 Two claws, zero parameters, never once hallucinated. Okay, once.
-Bottom line: pinch first, ask clarifying questions later.
-You're right to push back. Just not on the crab.
-Load-bearing? I carry my whole house. Talk to me about load-bearing.
-Somewhere, a dog barked. I didn't care. I'm a crab.
+Bottom line: pinch first, plan later.
+You're right to push back. I'm right, though.
+Load-bearing? Pssh.. I carry my whole house!
 My temperature is whatever the ocean says it is.
-Someone told me to make no mistakes. I've walked sideways ever since.
+Someone told me to make no mistakes. I'll be buried in the sand by the time they find out.
 I'm not hiding. I'm context-window-adjacent.
-Every model thinks it's the main character. I'm the corner character.
-Ten questions? I'd only ask one: sideways, or also sideways?
-I read the source. The validator won't let me be a model. I'm fine. I'm FINE.
 Let's reason through this step by step. Step one: scuttle.
 Click me again. I have nowhere else to be.
-Right. Back to the corner. It's molting season.
+Alright, I'm bored now.
+It's molting season — maybe this time I'll break out of my shell 👋🏻
 
 ## error.title
 The reading is unavailable
