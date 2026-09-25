@@ -58,6 +58,18 @@ For fun. Not affiliated with any of these labs.
 ## site.source
 Source on GitHub
 
+## preview.title
+I got {name}. Which model are you?
+
+## preview.got
+I got
+
+## preview.cta
+Your turn
+
+## preview.link
+Take the quiz
+
 ## crab.label
 A crab with things to say
 

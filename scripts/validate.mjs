@@ -9,7 +9,7 @@
 // model that is unreachable, one that eats every result, and one that is a near
 // duplicate of a model you already had.
 
-import { readFileSync } from 'node:fs';
+import { readFileSync, existsSync, readdirSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import { dirname, join } from 'node:path';
 
@@ -20,10 +20,12 @@ import { pathFor, branchesFrom, coverageOf, QUIZ_LENGTH, MIN_COVERAGE, SHAPE } f
 import { rankModels, zScoreModels, cosine, risingSign } from '../src/core/score.js';
 import { mulberry32 } from '../src/core/rng.js';
 import { encodeRun, decodeRun } from '../src/core/url.js';
+import { PREVIEW_DIR, CARD_FILE, siteUrl, previewFor, fingerprint, fingerprintOf } from './preview-data.mjs';
 
 // Read the same Markdown the browser fetches, through the same parsers, so the
 // two can never drift. A parse error here names the file and line.
-const CONTENT = join(dirname(fileURLToPath(import.meta.url)), '..', 'content');
+const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
+const CONTENT = join(ROOT, 'content');
 const readContent = (name) => readFileSync(join(CONTENT, name), 'utf8');
 
 let MODELS;
@@ -139,6 +141,7 @@ const REQUIRED_COPY = {
   'result.shareFailed': [], 'result.restart': [],
   'site.footer': [], 'site.source': [], 'error.title': [], 'error.body': [],
   'crab.label': [], 'crab.lines': [],
+  'preview.title': ['name'], 'preview.got': [], 'preview.cta': [], 'preview.link': [],
 };
 
 function checkInterfaceCopy() {
@@ -486,6 +489,42 @@ function checkDeterminism() {
   }
 }
 
+// ── 8. link previews ─────────────────────────────────────────────────────────
+
+/**
+ * Every share link points at r/<model>/, so a model without a page there has
+ * share links that 404. Those fail. A page that no longer matches its model's
+ * name, tagline or opening lines only shows an old preview, so that warns.
+ */
+function checkPreviews() {
+  const site = siteUrl(readFileSync(join(ROOT, 'index.html'), 'utf8'));
+  const stale = [];
+  for (const m of MODELS) {
+    const page = join(ROOT, PREVIEW_DIR, m.id, 'index.html');
+    if (!existsSync(page)) {
+      fail(`"${m.id}" has no link preview page (${PREVIEW_DIR}/${m.id}/index.html), so its share links would 404. Run \`npm run previews\`.`);
+      continue;
+    }
+    if (!existsSync(join(ROOT, PREVIEW_DIR, m.id, CARD_FILE))) {
+      fail(`"${m.id}" has no preview image (${PREVIEW_DIR}/${m.id}/${CARD_FILE}). Run \`npm run previews\`.`);
+    }
+    if (fingerprintOf(readFileSync(page, 'utf8')) !== fingerprint(previewFor(m, COPY, site))) stale.push(m.id);
+  }
+  if (!existsSync(join(ROOT, PREVIEW_DIR, CARD_FILE))) {
+    fail(`there's no preview image for the quiz itself (${PREVIEW_DIR}/${CARD_FILE}). Run \`npm run previews\`.`);
+  }
+  if (stale.length) {
+    warn(`link previews are out of date for ${stale.join(', ')} — run \`npm run previews\` and commit what it writes`);
+  }
+  const ids = new Set(MODELS.map((m) => m.id));
+  const leftover = existsSync(join(ROOT, PREVIEW_DIR))
+    ? readdirSync(join(ROOT, PREVIEW_DIR), { withFileTypes: true }).filter((d) => d.isDirectory() && !ids.has(d.name))
+    : [];
+  if (leftover.length) {
+    warn(`${PREVIEW_DIR}/ has previews for models that no longer exist (${leftover.map((d) => d.name).join(', ')}) — \`npm run previews\` clears them out`);
+  }
+}
+
 // ── run ──────────────────────────────────────────────────────────────────────
 
 console.log('\n  which-model-are-you · validating %d models, %d questions, %d copy strings', MODELS.length, QUESTIONS.length, Object.keys(COPY).length);
@@ -504,6 +543,7 @@ if (failures.length === 0) {
 } else {
   console.log('\n  (skipping simulations — fix the schema errors first)');
 }
+checkPreviews();
 
 if (warnings.length) {
   console.log('\n  warnings');

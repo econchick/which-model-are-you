@@ -6,7 +6,7 @@ import { loadContent, blurbFor } from '../data/content.js';
 import { pathFor, QUIZ_LENGTH } from '../core/select.js';
 import { rankModels, normalizeUserVector, sumAnswers, dominantAxis, risingSign } from '../core/score.js';
 import { mulberry32, newSeed } from '../core/rng.js';
-import { encodeRun, decodeRun, isReplayable, shareUrl } from '../core/url.js';
+import { encodeRun, decodeRun, isReplayable, shareUrl, homePath } from '../core/url.js';
 import { renderStart, renderStep, renderResult, renderError } from './render.js';
 import { createFlow } from './flow.js';
 import { mountCrab } from './crab.js';
@@ -67,10 +67,11 @@ function finish({ seed, picked, answers }) {
   const model = results[0].model;
   const hash = encodeRun({ version: content.poolVersion, seed, answers, resultId: model.id });
 
-  // Some embeddings (sandboxed frames) refuse history writes. The result is
-  // rendered either way; only the address bar misses out.
+  // Put the share link in the address bar too, so copying it from there works
+  // as well as the button. Some embeddings (sandboxed frames) refuse history
+  // writes; the result is rendered either way.
   try {
-    history.replaceState(null, '', hash);
+    history.replaceState(null, '', shareUrl(hash, model.id));
   } catch {
     /* no-op */
   }
@@ -97,7 +98,7 @@ function storedResult(model) {
 
 function restart() {
   try {
-    history.replaceState(null, '', window.location.pathname);
+    history.replaceState(null, '', homePath());
   } catch {
     /* no-op */
   }
@@ -131,7 +132,7 @@ function show({ instant = false } = {}) {
   if (result) {
     items.push({
       key: `result:${result.hash}`,
-      html: () => renderResult({ ...result, shareHref: shareUrl(result.hash), standalone: alone, copy }),
+      html: () => renderResult({ ...result, shareHref: shareUrl(result.hash, result.model.id), standalone: alone, copy }),
     });
   }
 

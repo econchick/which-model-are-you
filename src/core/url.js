@@ -1,6 +1,10 @@
-// Result sharing. A whole playthrough fits in a URL hash of about 20 characters:
+// Result sharing. A whole playthrough fits in a URL hash of about 20 characters,
+// on the end of the winning model's preview page:
 //
-//   #v=1&s=<seed base36>&a=<one base36 digit per answer>&r=<model id>
+//   r/<model id>/#v=1&s=<seed base36>&a=<one base36 digit per answer>&r=<model id>
+//
+// The page gives link previews something to show (see scripts/previews.mjs) and
+// sends people on to the quiz with the hash intact.
 //
 // `v` is the pool version. Bump the `version:` line in content/questions.md whenever
 // you edit questions, so old links don't replay against a changed pool and
@@ -51,7 +55,21 @@ export function isReplayable(run, currentVersion) {
   );
 }
 
-export function shareUrl(hash) {
-  const { origin, pathname } = window.location;
-  return `${origin}${pathname}${hash}`;
+/**
+ * Where the quiz lives, captured before anything rewrites the address bar. A
+ * model's preview page (r/<model>/) sends people here, so at load this is
+ * always the app's own address.
+ */
+const HOME = typeof window === 'undefined' ? null : new URL('./', window.location.href);
+
+/** The app's own path, for going back to a clean start. */
+export const homePath = () => HOME.pathname;
+
+/**
+ * A share link: the winning model's preview page, carrying the run in its hash.
+ * Link previews (Slack, iMessage…) read the path, which names the model; the
+ * quiz reads the hash, which replays the exact run. See scripts/previews.mjs.
+ */
+export function shareUrl(hash, modelId) {
+  return new URL(`r/${modelId}/${hash}`, HOME).href;
 }

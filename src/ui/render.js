@@ -72,7 +72,7 @@ export function renderStart(copy) {
 }
 
 /** A starburst with one point aimed straight down, where the first wire leaves it. */
-function renderBurst(points = 16) {
+export function renderBurst(points = 16) {
   const corners = Array.from({ length: points * 2 }, (_, i) => {
     const r = i % 2 === 0 ? 48 : 39;
     const a = Math.PI / 2 + (i * Math.PI) / points;

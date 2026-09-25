@@ -8,11 +8,14 @@ It plays like those magazines' flowcharts: every answer leads to a different
 next question. Except the page only draws the next question once you've
 answered — each answer's line fades out until it's taken.
 
-Plain HTML, CSS and ES modules. No build step, no dependencies, no backend.
+Plain HTML, CSS and ES modules. No build step and no backend; the site itself
+has no dependencies. The one exception is a script that draws the link-preview
+images, which needs a headless browser (see [Sharing](#sharing)).
 
 ```sh
 python3 -m http.server 8000     # then open http://localhost:8000
 node scripts/validate.mjs       # after editing anything in content/
+npm install && npm run previews # after editing models, to redraw link previews
 ```
 
 ## Status: early, and meant to be rewritten
@@ -239,22 +242,53 @@ weighted toward a neglected pole.
 
 ## Sharing
 
-A whole run fits in a ~20-character hash: `#v=4&s=<seed>&a=<answers>&r=<model>`.
-The seed and answers replay the exact path through the chart. Bump the `version:` line near the top
-of `content/questions.md` whenever you edit questions or change how they're
-drawn in `src/core/select.js` — old links then fall back to showing the stored
-result rather than silently replaying against a changed pool.
+A whole run fits in a ~20-character hash, on the end of the winning model's
+preview page:
+
+```
+https://yourmodel.is/r/fable-5-1/#v=5&s=<seed>&a=<answers>&r=fable-5-1
+```
+
+The seed and answers replay the exact path through the chart. Bump the
+`version:` line near the top of `content/questions.md` whenever you edit
+questions or change how they're drawn in `src/core/select.js` — old links then
+fall back to showing the stored result rather than silently replaying against a
+changed pool.
+
+### Link previews
+
+Slack, iMessage and the rest build a preview from the `<meta>` tags of the page
+a link points at, fetched by a crawler that runs no JavaScript and never sees
+the `#hash`. So every model has a small static page of its own,
+`r/<model>/index.html`, with its own title ("I got Fable 5.1. Which model are
+you?"), the opening line of its reading, and a card image, `r/<model>/card.png`.
+The page sends people straight on to the quiz, hash and all, and the quiz
+replays the run. Links to the quiz itself get `r/card.png`, its opening screen.
+
+Those pages and images are built, not written:
+
+```sh
+npm install          # once: installs Playwright, which draws the cards
+npm run previews     # rebuilds everything in r/ — commit what it writes
+```
+
+Run it after adding a model or changing a model's name, tagline, colours or the
+opening of its default reading. The validator fails if a model has no page (its
+share links would 404) and warns when a preview is out of date. Absolute URLs
+come from the canonical link in `index.html`; change the domain there. The
+preview wording ("I got", "Your turn") is in `content/interface.md`.
 
 ## Layout
 
 ```
-index.html · favicon.svg
+index.html · favicon.svg · package.json
 styles/app.css
 content/      models.md · questions.md · interface.md   ← everything you edit
 src/data/     axes.js · content.js
 src/core/     parse.js · rng.js · select.js · score.js · url.js
 src/ui/       app.js · crab.js · flow.js · render.js · sigil.js · wires.js
-scripts/      validate.mjs
+scripts/      validate.mjs · previews.mjs · preview-data.mjs
+r/            link-preview pages and cards               ← built by npm run previews
 ```
 
 The browser fetches the content files; the validator reads the same ones off
