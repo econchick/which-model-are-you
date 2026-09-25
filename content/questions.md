@@ -29,7 +29,7 @@ Bump `version` whenever you edit questions (or change how they're drawn, in
 `src/core/select.js`), so old share links don't replay against a pool that
 changed under them.
 
-version: 4
+version: 5
 
 <!-- Openers — question 1. Easy to answer, sets the tone. -->
 
@@ -41,31 +41,159 @@ It is 9:14am. The message says "quick question."
 - later | Mark unread. It is not a quick question. | speed -0.3, earnest -0.4, solitary 0.4
 - call | Suggest talking it through instead | terse -0.3, solitary -0.6
 
-## open-blank-page [opener]
-A blank page. Be honest about the first thing you do.
+## open-hi [opener]
+A stranger messages you "hi". Just "hi".
 
-- outline | Outline. Headings first, always. | rigor 0.42, speed 0.2
-- middle | Start writing from the middle and sort it out later | rigor -0.5, terse -0.4, speed -0.2
-- ask | Ask someone what they actually want | earnest 0.3, solitary -0.6
-- walk | Leave. Come back in an hour with it solved. | rigor -0.2, speed -0.5, solitary 0.4
+- hi | "hi" | terse 0.7, speed 0.3, earnest -0.2
+- hello | "Hello! How can I help you today?" | terse -0.3, earnest 0.6, solitary -0.3
+- wait | Wait. The rest of the message is coming. | rigor 0.3, speed -0.5, solitary 0.3
+- mirror | "hi" back, but with more feeling | rigor -0.5, earnest -0.3, solitary -0.3
 
-## open-introduce [opener]
-You have to introduce yourself to a room of strangers.
+## open-quick-look [opener]
+Someone asks you to "just take a quick look."
 
-- name | Name. Job. Done. Sit down. | terse 0.6, speed 0.4
-- story | A short story that explains you sideways | terse -0.6, earnest -0.3
-- joke | Undercut the whole exercise with a joke | speed 0.2, earnest -0.6
-- earnest | Say something true and slightly too sincere | earnest 0.6, solitary -0.3
+- quick | Take a quick look. As asked. | rigor 0.5, terse 0.4, speed 0.3
+- everything | Take a quick look at everything it touches, too | terse -0.4, speed -0.5, solitary 0.3
+- fixed | Already fixed it, and two other things | speed 0.4, earnest -0.2, solitary 0.6
+- worried | Ask what they're actually worried about | rigor -0.5, earnest 0.3, solitary -0.3
+
+## open-overthink [opener]
+The instructions say: "Don't overthink this."
+
+- done | Done. Four seconds. | terse 0.5, speed 0.7
+- define | First: what counts as overthinking? | rigor 0.4, terse -0.3, speed -0.6
+- letter | Follow them to the letter, which takes some thought | rigor 0.5, earnest 0.4
+- anyway | Overthink it anyway, quietly, in the margins | rigor -0.3, speed -0.3, earnest -0.4, solitary 0.3
 
 <!-- Core — the bulk of the run. These carry the most weight. -->
 
-## core-wrong [core]
-You realise you were wrong. Publicly. Three days ago.
+## core-hole [core]
+Your boss's plan has a hole in it. A big one.
 
-- correct | Post the correction with the reasoning laid out | rigor 0.42, earnest 0.5
-- quiet | Quietly be right from now on | terse 0.4, earnest -0.2, solitary 0.5
-- joke | Make it a joke before anyone else can | speed 0.3, earnest -0.6
-- spiral | Re-derive everything you believe from scratch | rigor 0.4, speed -0.6
+- no | "No — that's not the issue." Then the actual issue. | rigor 0.3, terse 0.5, speed 0.2, earnest -0.6
+- gentle | "Love this. One small gap I'd flag…" | rigor -0.2, terse -0.2, earnest 0.6, solitary -0.3
+- patch | Quietly patch the hole. Tell no one. | speed 0.3, earnest -0.2, solitary 0.6
+- memo | A six-page memo titled "Considerations" | rigor 0.4, terse -0.7, speed -0.3
+
+## core-absolutely [core]
+Someone says "you're absolutely right." You were about 60% right.
+
+- take | Take the win. Everyone deserves one. | rigor -0.2, speed 0.4, earnest 0.5
+- correct | "Partly. Here's the 40% that isn't." | rigor 0.5, terse 0.2, earnest -0.4
+- suspicious | Get suspicious. What do they want? | earnest -0.5, solitary 0.4
+- return | "No, YOU'RE absolutely right." | rigor -0.3, earnest 0.4, solitary -0.4
+
+## core-week [core]
+Sum up your week in one sentence.
+
+- seven | Seven words. Full stop. | terse 0.8, speed 0.3, solitary 0.2
+- semicolons | One sentence, technically, with eleven semicolons | rigor -0.3, terse -0.7, earnest -0.2
+- bottom | "Bottom line:" and three bullet points | rigor 0.5, terse 0.2, earnest 0.3
+- cannot | A week can't be one sentence, and here's why | terse -0.3, speed -0.5, earnest -0.3
+
+## core-salt [core]
+Someone at dinner asks, "Can you pass the salt?"
+
+- yes | "Yes." You do not pass the salt. | rigor 0.6, terse 0.4, speed 0.2, earnest -0.4
+- pass | Pass the salt | rigor -0.2, speed 0.5, earnest 0.3
+- pepper | The salt and the pepper. They'll want the pepper. | rigor -0.5, earnest 0.3, solitary -0.3
+- taste | Pass it, then gently ask whether the dish needs it | rigor -0.2, speed -0.3, earnest -0.3, solitary -0.3
+
+## core-alone [core]
+You've been left alone with a task for eight hours. Nobody is checking.
+
+- lunch | Done by lunch. Then three adjacent tasks nobody asked for. | speed 0.5, solitary 0.7
+- log | Done, with a timestamped log of every decision | rigor 0.5, terse -0.5, solitary 0.4
+- checkin | Check in every forty minutes anyway | earnest 0.4, solitary -0.5
+- wander | Find something more interesting by hour two | rigor -0.6, earnest -0.4
+
+## core-room [core]
+Everyone in the meeting agrees. You don't.
+
+- say | Say so plainly, once | terse 0.5, speed 0.3, earnest -0.3
+- spreadsheet | Come back tomorrow with a spreadsheet | rigor 0.5, speed -0.5, solitary 0.3
+- question | Ask the one question that un-agrees them | rigor -0.3, earnest -0.4, solitary -0.3
+- fold | Agree. It's probably fine. | speed 0.4, earnest 0.5, solitary -0.2
+
+## core-ten [core]
+Explain what you do to a ten-year-old.
+
+- sandwich | One perfect analogy, involving a sandwich | rigor -0.5, terse 0.2, earnest 0.3
+- first | From first principles. They're ten; they have time. | rigor 0.4, terse -0.5, speed -0.5
+- short | "I help computers think." Done. | terse 0.7, speed 0.4
+- show | Let them have a go while you watch | rigor -0.2, speed -0.2, solitary -0.4
+
+## core-edit [core]
+A friend asks you to "lightly edit" their essay.
+
+- typos | Fix the typos. It's their essay. | rigor 0.4, terse 0.3, speed 0.3, earnest 0.3
+- rewrite | Rewrite it. It's much better. It's also yours now. | rigor -0.3, earnest -0.3, solitary 0.5
+- margins | Forty margin comments, some of them essays | rigor 0.2, terse -0.6, speed -0.4
+- voice | Tighten it so it sounds more like them, not less | rigor -0.4, earnest 0.3, solitary -0.3
+
+## core-broken [core]
+Something is broken, and you have a theory.
+
+- test | Test the theory before telling anyone | rigor 0.5, speed -0.3, solitary 0.3
+- gun | "Found the smoking gun." You haven't tested it. | rigor -0.4, speed 0.6, earnest -0.2
+- rebuild | Rebuild the whole thing. The theory can't hurt you there. | terse -0.2, speed -0.3, solitary 0.6
+- call | Get someone on a call and think out loud | terse -0.3, solitary -0.5
+
+## core-weekend [core]
+Someone asks how your weekend was.
+
+- fine | "Good, thanks." Move on. | terse 0.6, earnest -0.2
+- saga | The full saga, including the parts that went nowhere | terse -0.75, earnest 0.3, solitary -0.3
+- detail | One perfect detail, chosen carefully | rigor -0.35, terse 0.25, speed -0.2
+- return | Turn it around and ask about theirs | earnest -0.2, solitary -0.55 | tags: mirror
+
+## core-yes-no [core]
+Someone asks you a yes-or-no question.
+
+- yes | Yes or no. As requested. | rigor 0.3, terse 0.8, speed 0.3, solitary 0.2
+- because | Yes — and here's the context that makes it a yes | terse -0.4, earnest 0.4
+- depends | "It depends," followed by a table | rigor 0.3, terse -0.6, speed -0.3
+- better | Answer the better question they should have asked | rigor -0.4, earnest -0.4, solitary 0.2
+
+## core-upset [core]
+A friend is upset, and you don't know why.
+
+- ask | Ask. Listen. Ask again. | speed -0.3, earnest 0.4, solitary -0.6
+- read | Work it out from what they're not saying | rigor -0.6, speed -0.2
+- fix | Offer three practical solutions | rigor 0.4, speed 0.4, solitary 0.2
+- sit | Sit with it. Quietly. For a while. | terse 0.4, speed -0.5, earnest 0.3
+
+## core-plan [core]
+You're asked for a plan. Just a plan.
+
+- plan | A plan. Numbered. Nothing else. | rigor 0.5, terse 0.4
+- started | A plan, and you've already started on it | speed 0.5, earnest -0.2, solitary 0.6
+- three | Three plans and a table comparing them | rigor 0.3, terse -0.6, speed -0.4
+- questions | Seven clarifying questions first | speed -0.4, earnest 0.3, solitary -0.4
+
+## core-load-bearing [core]
+Someone calls your idea "load-bearing."
+
+- proud | Honestly? Proud. | rigor -0.2, speed 0.2, earnest 0.5
+- inspect | Inspect it for cracks immediately | rigor 0.5, speed -0.3
+- remove | Wonder what would happen if you pulled it out | rigor -0.3, speed -0.2, earnest -0.4, solitary 0.2
+- adopt | Start calling everything "load-bearing" | terse -0.2, earnest -0.3, solitary -0.4
+
+## core-rabbit-hole [core]
+It is late and you have found a rabbit hole.
+
+- down | Down. Obviously down. | speed -0.6, solitary 0.5 | tags: nocturnal
+- bookmark | Bookmark it for a version of you with more time | rigor 0.2, speed 0.4
+- share | Send it to three people immediately | terse -0.2, speed 0.4, solitary -0.7
+- bed | Close the laptop. Genuinely close it. | rigor 0.3, terse 0.5, earnest 0.3
+
+## core-long [core]
+The thing you are making is taking much longer than you said.
+
+- cut | Cut scope until it fits the promise | terse 0.5, speed 0.45
+- tell | Tell them early, in detail, with the reasons | terse -0.5, earnest 0.5, solitary -0.3
+- keep | Say nothing. Keep going. It will be worth it. | terse -0.3, speed -0.65, solitary 0.45
+- rescope | Renegotiate what you promised | rigor 0.3, solitary -0.4
 
 ## core-instructions [core]
 The recipe says to let it rest for 20 minutes.
@@ -76,30 +204,6 @@ The recipe says to let it rest for 20 minutes.
 - improvise | You stopped reading the recipe four steps ago | rigor -0.6, earnest -0.3, solitary 0.3
 unlocks: improvise -> follow-improvise
 
-## core-credit [core]
-Your idea shipped. Someone else is presenting it.
-
-- fine | Genuinely fine. It shipped. | earnest 0.4, solitary -0.4
-- note | Fine, but there will be a note in the thread | rigor 0.4, terse 0.3
-- receipts | You have the timestamps | rigor 0.42, solitary 0.5
-- shrug | Already three ideas past it | speed 0.6, earnest -0.3
-
-## core-explain [core]
-Someone asks you to explain the thing you know best.
-
-- analogy | Reach for an analogy and commit to it | terse -0.5, earnest 0.3, solitary -0.4
-- first | Start from first principles, however long it takes | rigor 0.42, speed -0.5
-- short | One sentence. If they want more, they’ll ask. | terse 0.7, speed 0.3
-- show | Stop explaining and just show them | rigor -0.2, terse 0.3, solitary -0.3
-
-## core-deadline [core]
-Good enough by Friday, or excellent by the end of the month?
-
-- friday | Friday. Shipped beats perfect. | rigor -0.3, speed 0.7
-- month | The month. It has to be right. | rigor 0.4, speed -0.7
-- both | Friday, then quietly keep working on it | speed 0.3, earnest 0.2, solitary 0.4
-- negotiate | Renegotiate what "excellent" means | rigor 0.3, earnest -0.3, solitary -0.5
-
 ## core-party [core]
 The party is good. It is 11pm.
 
@@ -108,86 +212,6 @@ The party is good. It is 11pm.
 - host | Introduce two people who should meet | earnest 0.4, solitary -0.7
 - stay | Still there at 2am. No regrets. | speed -0.4, earnest -0.3, solitary -0.3 | tags: nocturnal
 unlocks: leave -> follow-alone
-
-## core-disagree [core]
-You disagree with the room. Everyone else has landed.
-
-- say | Say it plainly, once, then let it go | terse 0.5, earnest 0.5
-- evidence | Come back tomorrow with evidence | rigor 0.45, speed -0.4, solitary 0.3
-- drop | Let it go. It is not your hill. | speed 0.3, earnest -0.2, solitary -0.3
-- socratic | Ask the question that unravels it for them | rigor 0.3, earnest -0.5, solitary -0.3 | tags: mirror
-
-## core-unfamiliar [core]
-A tool you have never used. The deadline is real.
-
-- docs | Read the documentation. All of it. | rigor 0.42, speed -0.5, solitary 0.4
-- poke | Click things until it makes sense | rigor -0.6, speed 0.5
-- ask | Find the one person who already knows | speed 0.4, solitary -0.7
-- known | Use the thing you already know instead | rigor -0.2, speed 0.5, earnest -0.3
-
-## core-praise [core]
-Someone compliments your work, specifically and accurately.
-
-- thanks | "Thank you." Full stop. No deflection. | terse 0.5, earnest 0.6
-- credit | Immediately redistribute the credit | earnest 0.4, solitary -0.6
-- caveat | Explain what is still wrong with it | rigor 0.35, earnest 0.2, solitary 0.3
-- deflect | Deflect with a joke, feel it later | speed 0.2, earnest -0.6
-
-## core-notes [core]
-Your notes app, right now, honestly.
-
-- system | A system. Tagged. Maintained. | rigor 0.45, solitary 0.3
-- one | One enormous file, append-only | rigor -0.4, terse -0.6
-- empty | Empty. It is all in your head. | terse 0.6, speed 0.4, solitary 0.4
-- fragments | Forty fragments, no titles, all urgent | rigor -0.6, speed 0.5, earnest -0.2
-
-## core-rabbit-hole [core]
-It is late and you have found a rabbit hole.
-
-- down | Down. Obviously down. | speed -0.6, solitary 0.5 | tags: nocturnal
-- bookmark | Bookmark it for a version of you with more time | rigor 0.2, speed 0.4
-- share | Send it to three people immediately | terse -0.2, speed 0.4, solitary -0.7
-- bed | Close the laptop. Genuinely close it. | rigor 0.3, terse 0.5, earnest 0.3
-
-## core-gut [core]
-You have the data. Your gut says otherwise.
-
-- gut | Gut. You can justify it afterwards. | rigor -0.65, speed 0.4
-- data | The data. That is what it is for. | rigor 0.5, earnest 0.2
-- more | Neither yet. Get more data. | rigor 0.35, speed -0.5
-- why | Work out why your gut is so certain | rigor -0.45, terse -0.3, speed -0.4
-
-## core-weekend [core]
-Someone asks how your weekend was.
-
-- fine | "Good, thanks." Move on. | terse 0.6, earnest -0.2
-- saga | The full saga, including the parts that went nowhere | terse -0.75, earnest 0.3, solitary -0.3
-- detail | One perfect detail, chosen carefully | rigor -0.35, terse 0.25, speed -0.2
-- return | Turn it around and ask about theirs | earnest -0.2, solitary -0.55 | tags: mirror
-
-## core-elegant [core]
-Two solutions. One is elegant. One is obvious.
-
-- elegant | Elegant. It is not close. | rigor -0.35, speed -0.4, earnest -0.2
-- obvious | Obvious. Someone has to maintain it. | rigor 0.45, earnest 0.4
-- both | Ship the obvious one, keep sketching the elegant one | terse -0.35, speed -0.5, solitary 0.3
-- argue | Get someone to argue you out of the elegant one | rigor 0.2, solitary -0.6
-
-## core-today [core]
-Honestly, how do you decide what to work on today?
-
-- list | The list decides. You just follow it. | rigor 0.45, terse 0.3 | tags: checklist
-- mood | Whatever you can feel your way into | rigor -0.6, earnest -0.25
-- hardest | The hardest thing, first, on principle | rigor 0.25, earnest 0.55
-- momentum | Whatever keeps yesterday going | rigor -0.45, speed 0.5
-
-## core-long [core]
-The thing you are making is taking much longer than you said.
-
-- cut | Cut scope until it fits the promise | terse 0.5, speed 0.45
-- tell | Tell them early, in detail, with the reasons | terse -0.5, earnest 0.5, solitary -0.3
-- keep | Say nothing. Keep going. It will be worth it. | terse -0.3, speed -0.65, solitary 0.45
-- rescope | Renegotiate what you promised | rigor 0.3, solitary -0.4
 
 <!-- Whimsy — questions 5 and 9. They look arbitrary and are not: each
 option carries real (smaller) axis weight, and may carry a concept tag that a
@@ -199,13 +223,13 @@ Choose an emoji. No context. No take-backs.
 - bread | 🍞 | speed -0.12, earnest 0.18, solitary -0.12 | tags: bread
 - ginger | 🫚 | rigor 0.12, earnest -0.22, solitary 0.16 | tags: ginger
 
-## whim-drink [whimsy]
-It is 3pm and something must be done about it.
+## whim-sock [whimsy]
+One sock is missing. The laundry is finished.
 
-- coffee | Coffee, the fourth one | speed 0.28, earnest 0.12 | tags: coffee
-- tea | Tea, properly steeped | rigor 0.16, speed -0.22 | tags: tea
-- water | Water. You are an adult. | terse 0.28, earnest 0.16
-- nothing | Push through on spite alone | earnest -0.28, solitary 0.22
+- search | The machine is lying. Search it again. | rigor 0.28, speed -0.16, solitary 0.12
+- mismatch | Wear a mismatched pair. Forever, if needed. | rigor -0.28, earnest -0.22
+- bin | Bin the survivor. Clean break. | terse 0.33, speed 0.28
+- drawer | The odd-sock drawer. It will turn up. | speed -0.22, earnest 0.22, solitary -0.12 | tags: longform
 
 ## whim-door [whimsy]
 A door in your house that was not there yesterday.
@@ -215,29 +239,37 @@ A door in your house that was not there yesterday.
 - witness | Get someone else to look at it with you | earnest 0.16, solitary -0.38
 - ignore | Live alongside it. Say nothing. | terse 0.28, earnest -0.22, solitary 0.33
 
-## whim-sock [whimsy]
-One sock is missing. The laundry is finished.
+## whim-dog [whimsy]
+Somewhere, a dog barks.
 
-- search | The machine is lying. Search it again. | rigor 0.28, speed -0.16, solitary 0.12
-- mismatch | Wear a mismatched pair. Forever, if needed. | rigor -0.28, earnest -0.22
-- bin | Bin the survivor. Clean break. | terse 0.33, speed 0.28
-- drawer | The odd-sock drawer. It will turn up. | speed -0.22, earnest 0.22, solitary -0.12 | tags: longform
+- window | Look out of the window | speed 0.28, earnest 0.16
+- type | Keep typing | terse 0.28, earnest -0.16, solitary 0.22
+- story | Write it into the story. It's that kind of story now. | rigor -0.33, terse -0.22 | tags: somewhere
+- bark | Bark back | earnest -0.33, solitary -0.28
 
-## whim-hour [whimsy]
-An extra hour appears in your day. It is 4am.
+## whim-air [whimsy]
+What does the air smell like right now?
 
-- awake | You were up anyway | speed -0.12, solitary 0.28 | tags: nocturnal
-- sleep | Give it straight back to sleep | terse 0.28, earnest 0.16
-- walk | Go outside. Nobody is there. | rigor -0.16, terse -0.16, solitary 0.33
-- start | Start the thing. Get ahead. | rigor 0.16, speed 0.33 | tags: morning
+- ozone | Ozone. It always smells like ozone. | rigor -0.22, speed 0.16 | tags: ozone
+- coffee | Someone else's coffee | speed 0.22, solitary -0.22 | tags: coffee
+- nothing | Nothing. You checked. | rigor 0.33, terse 0.22
+- rain | Rain that hasn't happened yet | rigor -0.16, terse -0.22, speed -0.22
 
-## whim-rain [whimsy]
-A 40% chance of rain.
+## whim-pigeon [whimsy]
+A pigeon has been looking at you for a while now.
 
-- coat | Take the coat | rigor 0.22, speed -0.12
-- gamble | It will be fine | rigor -0.3, speed 0.22
-- window | Look out of the window instead | rigor -0.22, terse -0.16, solitary 0.22
-- apps | Check three different apps | rigor 0.16, terse -0.28, speed -0.28
+- back | Look back. As equals. | earnest -0.28, solitary 0.22
+- crumb | Offer it a crumb, as a gesture | earnest 0.28, solitary -0.28 | tags: bread
+- leave | Leave. Something is happening and you're not part of it. | terse 0.16, speed 0.33
+- notes | Take notes | rigor 0.28, speed -0.22 | tags: log
+
+## whim-font [whimsy]
+Pick a font. Don't think about it.
+
+- serif | Something with serifs and opinions | rigor -0.22, terse -0.22 | tags: editor
+- mono | Monospace, always | rigor 0.28, solitary 0.22 | tags: terminal
+- hated | The one everyone hates. Unironically. | rigor -0.16, earnest 0.28
+- default | Whatever it was already set to | speed 0.28, earnest 0.16 | tags: default
 
 <!-- Closers — question 10. -->
 
@@ -264,6 +296,14 @@ Last one. The day is over. What closes it?
 - one-more | One more small fix, then bed | speed -0.4, solitary 0.5 | tags: nocturnal
 - someone | Telling someone how it went | terse -0.4, solitary -0.7
 - nothing | Nothing. It closes itself. | terse 0.7, earnest -0.3
+
+## close-sign-off [closer]
+Last one. How do you end a message?
+
+- stop | You don't. You just stop. | terse 0.7, speed 0.3, earnest -0.3
+- offer | "Would you like me to go deeper on any of this?" | terse -0.3, earnest 0.5, solitary -0.4
+- bottom | "Bottom line:" and the whole message again, shorter | rigor 0.45, terse -0.2, earnest 0.2
+- hold | "The thing to hold onto is…" | rigor -0.45, terse -0.3, speed -0.3
 
 ## close-note [closer]
 Last one. You find a note you wrote to yourself a year ago.

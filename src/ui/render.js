@@ -151,7 +151,7 @@ export function renderResult({ model, runnerUp, blurb, userVector, shareHref, st
         </div>
         <h1 id="result-title" class="result-title" tabindex="-1">
           <span class="result-you">${line(copy['result.youAre'])}</span>
-          <span class="result-name">${escape(model.name)}</span>
+          <span class="result-name" style="--fit:${longestWord(model.name)}">${nameHtml(model.name)}</span>
         </h1>
         <p class="result-tagline">${escape(model.tagline)}</p>
         ${model.rare ? `<p class="rare-flag">${line(copy['result.rare'])}</p>` : ''}
@@ -167,6 +167,16 @@ export function renderResult({ model, runnerUp, blurb, userVector, shareHref, st
       </div>
     </section>`;
 }
+
+/**
+ * Model names are set huge, so they may only break between words: never at the
+ * hyphen in "Qwen3.8-Max". The stylesheet sizes the lettering so the longest
+ * word still fits the card.
+ */
+const nameHtml = (name) =>
+  name.split(' ').map((word) => `<span class="result-word">${escape(word)}</span>`).join(' ');
+
+const longestWord = (name) => Math.max(...name.split(' ').map((word) => word.length));
 
 /** The player's own chart, in words — the "why this model" receipt. */
 function renderChart(userVector, copy) {

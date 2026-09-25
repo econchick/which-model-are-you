@@ -539,6 +539,7 @@ main {
 
 .result-card {
   position: relative;
+  container-type: inline-size;
   padding: 2.4rem 2rem 2rem;
   text-align: center;
   background: var(--accent-to);
@@ -641,12 +642,18 @@ main {
   font-family: var(--display);
   font-weight: 400;
   font-size: clamp(3rem, 12vw, 4.6rem);
+  /* Scale with the card, and shrink further until the longest word (--fit
+     characters) fits on one line. */
+  font-size: min(4.6rem, 15cqi, calc(100cqi / (var(--fit, 8) * 0.64)));
   line-height: 1;
   color: var(--paper);
   -webkit-text-stroke: 7px var(--ink);
   paint-order: stroke fill;
   text-shadow: 5px 6px 0 var(--accent-from);
-  overflow-wrap: anywhere;
+}
+
+.result-word {
+  white-space: nowrap;
 }
 
 .result-tagline {

@@ -20,18 +20,21 @@ node scripts/validate.mjs       # after editing anything in content/
 The machinery is built and tested; the writing is a first pass. Expect to change
 most of it.
 
-- **5 models, roughly a third of the intended roster.** Fable, Haiku, Astra,
-  DeepSeek and ELIZA are seeds — enough to exercise the scoring and set a tone,
-  not the final cast.
-- **The blurb voices are unreviewed.** They're the whole payoff, and they haven't
-  had a pass from anyone but their author. Astra in particular is written from an
-  archetype rather than first-hand knowledge.
-- **31 questions.** Enough for real variety, short of the pool this wants. The
-  fourth closer (`close-note`) was written in a hurry so the last step could
+- **28 models across eight labs, plus ELIZA.** Placed and written from a
+  September 2026 snapshot of how each model tends to behave: nine Claudes, nine
+  GPTs, two Geminis, three Qwens, and one each from xAI, DeepSeek, Moonshot,
+  Z.ai and Meta. ELIZA is the rare easter egg.
+- **The blurb voices are unreviewed.** They're the whole payoff. Each one leans
+  on the model's documented verbal tics, as many as the evidence supports: the
+  well-attested ones (Claude's "load-bearing", GPT's "Bottom line:") freely, the
+  shakier ones sparingly. They've had no pass from anyone but their author.
+- **36 questions.** Most are new and poke at those same habits without naming
+  anyone. The closer `close-note` was written in a hurry so the last step could
   branch four ways; it's the likeliest to need a rewrite.
-- **Win rates are lumpy** — Astra takes ~31% of runs. With only five models that's
-  expected, and it should flatten as the roster fills out. Watch the histogram
-  from the validator as you add models rather than tuning around it now.
+- **Win rates run 1.8%–7.3%** against an even share of 3.4%. The warm,
+  collaborative corner (Opus 4.7, Opus 5.5) wins most; the fast agentic one
+  (Qwen3.8-27B, Gemini 3.8 Flash) least. Watch the histogram from the validator
+  when you move anyone.
 
 None of that blocks playing it. Keep the validator green and iterate on the
 content.
@@ -72,20 +75,23 @@ traits. Nothing in the question pool knows a model exists — the validator fail
 if a question so much as mentions one by name.
 
 ```md
-## fable — Fable
+## fable-5-1 — Fable 5.1
 lab: Anthropic
-accent: #6d5bd0, #f0b67f
-axes: rigor -0.2, terse -0.85, speed -0.8, earnest 0.35, solitary -0.35
-tags: bread, nocturnal, longform
+accent: #6d5bd0, #f0c9a0
+axes: rigor -0.55, terse -0.9, speed -0.85, earnest 0.1, solitary 0.2
+tags: editor, longform, bread
 tagline: Takes the long way on purpose
 
 ### when: terse
-You were given a perfectly good straight road and you took the switchback,
-because you wanted to see the valley from above.
+You were handed a perfectly good straight road and you took the switchback,
+because the view from the ridge was the part that earned its keep.
 
 ### when: *
 You are the long answer to a short question.
 ```
+
+The first accent colour is the lettering's shadow and the chart's stars; the
+second is the result card's background, so keep it light enough for dark text.
 
 `### when:` selects a variant by the axis the player leaned on hardest, so the
 same result reads differently on a retake. Always include a `when: *` fallback.
@@ -105,6 +111,16 @@ Choose an emoji. No context. No take-backs.
 
 `rigor↔vibes` · `terse↔verbose` · `speed↔depth` · `earnest↔irreverent` ·
 `solitary↔collaborative`
+
+When placing a model, read them as:
+
+| Axis | + end | − end |
+| --- | --- | --- |
+| `rigor` | by the book: literal, checks its work | reads the subtext, goes by feel |
+| `terse` | says it short | says it all |
+| `speed` | answers now | keeps thinking |
+| `earnest` | warm, sincere, agreeable | dry, blunt, won't flatter |
+| `solitary` | goes off and does the whole job | works it out with you |
 
 Five is deliberate. Adding a sixth means giving every existing model a value for
 it and splitting the same ten questions into thinner signal.
@@ -148,7 +164,7 @@ Nothing breaks; nothing is required.
 
 ## Question selection
 
-The quiz is a flowchart over a pool of ~30 questions: every answer leads to a
+The quiz is a flowchart over a pool of ~35 questions: every answer leads to a
 different next question, and a playthrough is one 10-question path through it,
 always in the same *shape*:
 
