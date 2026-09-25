@@ -6,10 +6,10 @@
 // Everything it says is in content/interface.md.
 
 /** How long the wave lasts before it ducks back down. Matches the CSS. */
-const WAVE_MS = 1100;
+const WAVE_MS = 750;
 
 /** Long enough to read the last line before the crab says goodbye. */
-const readTime = (line) => Math.max(2400, line.length * 55);
+const readTime = (line) => Math.max(1500, line.length * 38);
 
 const ART = `
   <svg class="crab-art" viewBox="0 0 120 100" aria-hidden="true">

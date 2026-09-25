@@ -974,7 +974,7 @@ main {
 
 /* Goodbye: one claw up, waving, before it ducks back down (WAVE_MS in crab.js). */
 .crab.is-waving .crab-arm--right {
-  animation: wave 1100ms ease-in-out;
+  animation: wave 750ms ease-in-out;
 }
 
 @keyframes wave {
