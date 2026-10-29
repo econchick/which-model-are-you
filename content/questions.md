@@ -29,7 +29,7 @@ Bump `version` whenever you edit questions (or change how they're drawn, in
 `src/core/select.js`), so old share links don't replay against a pool that
 changed under them.
 
-version: 9
+version: 10
 
 <!-- Openers — question 1. Easy to answer, sets the tone. -->
 
@@ -50,12 +50,12 @@ Someone sends you their slides and asks you to "just take a quick look."
 - worried | Ask what they're actually worried about | rigor -0.5, earnest 0.3, solitary -0.3
 
 ## open-overthink [opener]
-The instructions say: "Don't overthink this."
+An online form asks for your favorite color. Underneath, in small print: "Don't overthink this."
 
-- done | Done. Four seconds. | terse 0.5, speed 0.7
-- define | First: what counts as overthinking? | rigor 0.4, terse -0.3, speed -0.6
-- letter | Follow them to the letter, which takes some thought | rigor 0.5, earnest 0.4
-- anyway | Overthink it anyway, quietly, in the margins | rigor -0.3, speed -0.3, earnest -0.4, solitary 0.3
+- done | Blue. Done. | terse 0.5, speed 0.7
+- define | Favorite for what, though? Walls? Cars? | rigor 0.4, terse -0.3, speed -0.6
+- letter | Type "blue". Delete it. Type your actual favorite. | rigor 0.5, earnest 0.4
+- anyway | Type "blue", then fill the rest of the box with exceptions | rigor -0.3, speed -0.3, earnest -0.4, solitary 0.3
 
 <!-- Core — the bulk of the run. These carry the most weight. -->
 
