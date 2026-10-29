@@ -46,7 +46,7 @@ Someone sends you their slides and asks you to "just take a quick look."
 
 - quick | Take a quick look. As asked. | rigor 0.5, terse 0.4, speed 0.3
 - everything | Look at the slides, the speaker notes, and the spreadsheet behind them | terse -0.4, speed -0.5, solitary 0.3
-- fixed | Edited them yourself. Also redid the fonts. | speed 0.4, earnest -0.2, solitary 0.6
+- fixed | Made edits yourself. Also redid the fonts. And the color theme. | speed 0.4, earnest -0.2, solitary 0.6
 - worried | Ask what they're actually worried about | rigor -0.5, earnest 0.3, solitary -0.3
 
 ## open-overthink [opener]
