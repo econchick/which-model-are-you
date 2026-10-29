@@ -13,6 +13,12 @@ import { mountCrab } from './crab.js';
 
 const root = document.getElementById('app');
 
+// A finished run moves the address bar to r/<id>/ (see finish), and browsers
+// resolve the relative favicon.svg against that, which 404s. Pin it to where
+// it was loaded from.
+const icon = document.querySelector('link[rel="icon"]');
+if (icon) icon.setAttribute('href', icon.href);
+
 /** A new question ignores answers this soon after appearing — no answering it unseen. */
 const SETTLE_MS = 450;
 
