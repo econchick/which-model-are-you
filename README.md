@@ -30,6 +30,20 @@ npm run validate      # same as: node scripts/validate.mjs
 
 It exits non-zero on failure.
 
+Two more checks look at the built site rather than the content:
+
+```sh
+npm run links         # every href, src and og:image points at a file that exists
+npm run smoke         # plays the quiz in headless Chromium and opens the share links
+```
+
+`npm run smoke` needs Playwright, set up as in [Rebuild link
+previews](#rebuild-link-previews); `CHROMIUM_PATH` works the same way.
+
+GitHub Actions runs all three on every push and pull request
+(`.github/workflows/checks.yml`), with `npm run validate -- --strict-previews`,
+which also fails when the link previews in `r/` are out of date.
+
 ## Rebuild link previews
 
 The pages and images in `r/` are generated. Rebuild them after changing
@@ -60,7 +74,11 @@ Absolute URLs in the link previews come from the canonical link in
 `index.html`; if the domain changes, update it there and in `CNAME`, then
 rebuild the previews.
 
-To publish the current branch:
+`.github/workflows/checks.yml` has a `deploy` job that does the steps below
+automatically after every passing push to `main`. It's commented out; uncomment
+it to turn it on.
+
+To publish the current branch by hand:
 
 ```sh
 npm run validate

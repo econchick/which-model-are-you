@@ -68,8 +68,9 @@ jobs:
   #         path: gh-pages
   #     - name: Copy the site into gh-pages
   #       run: |
-  #         git -C gh-pages rm -rq --ignore-unmatch index.html favicon.svg content src styles r
-  #         cp -r index.html favicon.svg content src styles r gh-pages/
+  #         find gh-pages -mindepth 1 -maxdepth 1 \
+  #           ! -name .git ! -name CNAME ! -name .nojekyll -exec rm -rf {} +
+  #         cp -R index.html favicon.svg content src styles r gh-pages/
   #     - name: Commit and push
   #       working-directory: gh-pages
   #       run: |
