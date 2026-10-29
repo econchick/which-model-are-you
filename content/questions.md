@@ -39,7 +39,7 @@ A message pops up: "Hey, quick question." Then the typing dots. Then nothing.
 - ask | Reply "Sure, what's up?" and wait | earnest 0.4, solitary -0.4
 - guess | Guess what they'll ask and answer that | rigor -0.3, speed 0.6, solitary 0.2
 - wait | Say nothing until the actual question arrives | terse 0.4, earnest -0.3, solitary 0.3
-- brace | Scroll back through your last chat with them for clues | rigor 0.4, terse -0.2, speed -0.5
+- later | Mark unread. It is not a quick question. | rigor 0.3, terse -0.2, speed -0.5, earnest -0.1
 
 ## open-hi [opener]
 A stranger messages you "hi". Just "hi".
