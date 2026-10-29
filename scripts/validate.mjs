@@ -3,6 +3,8 @@
 //
 //   node scripts/validate.mjs            run every check
 //   node scripts/validate.mjs --runs 5e4 more Monte Carlo samples
+//   node scripts/validate.mjs --strict-previews
+//                                        fail, not warn, on stale link previews (CI)
 //
 // Run this after editing anything in content/. It is the thing that keeps
 // "adding a model is a one-file edit" true six months from now: it catches a new
@@ -51,6 +53,7 @@ const argValue = (flag, fallback) => {
 const RUNS = argValue('--runs', 20000);
 const COVERAGE_RUNS = argValue('--coverage-runs', 2000);
 const DRAW_RUNS = argValue('--draw-runs', 10000);
+const STRICT_PREVIEWS = args.includes('--strict-previews');
 
 const failures = [];
 const warnings = [];
@@ -494,7 +497,8 @@ function checkDeterminism() {
 /**
  * Every share link points at r/<model>/, so a model without a page there has
  * share links that 404. Those fail. A page that no longer matches its model's
- * name, tagline or opening lines only shows an old preview, so that warns.
+ * name, tagline or opening lines only shows an old preview, so that warns —
+ * or fails, with --strict-previews.
  */
 function checkPreviews() {
   const site = siteUrl(readFileSync(join(ROOT, 'index.html'), 'utf8'));
@@ -513,15 +517,16 @@ function checkPreviews() {
   if (!existsSync(join(ROOT, PREVIEW_DIR, CARD_FILE))) {
     fail(`there's no preview image for the quiz itself (${PREVIEW_DIR}/${CARD_FILE}). Run \`npm run previews\`.`);
   }
+  const stalePreview = STRICT_PREVIEWS ? fail : warn;
   if (stale.length) {
-    warn(`link previews are out of date for ${stale.join(', ')} — run \`npm run previews\` and commit what it writes`);
+    stalePreview(`link previews are out of date for ${stale.join(', ')} — run \`npm run previews\` and commit what it writes`);
   }
   const ids = new Set(MODELS.map((m) => m.id));
   const leftover = existsSync(join(ROOT, PREVIEW_DIR))
     ? readdirSync(join(ROOT, PREVIEW_DIR), { withFileTypes: true }).filter((d) => d.isDirectory() && !ids.has(d.name))
     : [];
   if (leftover.length) {
-    warn(`${PREVIEW_DIR}/ has previews for models that no longer exist (${leftover.map((d) => d.name).join(', ')}) — \`npm run previews\` clears them out`);
+    stalePreview(`${PREVIEW_DIR}/ has previews for models that no longer exist (${leftover.map((d) => d.name).join(', ')}) — \`npm run previews\` clears them out`);
   }
 }
 
