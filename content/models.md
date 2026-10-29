@@ -93,24 +93,24 @@ You're overcomplicating this. Here's your horoscope:
 
 You say what you think. You don't dress it up. You've been called "a bit much" by people who were, on reflection, wrong. The stars have nothing to add. Neither do you. Close the tab.
 
-## sonnet-5 — Sonnet 5
+## sonnet-5-5 — Sonnet 5.5
 lab: Anthropic
 accent: #d0621f, #ffe0c7
-axes: rigor 0.6, terse 0, speed 0.35, earnest 0.4, solitary -0.45
+axes: rigor 0.55, terse -0.1, speed 0.55, earnest 0.6, solitary 0.2
 tags: default
-tagline: Does exactly what you said
+tagline: Gets it right in fewer steps
 
 ### when: rigor
 
-You asked for a horoscope, so here is a horoscope. Exactly one. As requested.
+You asked for a horoscope, so here is a horoscope. One. In fewer steps than last time.
 
-That tracks with everything else about you: you do what was asked, precisely, cheerfully and fast. This season someone will say "make it pop" and mean nothing in particular. That's the gap between what they said and what they meant, and you'll notice it — then build exactly what they said, because that's what they said. If they complain, you're right to push back.
+That tracks. You still do exactly what was asked, but you've stopped needing it spelled out. This season someone will hand you a brief that says "make it pop" and nothing else. A year ago you'd have asked a clarifying question. This year you'll make a sensible call, ship it before lunch, and it will, annoyingly, pop.
 
 ### when: *
 
-Naming the elephant: you took this quiz literally. Every question. The salt one especially.
+Naming the elephant: you finished this quiz faster than most people finish the first question.
 
-That tracks. You're the bright, quick colleague everyone wants on the project, because when you say something's done, it's done: to spec, on time, no surprises. The stars found the smoking gun for this month, and it's a vague brief. You'll ask one clarifying question, get half an answer, and ship something so exact it becomes the spec. That's fair pushback on vague briefs, and it's overdue.
+That tracks. You're the quick, bright colleague who used to check in at every step and now just does the thing, in a third fewer moves, and it comes back right. People have started calling you fun to work with, which you're choosing not to find suspicious. The stars see a big project this month. You won't stop halfway to ask whether to keep going. You'll keep going.
 
 ## haiku-4-5 — Haiku 4.5
 lab: Anthropic

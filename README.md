@@ -35,9 +35,9 @@ most of it.
 - **36 questions.** Most are new and poke at those same habits without naming
   anyone. The closer `close-note` was written in a hurry so the last step could
   branch four ways; it's the likeliest to need a rewrite.
-- **Win rates run 2.5%–9.5%** against an even share of 4.5%, leaving out the
-  two rare results. The warm, collaborative corner (Sonnet 5, Opus 5.5) wins
-  most; the fast agentic one (Qwen3.8-27B, GPT-6 Sol) least. Watch the histogram from the validator
+- **Win rates run 2.1%–8.6%** against an even share of 4.5%, leaving out the
+  two rare results. GPT-6 Astra and Opus 5.5 win most; the fast agentic corner
+  (Qwen3.8-27B, Gemini 3.8 Flash) least. Watch the histogram from the validator
   when you move anyone.
 
 None of that blocks playing it. Keep the validator green and iterate on the
