@@ -98,15 +98,11 @@ try {
   );
   const page = await context.newPage();
   page.on('pageerror', (error) => problems.push(`script error: ${error.message}`));
-  // Known: once a run ends the address bar moves to r/<id>/, and Chromium then
-  // looks for the relative favicon.svg there. Harmless, so it isn't counted.
-  const ignored = (url) => /\/r\/[^/]+\/favicon\.svg$/.test(url);
   page.on('console', (msg) => {
-    if (msg.type() === 'error' && !ignored(msg.location().url)) problems.push(`console error: ${msg.text()}`);
+    if (msg.type() === 'error') problems.push(`console error: ${msg.text()}`);
   });
   page.on('response', (res) => {
-    const url = res.url();
-    if (url.startsWith(home) && res.status() >= 400 && !ignored(url)) problems.push(`${res.status()} for ${url}`);
+    if (res.url().startsWith(home) && res.status() >= 400) problems.push(`${res.status()} for ${res.url()}`);
   });
 
   console.log('\n  which-model-are-you · playing the quiz in Chromium\n');
