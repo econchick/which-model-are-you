@@ -24,6 +24,16 @@ jobs:
       # fails the run when r/ is out of date, so `npm run previews` isn't forgotten.
       - run: npm run validate -- --strict-previews
 
+  links:
+    name: Check links
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 22
+      - run: npm run links
+
   smoke:
     name: Play the quiz
     runs-on: ubuntu-latest
@@ -35,3 +45,37 @@ jobs:
       - run: npm install --no-audit --no-fund
       - run: npx playwright install --with-deps chromium
       - run: npm run smoke
+
+  # Publishes the site to gh-pages once every check passes on main: the same
+  # copy as the manual deploy in the README, keeping CNAME and .nojekyll.
+  # Uncomment to turn it on.
+  #
+  # deploy:
+  #   name: Deploy to gh-pages
+  #   needs: [validate, links, smoke]
+  #   if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+  #   runs-on: ubuntu-latest
+  #   permissions:
+  #     contents: write
+  #   concurrency:
+  #     group: deploy
+  #     cancel-in-progress: false
+  #   steps:
+  #     - uses: actions/checkout@v5
+  #     - uses: actions/checkout@v5
+  #       with:
+  #         ref: gh-pages
+  #         path: gh-pages
+  #     - name: Copy the site into gh-pages
+  #       run: |
+  #         git -C gh-pages rm -rq --ignore-unmatch index.html favicon.svg content src styles r
+  #         cp -r index.html favicon.svg content src styles r gh-pages/
+  #     - name: Commit and push
+  #       working-directory: gh-pages
+  #       run: |
+  #         git add -A
+  #         if git diff --cached --quiet; then echo "Nothing changed"; exit 0; fi
+  #         git config user.name "github-actions[bot]"
+  #         git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+  #         git commit -m "Deploy ${GITHUB_SHA::7}"
+  #         git push

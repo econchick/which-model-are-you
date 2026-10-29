@@ -4,8 +4,9 @@
   "type": "module",
   "scripts": {
     "validate": "node scripts/validate.mjs",
-    "previews": "node scripts/previews.mjs",
-    "smoke": "node scripts/smoke.mjs"
+    "links": "node scripts/links.mjs",
+    "smoke": "node scripts/smoke.mjs",
+    "previews": "node scripts/previews.mjs"
   },
   "devDependencies": {
     "playwright": "^1.56.1"
