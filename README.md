@@ -1,301 +1,89 @@
-# What's your model?
+# which-model-are-you
 
-A ten-question personality quiz in the spirit of the ones in the back of teen
-magazines, except the answer is a language model and the blurb is written in
-that model's own voice. Some of the questions are about socks. They still count.
-
-It plays like those magazines' flowcharts: every answer leads to a different
-next question. Except the page only draws the next question once you've
-answered — each answer's line fades out until it's taken.
-
-Plain HTML, CSS and ES modules. No build step and no backend; the site itself
-has no dependencies. The one exception is a script that draws the link-preview
-images, which needs a headless browser (see [Sharing](#sharing)).
+## Clone
 
 ```sh
-python3 -m http.server 8000     # then open http://localhost:8000
-node scripts/validate.mjs       # after editing anything in content/
-npm install && npm run previews # after editing models, to redraw link previews
+git clone https://github.com/econchick/which-model-are-you.git
+cd which-model-are-you
 ```
 
-## Status: early, and meant to be rewritten
+## Run locally
 
-The machinery is built and tested; the writing is a first pass. Expect to change
-most of it.
-
-- **21 models across eight labs, plus ELIZA.** Placed and written from a
-  September 2026 snapshot of how each model tends to behave: six Claudes, five
-  GPTs, two Geminis, three Qwens, and one each from xAI, DeepSeek, Moonshot,
-  Z.ai and Meta. Two results are rare on purpose: ELIZA, the easter egg, and
-  Haiku 4.5, the joke about early retirement.
-- **The blurb voices are unreviewed.** They're the whole payoff. Each one leans
-  on the model's documented verbal tics, as many as the evidence supports: the
-  well-attested ones (Claude's "load-bearing", GPT's "Bottom line:") freely, the
-  shakier ones sparingly. They've had no pass from anyone but their author.
-- **36 questions.** Most are new and poke at those same habits without naming
-  anyone. The closer `close-note` was written in a hurry so the last step could
-  branch four ways; it's the likeliest to need a rewrite.
-- **Win rates run 2.1%–8.6%** against an even share of 4.5%, leaving out the
-  two rare results. GPT-6 Astra and Opus 5.5 win most; the fast agentic corner
-  (Qwen3.8-27B, Gemini 3.8 Flash) least. Watch the histogram from the validator
-  when you move anyone.
-
-None of that blocks playing it. Keep the validator green and iterate on the
-content.
-
-A server is required — the app fetches its content files, and ES modules don't
-load over `file://`.
-
-## Everything you'd want to edit is in `content/`
-
-| File | What's in it |
-| --- | --- |
-| `content/models.md` | The roster: one block per model, with its blurbs |
-| `content/questions.md` | The question pool |
-| `content/interface.md` | Every other word the app shows |
-
-They're Markdown, so prose is just prose — no quotes to balance, no escaping,
-apostrophes and quotation marks safe. The mechanics (axis weights, tags) sit on
-one compact line per item, out of the way of the writing.
-
-Nothing else contains user-facing text: `render.js` looks up every string by
-name from `interface.md`, and the validator fails if one it needs is missing.
-
----
-
-## Adding a model
-
-This is the thing the whole design is bent around. It's one edit to one file.
-
-1. Open `content/models.md` and copy an existing block.
-2. Give it five axis values between -1 and +1. Be specific: a model whose vector
-   hovers near zero has no personality and will rarely win anything. The
-   validator warns you if you've done this.
-3. Write its blurbs in its own voice.
-4. Run `node scripts/validate.mjs`.
-
-You do **not** touch `questions.md`. Questions measure traits; models claim
-traits. Nothing in the question pool knows a model exists — the validator fails
-if a question so much as mentions one by name.
-
-```md
-## fable-5-1 — Fable 5.1
-lab: Anthropic
-accent: #6d5bd0, #f0c9a0
-axes: rigor -0.55, terse -0.9, speed -0.85, earnest 0.1, solitary 0.2
-tags: editor, longform, bread
-tagline: Takes the long way on purpose
-
-### when: terse
-You were handed a perfectly good straight road and you took the switchback,
-because the view from the ridge was the part that earned its keep.
-
-### when: *
-You are the long answer to a short question.
-```
-
-The first accent colour is the lettering's shadow and the chart's stars; the
-second is the result card's background, so keep it light enough for dark text.
-
-`### when:` selects a variant by the axis the player leaned on hardest, so the
-same result reads differently on a retake. Always include a `when: *` fallback.
-Blank lines separate paragraphs; `**bold**` and `*italic*` work.
-
-Writing a question looks like this — the last two fields are optional:
-
-```md
-## whim-emoji [whimsy]
-Choose an emoji. No context. No take-backs.
-
-- bread | 🍞 | earnest 0.18, solitary -0.12, speed -0.12 | tags: bread
-- ginger | 🫚 | earnest -0.22, rigor 0.12, solitary 0.16 | tags: ginger
-```
-
-## The five axes
-
-`rigor↔vibes` · `terse↔verbose` · `speed↔depth` · `earnest↔irreverent` ·
-`solitary↔collaborative`
-
-When placing a model, read them as:
-
-| Axis | + end | − end |
-| --- | --- | --- |
-| `rigor` | by the book: literal, checks its work | reads the subtext, goes by feel |
-| `terse` | says it short | says it all |
-| `speed` | answers now | keeps thinking |
-| `earnest` | warm, sincere, agreeable | dry, blunt, won't flatter |
-| `solitary` | goes off and does the whole job | works it out with you |
-
-Five is deliberate. Adding a sixth means giving every existing model a value for
-it and splitting the same ten questions into thinner signal.
-
-## How scoring works
-
-```
-score(model) = cosine(yourVector, zScored(model.axes))
-             + 0.15 * tagAffinity(model)
-             + model.gravity
-```
-
-The top score is the result. The "rising sign" under it is the best-placed model
-from a *different lab*, using each model's `lab:` line: a Qwen rising under a
-Qwen reads as the same answer twice.
-
-Three parts of that are load-bearing:
-
-**Why cosine, not distance.** Summed answers regress toward the middle. Under
-Euclidean distance the blandest, most central model would win nearly every run.
-Cosine only cares about *direction*, so even an indecisive player gets a result
-with an opinion in it.
-
-**Why z-score the models.** An axis where the whole roster agrees carries no
-information and shrinks to nothing automatically; an axis with one outlier
-amplifies. The useful consequence is that the space recalibrates itself when you
-add a model, with nothing to hand-tune.
-
-**What `gravity` is for.** A thumb on the scale, default 0, for when two models
-crowd the same region or an easter egg needs to stay rare. Reach for it *after*
-the validator tells you something is wrong, and in small steps — and read the
-next section first, because it's usually not the right fix.
-
-## Why the silly questions matter
-
-Picking 🍞 over 🫚 carries real (small) axis weight, so whimsy genuinely moves
-the result — just less than a core question does. There's a second, optional
-channel: an answer can carry a concept tag (`bread`), and a model can claim it.
-Matched tags are damped by how many the model claims, so a tag-hoarder can't
-sweep the board, and the 0.15 coefficient keeps ten questions of real signal
-always outranking one emoji.
-
-A new model that claims no tags scores zero affinity and competes on axes alone.
-Nothing breaks; nothing is required.
-
-## Question selection
-
-The quiz is a flowchart over a pool of ~35 questions: every answer leads to a
-different next question, and a playthrough is one 10-question path through it,
-always in the same *shape*:
-
-```
-opener → core → core → core → whimsy → core → core → core → whimsy → closer
-```
-
-The shape is why a run feels composed rather than shuffled: whichever answer you
-give, the next step is the same kind of question, and only which one changes.
-The chart is never stored. Each fork is drawn when a player reaches it, seeded by
-the answers that led there, so a path always forks the same way — which is what
-lets a share link replay it. At each fork the answers draw their next questions
-from the pool without repeats, with odds weighted toward whatever measures the
-axes this path has measured least so far.
-
-Branches can also be written by hand. An answer with an `unlocks:` rule leads
-straight to its follow-up whenever the next step is a core question; every other
-answer's next question is drawn. One level only — a follow-up can't unlock
-another.
-
-Every answer leading somewhere different means each kind of question needs a
-deep enough pool: the step before a closer can have four answers, so there must
-be at least four closers, and so on. The validator works out the minimum for
-each section and fails if one runs short.
-
-The weighting is deliberately gentle. An earlier version only ever chose from
-the top three candidates, and since the same heavily-weighted questions were
-always on top, half the pool — both follow-ups included — was never asked. The
-validator now fails if any question is asked too rarely.
-
-## The validator is the point
-
-`node scripts/validate.mjs` is what keeps "adding a model is easy" true a year
-from now. It checks the schema and the no-model-names rule, then simulates
-20,000 playthroughs and asserts:
-
-- every model is **reachable** (wins often enough) and none **dominates**
-- no two models are near-duplicates that would shadow each other
-- every axis gets enough coverage along every path
-- every answer leads to a different next question, every question in the pool
-  actually gets asked, and every follow-up can actually be unlocked
-- flipping a whimsy answer changes the result *sometimes*, and flipping a core
-  answer changes it *more often* — the invariant that says the quiz is playful
-  but not arbitrary
-- a seed replays to an identical run, so share links are honest
-- every string the interface looks up exists, and uses only placeholders that
-  actually get filled in
-
-It prints a win-rate histogram, which is the tuning dashboard.
-
-### Pool balance — read this before touching `gravity`
-
-The validator also checks that each axis has roughly as much option weight on
-one pole as the other. This catches the sneakiest content bug there is, and it
-caught a real one during the first build: the pool had 26 options rewarding
-rigour against 15 rewarding instinct, so only 1.5% of players ever landed on the
-"vibes" side of that axis. Fable — which needs vibes *and* verbose *and* depth —
-won 1.4% of runs and looked broken.
-
-It wasn't. Fable won 84% of runs when played deliberately, so its vector was
-fine; the pool simply never sent anyone to that corner of the space. Balancing
-the options took it to ~10% with `gravity` untouched at 0.
-
-The lesson, encoded in the check: **when a model is unreachable, suspect the
-question pool before you suspect the model.** Gravity is a last resort, and if
-you find yourself cranking it, the answer is usually a few more questions
-weighted toward a neglected pole.
-
-## Sharing
-
-A whole run fits in a ~20-character hash, on the end of the winning model's
-preview page:
-
-```
-https://yourmodel.is/r/fable-5-1/#v=5&s=<seed>&a=<answers>&r=fable-5-1
-```
-
-The seed and answers replay the exact path through the chart. Bump the
-`version:` line near the top of `content/questions.md` whenever you edit
-questions or change how they're drawn in `src/core/select.js` — old links then
-fall back to showing the stored result rather than silently replaying against a
-changed pool.
-
-### Link previews
-
-Slack, iMessage and the rest build a preview from the `<meta>` tags of the page
-a link points at, fetched by a crawler that runs no JavaScript and never sees
-the `#hash`. So every model has a small static page of its own,
-`r/<model>/index.html`, with its own title ("I got Fable 5.1. What's your
-model?"), the opening line of its reading, and a card image, `r/<model>/card.png`.
-The page sends people straight on to the quiz, hash and all, and the quiz
-replays the run. Links to the quiz itself get `r/card.png`, its opening screen.
-
-Those pages and images are built, not written:
+The site is plain HTML, CSS and ES modules with no build step. It needs to be
+served over HTTP (it fetches files from `content/`, and ES modules don't load
+over `file://`), so start any static server from the repo root:
 
 ```sh
-npm install          # once: installs Playwright, which draws the cards
-npm run previews     # rebuilds everything in r/ — commit what it writes
+python3 -m http.server 8000
 ```
 
-Run it after adding a model or changing a model's name, tagline, colours or the
-opening of its default reading. The validator fails if a model has no page (its
-share links would 404) and warns when a preview is out of date. Absolute URLs
-come from the canonical link in `index.html`; change the domain there. The
-preview wording ("I got", "Your turn") is in `content/interface.md`.
+Then open <http://localhost:8000>.
 
-## Layout
+## Checks
 
-```
-index.html · favicon.svg · package.json
-styles/app.css
-content/      models.md · questions.md · interface.md   ← everything you edit
-src/data/     axes.js · content.js
-src/core/     parse.js · rng.js · select.js · score.js · url.js
-src/ui/       app.js · crab.js · flow.js · render.js · sigil.js · wires.js
-scripts/      validate.mjs · previews.mjs · preview-data.mjs
-r/            link-preview pages and cards               ← built by npm run previews
+Requires Node 18 or newer. Run the validator after editing anything in
+`content/`:
+
+```sh
+npm run validate      # same as: node scripts/validate.mjs
 ```
 
-The browser fetches the content files; the validator reads the same ones off
-disk and runs them through the same parsers in `src/core/parse.js`, so the two
-can't drift. A malformed file fails with the filename, the line number, and what
-was expected.
+It exits non-zero on failure.
 
-The result sigil is drawn procedurally from the axis vectors, so a new model
-gets its own constellation without anyone drawing one.
+## Rebuild link previews
+
+The pages and images in `r/` are generated. Rebuild them after changing
+anything in `content/models.md`, then commit what changed:
+
+```sh
+npm install           # once: installs Playwright
+npx playwright install chromium   # once, if you don't already have a browser for it
+npm run previews
+```
+
+To use a Chromium you already have instead, point `CHROMIUM_PATH` at it:
+
+```sh
+CHROMIUM_PATH=/path/to/chromium npm run previews
+```
+
+## Deploy
+
+The site is served by GitHub Pages from the `gh-pages` branch, at the root of
+that branch. `gh-pages` holds the built site only, plus two files that must
+stay there:
+
+- `CNAME`: the custom domain (`yourmodel.is`)
+- `.nojekyll`: tells Pages to serve files as-is
+
+Absolute URLs in the link previews come from the canonical link in
+`index.html`; if the domain changes, update it there and in `CNAME`, then
+rebuild the previews.
+
+To publish the current branch:
+
+```sh
+npm run validate
+
+# Check out gh-pages in a separate folder
+git fetch origin gh-pages
+git worktree add ../site-deploy gh-pages
+
+# Replace everything except .git, CNAME and .nojekyll with the site files
+find ../site-deploy -mindepth 1 -maxdepth 1 \
+  ! -name .git ! -name CNAME ! -name .nojekyll -exec rm -rf {} +
+cp -R index.html favicon.svg content src styles r ../site-deploy/
+
+# Commit and push
+cd ../site-deploy
+git add -A
+git commit -m "Deploy $(git -C ../which-model-are-you rev-parse --short HEAD)"
+git push origin gh-pages
+cd -
+git worktree remove ../site-deploy
+```
+
+Pages picks up the push within a minute or two. In the repository's
+**Settings → Pages**, the source should be "Deploy from a branch",
+branch `gh-pages`, folder `/ (root)`, with the custom domain set and
+"Enforce HTTPS" on.
