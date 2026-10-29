@@ -54,7 +54,7 @@ An online form asks for your favorite color. Underneath, in small print: "Don't 
 
 - done | Blue. Done. | terse 0.5, speed 0.7
 - define | Favorite for what, though? Walls? Cars? | rigor 0.4, terse -0.3, speed -0.6
-- letter | Type "blue". Delete it. Type your actual favorite. | rigor 0.5, earnest 0.4
+- lunch | Put a pin in it. Ask your colleagues at lunch. | speed -0.4, earnest 0.3, solitary -0.6
 - anyway | Type "blue", then fill the rest of the box with exceptions | rigor -0.3, speed -0.3, earnest -0.4, solitary 0.3
 
 <!-- Core — the bulk of the run. These carry the most weight. -->
