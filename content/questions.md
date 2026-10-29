@@ -29,17 +29,17 @@ Bump `version` whenever you edit questions (or change how they're drawn, in
 `src/core/select.js`), so old share links don't replay against a pool that
 changed under them.
 
-version: 6
+version: 7
 
 <!-- Openers — question 1. Easy to answer, sets the tone. -->
 
 ## open-inbox [opener]
-It is 9:14am. The message says "quick question."
+A message pops up: "Hey, quick question." Then the typing dots. Then nothing.
 
-- now | Answer it before the sentence finishes loading | terse 0.4, speed 0.6, solitary -0.2
-- context | Scroll up. Read the whole thread first. | rigor 0.4, speed -0.5
-- later | Mark unread. It is not a quick question. | speed -0.3, earnest -0.4, solitary 0.4
-- call | Suggest talking it through instead | terse -0.3, solitary -0.6
+- ask | Reply "Sure, what's up?" and wait | earnest 0.4, solitary -0.4
+- guess | Guess what they'll ask and answer that | rigor -0.3, speed 0.6, solitary 0.2
+- wait | Say nothing until the actual question arrives | terse 0.4, earnest -0.3, solitary 0.3
+- brace | Clear your afternoon. It's never a quick question. | rigor 0.4, terse -0.2, speed -0.5
 
 ## open-hi [opener]
 A stranger messages you "hi". Just "hi".
