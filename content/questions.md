@@ -29,7 +29,7 @@ Bump `version` whenever you edit questions (or change how they're drawn, in
 `src/core/select.js`), so old share links don't replay against a pool that
 changed under them.
 
-version: 7
+version: 8
 
 <!-- Openers — question 1. Easy to answer, sets the tone. -->
 
@@ -40,14 +40,6 @@ A message pops up: "Hey, quick question." Then the typing dots. Then nothing.
 - guess | Guess what they'll ask and answer that | rigor -0.3, speed 0.6, solitary 0.2
 - wait | Say nothing until the actual question arrives | terse 0.4, earnest -0.3, solitary 0.3
 - later | Mark unread. It is not a quick question. | rigor 0.3, terse -0.2, speed -0.5, earnest -0.1
-
-## open-hi [opener]
-A stranger messages you "hi". Just "hi".
-
-- hi | "hi" | terse 0.7, speed 0.3, earnest -0.2
-- hello | "Hello! How can I help you today?" | terse -0.3, earnest 0.6, solitary -0.3
-- wait | Wait. The rest of the message is coming. | rigor 0.3, speed -0.5, solitary 0.3
-- mirror | "hi" back, but with more feeling | rigor -0.5, earnest -0.3, solitary -0.3
 
 ## open-quick-look [opener]
 Someone asks you to "just take a quick look."
