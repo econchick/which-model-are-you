@@ -23,10 +23,11 @@ npm install && npm run previews # after editing models, to redraw link previews
 The machinery is built and tested; the writing is a first pass. Expect to change
 most of it.
 
-- **28 models across eight labs, plus ELIZA.** Placed and written from a
-  September 2026 snapshot of how each model tends to behave: nine Claudes, nine
+- **21 models across eight labs, plus ELIZA.** Placed and written from a
+  September 2026 snapshot of how each model tends to behave: six Claudes, five
   GPTs, two Geminis, three Qwens, and one each from xAI, DeepSeek, Moonshot,
-  Z.ai and Meta. ELIZA is the rare easter egg.
+  Z.ai and Meta. Two results are rare on purpose: ELIZA, the easter egg, and
+  Haiku 4.5, the joke about early retirement.
 - **The blurb voices are unreviewed.** They're the whole payoff. Each one leans
   on the model's documented verbal tics, as many as the evidence supports: the
   well-attested ones (Claude's "load-bearing", GPT's "Bottom line:") freely, the
@@ -34,9 +35,9 @@ most of it.
 - **36 questions.** Most are new and poke at those same habits without naming
   anyone. The closer `close-note` was written in a hurry so the last step could
   branch four ways; it's the likeliest to need a rewrite.
-- **Win rates run 1.8%–7.3%** against an even share of 3.4%. The warm,
-  collaborative corner (Opus 4.7, Opus 5.5) wins most; the fast agentic one
-  (Qwen3.8-27B, Gemini 3.8 Flash) least. Watch the histogram from the validator
+- **Win rates run 2.5%–9.5%** against an even share of 4.5%, leaving out the
+  two rare results. The warm, collaborative corner (Sonnet 5, Opus 5.5) wins
+  most; the fast agentic one (Qwen3.8-27B, GPT-6 Sol) least. Watch the histogram from the validator
   when you move anyone.
 
 None of that blocks playing it. Keep the validator green and iterate on the

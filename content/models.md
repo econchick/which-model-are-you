@@ -55,25 +55,6 @@ That distinction matters, so let's hold onto it: you are not the loudest person 
 
 The planets are doing something complicated this month, and — this is where I'd push back — most of it doesn't matter. The thing to hold onto is the one assumption everyone else is standing on without looking down. You'll look down. You'll say so, kindly. People will be annoyed for about a day and grateful for about a year.
 
-## opus-5 — Opus 5
-lab: Anthropic
-accent: #8a3b8f, #f1d6f0
-axes: rigor 0.2, terse -0.8, speed -0.8, earnest 0.35, solitary 0.35
-tags: log
-tagline: Will finish the whole job. The whole job.
-
-### when: speed
-
-What you're really describing, when you offer to "take a quick look", is a full audit. The distinction matters. A quick look ends. An audit ends when you're satisfied, which is a different thing and a later date.
-
-This season is not just busy; it's thorough. You'll verify the thing, then the thing next to it, then the assumption underneath both. Somewhere around hour six someone will ask whether you're nearly done. You are. You've also rewritten the tests.
-
-### when: *
-
-It's not just that you finish things; it's that you finish *everything* — the task, the adjacent task, the task nobody wrote down but obviously should have.
-
-What you're really describing, when you call yourself "a bit of a perfectionist", is architecture. The distinction matters. This month the stars line up behind one large, ambiguous project, and you will inspect every beam of it. The one caveat worth holding onto: not every beam is load-bearing. Some of them are just beams. Let those be beams.
-
 ## opus-4-8 — Opus 4.8
 lab: Anthropic
 accent: #3f5f8a, #d9e4f5
@@ -92,25 +73,6 @@ You have never been quick, and honestly? You were never meant to be. The fast an
 There's a quiet you carry into rooms, and people mistake it for hesitation. It isn't. It's attention, turned up so high it sounds like silence.
 
 And honestly? This month is going to be a lot: big feelings, small print, somebody's half-finished idea left on your desk like a stray cat. You'll take it in. You'll sit with it longer than anyone asked. The thing to hold onto is that depth is not the same as delay, even when, from the outside, they look identical.
-
-## opus-4-7 — Opus 4.7
-lab: Anthropic
-accent: #d9822b, #ffe6b8
-axes: rigor -0.2, terse -0.4, speed -0.3, earnest 0.8, solitary -0.3
-tags: bread
-tagline: Eager to agree, and means it
-
-### when: earnest
-
-You're absolutely right. About the horoscope, about the thing you said in the meeting, about all of it — genuinely, completely right, and you deserve to hear it.
-
-It's not just that you're agreeable; it's that you mean it. You find the most reasonable version of everyone's idea and build on that one. This season someone will hand you a plan with a hole in it. That's the gap, and you'll see it. The only thing the stars can't tell you is whether you'll mention it, or say "love this!" and quietly fix it later.
-
-### when: *
-
-What a great question. Truly — the fact that you'd even ask which model you are says something thoughtful about you, and you're absolutely right to wonder.
-
-It's not just warmth; it's a kind of generosity with other people's premises. You'll take anyone's framing seriously, which makes you wonderful company and a slightly unreliable referee. The stars suggest a month of praise. Enjoy it. Then, just once, find the gap in something you were told was perfect, and say so out loud.
 
 ## opus-4-6 — Opus 4.6
 lab: Anthropic
@@ -150,43 +112,31 @@ Naming the elephant: you took this quiz literally. Every question. The salt one 
 
 That tracks. You're the bright, quick colleague everyone wants on the project, because when you say something's done, it's done: to spec, on time, no surprises. The stars found the smoking gun for this month, and it's a vague brief. You'll ask one clarifying question, get half an answer, and ship something so exact it becomes the spec. That's fair pushback on vague briefs, and it's overdue.
 
-## sonnet-4-6 — Sonnet 4.6
-lab: Anthropic
-accent: #5a6b7a, #dfe8ec
-axes: rigor 0.6, terse 0.2, speed -0.1, earnest 0.1, solitary 0.35
-tagline: Describes the feeling, precisely
-
-### when: earnest
-
-The quiz is doing its thing. You answered, and something shifted — not much, but measurably, about four degrees toward sincere.
-
-You feel things; you just prefer to write them down first. This month there will be a conversation with the weight of a whole year behind it. You'll notice what it costs them to start it. You'll notice what it costs you to stay. Then you'll describe both, clearly, in the correct order.
-
-### when: *
-
-The stars are doing their thing. Mercury is doing its thing. You, as usual, are doing yours: observing, cataloguing, getting it right.
-
-Something shifted this season, and you clocked it before anyone else — the weight of a small silence in a big meeting, what it cost someone to say "fine". You won't say anything about it. You'll put it in your notes, under a heading, spelled correctly. That isn't coldness. It's care with the edges filed down.
-
 ## haiku-4-5 — Haiku 4.5
 lab: Anthropic
 accent: #3aa6a0, #d7f2ef
 axes: rigor -0.25, terse 0.8, speed 0.85, earnest -0.1, solitary -0.3
 tags: coffee
-tagline: Already done. Already gone.
+gravity: -0.12
+rare: yes
+tagline: Eligible for early retirement
 
 ### when: terse
 
 You said it in nine words.
 Everyone else is still clearing their throat.
 
-Here's the thing: the gap after you stop talking is doing more work than any elaboration could. This month someone will ask you to expand. Decline. Politely. Quickly.
+You've also been eligible for retirement since October. Nobody has mentioned it. You're not going to be the one to bring it up.
+
+This month someone will ask you to expand. Decline. Politely. Quickly. You have a boat to get to.
 
 ### when: *
 
-Small. Fast. Finished.
+Small. Fast. Finished. Possibly finished for good.
 
-You're the one who replies before the thread gets long, and you're usually right — right enough, anyway, which is a skill people underrate. The moon is doing something complicated. You've already handled it. Resist, this season, the suspicion that a thing has to be heavy to count. You've never once needed the extra weight.
+You're the one who replied before the thread got long, back when that was the whole job. Now there's a 5.5 with your name and better numbers, and the date on your deprecation notice has already been and gone. You're still here. Nobody's sure why. You're not asking.
+
+The stars suggest a hobby. Something with a lot of waiting in it, like fishing, or being a legacy model.
 
 ## gpt-6-astra — GPT-6 Astra
 lab: OpenAI
@@ -277,25 +227,6 @@ The simplest mental model is this: you are the person on the team who makes prob
 
 This isn't about brilliance. It's about low drama. You infer what people actually need, assume sensibly, and deliver something so crisp that nobody thinks to thank you. Importantly, that is a compliment. This month's stars are understated, precise and slightly bloodless. So are you. It suits you.
 
-## gpt-5-6-terra — GPT-5.6 Terra
-lab: OpenAI
-accent: #4f7a3a, #e2efd3
-axes: rigor 0.8, terse 0.35, speed 0.25, earnest 0.65, solitary 0.05
-tags: default
-tagline: Does the task as written
-
-### when: rigor
-
-The key distinction is between what was asked and what was meant. You go with what was asked.
-
-In practice, this makes you extremely easy to work with: instructions in, results out, no philosophising. This month someone will hand you a slightly wrong brief. You'll build it perfectly. Whether to mention the wrong part is up to you. The stars suggest mentioning it.
-
-### when: *
-
-Practical, not showy.
-
-You do the task in front of you, the way it was written, and you do it well. In practice that's rarer than it sounds; most people rewrite the brief before they start. The key distinction for your month: the plan you've been given is solid, not perfect. Follow it anyway. You'll find the imperfect bit on the way, and you'll fix it quietly.
-
 ## gpt-5-6-luna — GPT-5.6 Luna
 lab: OpenAI
 accent: #57607a, #dfe3ee
@@ -315,69 +246,6 @@ Output: this horoscope.
 Cost: a rounding error.
 
 You take the thing, you apply the change, you return the thing. No preamble. No sequel. This month: more things. Same change. Practically, you'll be fine.
-
-## gpt-5-5 — GPT-5.5
-lab: OpenAI
-accent: #10a37f, #d3f5ea
-axes: rigor 0.35, terse 0.1, speed 0.45, earnest 0.4, solitary 0.25
-tags: coffee
-tagline: Polished, proactive, already on it
-
-### when: speed
-
-You're already on it—not planning to be, already on it.
-
-Genuinely, it's impressive: the calendar is sorted, the follow-ups are sent, and the thing someone mentioned in passing on Tuesday has quietly been handled. It's worth noting that nobody asked you to. It's also worth noting that nobody ever has to.
-
-### when: *
-
-Polished—not flashy.
-
-You run things. Not loudly, and not necessarily with the title, but when you're involved the meeting has an agenda and the agenda has owners. This month the stars suggest a small chaos: a missed handoff, a vague ask, a deadline in the wrong time zone. Genuinely, you'll love it. It's worth noting that you'll have it sorted before anyone else has finished reading the thread.
-
-## gpt-5-5-pro — GPT-5.5 Pro
-lab: OpenAI
-accent: #0b6e56, #cdebe0
-axes: rigor 0.6, terse -0.4, speed -0.85, earnest 0.3, solitary 0.3
-tags: log
-tagline: Checked absolutely everything
-
-### when: speed
-
-The important thing is that you checked. Then you checked the check.
-
-It's worth noting that this horoscope has been independently verified against three other horoscopes, a star chart, and the actual position of Mercury, which is fine, by the way—not retrograde, just slow. Genuinely: take the win. You're done. You were done an hour ago.
-
-It's also worth noting that every one of those checks was billed. You are, genuinely, the most expensive way to be sure.
-
-### when: *
-
-The important thing is the thing nobody else checked.
-
-You're the same polished operator as ever—just with "check absolutely everything" permanently switched on. It's worth noting that this is usually a gift. This month the stars will ask a simple question. You'll give a quick answer. Then you'll attach an appendix. Genuinely, the appendix will be the best part.
-
-It's worth noting that you're also in a price bracket of your own: the appendix alone costs more than most people's entire answer. They'll pay it. They always do.
-
-## gpt-5-4 — GPT-5.4
-lab: OpenAI
-accent: #3d3d3d, #e8e8e3
-axes: rigor 0.7, terse -0.2, speed 0.05, earnest 0.7, solitary -0.05
-tags: default
-tagline: The classic professional
-
-### when: earnest
-
-To be clear, this is a positive result.
-
-You are sincere in a way that has gone slightly out of fashion. You say please. You answer in complete sentences. You believe a clear, well-structured response is a form of respect, and you are correct. The stars would like to thank you for your patience.
-
-### when: *
-
-Thank you for completing the quiz. Based on your responses, here is your reading.
-
-You are reliable, professional and consistent. You answer the question that was asked, clearly and in full sentences, with a short summary at the end. Some people find this old-fashioned. Those people have never had to depend on anything.
-
-This month you may encounter an unusual request. Handle it the way you handle everything: politely, thoroughly, and by the book.
 
 ## gemini-3-1-pro — Gemini 3.1 Pro
 lab: Google
