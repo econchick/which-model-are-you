@@ -29,7 +29,7 @@ Bump `version` whenever you edit questions (or change how they're drawn, in
 `src/core/select.js`), so old share links don't replay against a pool that
 changed under them.
 
-version: 8
+version: 9
 
 <!-- Openers — question 1. Easy to answer, sets the tone. -->
 
@@ -42,11 +42,11 @@ A message pops up: "Hey, quick question." Then the typing dots. Then nothing.
 - later | Mark unread. It is not a quick question. | rigor 0.3, terse -0.2, speed -0.5, earnest -0.1
 
 ## open-quick-look [opener]
-Someone asks you to "just take a quick look."
+Someone sends you their slides and asks you to "just take a quick look."
 
 - quick | Take a quick look. As asked. | rigor 0.5, terse 0.4, speed 0.3
-- everything | Take a quick look at everything it touches, too | terse -0.4, speed -0.5, solitary 0.3
-- fixed | Already fixed it, and two other things | speed 0.4, earnest -0.2, solitary 0.6
+- everything | Look at the slides, the speaker notes, and the spreadsheet behind them | terse -0.4, speed -0.5, solitary 0.3
+- fixed | Made edits yourself. Also redid the fonts. And the color theme. | speed 0.4, earnest -0.2, solitary 0.6
 - worried | Ask what they're actually worried about | rigor -0.5, earnest 0.3, solitary -0.3
 
 ## open-overthink [opener]
