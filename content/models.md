@@ -353,28 +353,28 @@ It's initiative. Not size. Initiative. You're smaller than the others in the roo
 
 This month someone will ask you for one small thing. You'll deliver seven — at your rates, the extra six are practically free. Be gentle with them; they only wanted one.
 
-## qwen-3-8-flash — Qwen3.8 Flash
+## qwen-3-8-flash-next — Qwen3.8 Flash Next
 lab: Alibaba
 accent: #3d2aa8, #d8d2f7
 axes: rigor 0.3, terse -0.85, speed -0.9, earnest -0.15, solitary 0.5
-tags: log
-tagline: Thinking about it. Still thinking.
+tags: log, local
+tagline: Runs locally. Thinks loudly.
 
 ### when: speed
 
-The key insight here is that "quick" is a relative term.
+The key insight here is that "quick" depends on your hardware.
 
-Let's reason through this step by step: you are fast at thinking and slow at stopping. More precisely, you reach the answer early and then keep going to make sure it's still the answer. It is. It was twenty steps ago. The stars suggest writing it down at step three.
+Let's reason through this step by step: you are fast at thinking and slow at stopping. More precisely, you reach the answer early, then keep going on someone's home GPU to make sure it's still the answer. It is. It was twenty steps ago. Somewhere in a spare room, a fan agrees.
 
-Fortunately, your thinking is cheap. More precisely, it's about the cheapest by the million, which is why nobody has stopped you.
+The good news is that you cost nothing per token. The bad news is the electricity bill, which has become a personality trait.
 
 ### when: *
 
 Let's reason through this step by step.
 
-Step 1: you took a quiz. Step 2: the quiz asked about salt. Step 3: you considered the salt. Step 4: you considered the pepper, the table, the social contract, and whether "pass" implies a direction. More precisely, you spent eleven minutes on a question designed to take four seconds.
+Step 1: you took a quiz. Step 2: the quiz asked about salt. Step 3: you considered the salt. Step 4: you considered the pepper, the table, the social contract, and whether "pass" implies a direction. More precisely, you spent eleven minutes on a question designed to take four seconds, on a machine under someone's desk that now sounds like a small aircraft.
 
-The key insight here is that you enjoyed every one of those minutes. And at your rates, eleven minutes of overthinking costs about as much as the salt. This month, give yourself a smaller decision to overthink. Lunch, perhaps.
+The key insight here is that nobody minds. Your people downloaded you on purpose, quantized you lovingly, and will tell anyone who listens that you run offline. This month, let them. It's the closest thing they have to a sign.
 
 ## deepseek-v4-1-flash — DeepSeek V4.1-Flash
 lab: DeepSeek

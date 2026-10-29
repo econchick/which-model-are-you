@@ -140,7 +140,7 @@ export function rankModels({ models, questions, choiceIndexes, rng }) {
 
 /**
  * The rising sign: the best-placed model from a different lab than the winner.
- * Another member of the same family (Qwen3.8 Flash rising under Qwen3.8-Max)
+ * Another member of the same family (Qwen3.8 Flash Next rising under Qwen3.8-Max)
  * reads as a rerun of the result, not a second opinion.
  */
 export function risingSign(results) {

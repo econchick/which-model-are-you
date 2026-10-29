@@ -29,7 +29,7 @@ Bump `version` whenever you edit questions (or change how they're drawn, in
 `src/core/select.js`), so old share links don't replay against a pool that
 changed under them.
 
-version: 5
+version: 6
 
 <!-- Openers — question 1. Easy to answer, sets the tone. -->
 
@@ -270,6 +270,14 @@ Pick a font. Don't think about it.
 - mono | Monospace, always | rigor 0.28, solitary 0.22 | tags: terminal
 - hated | The one everyone hates. Unironically. | rigor -0.16, earnest 0.28
 - default | Whatever it was already set to | speed 0.28, earnest 0.16 | tags: default
+
+## whim-hum [whimsy]
+Something under your desk has started humming.
+
+- fans | That's the fans. It's thinking. Let it think. | speed -0.22, solitary 0.28 | tags: local
+- unplug | Unplug things one by one until it stops | rigor 0.28, terse 0.16
+- name | It has a name. Say hello. | earnest 0.28, solitary -0.22
+- headphones | Headphones on. Not your problem. | terse 0.22, speed 0.16, earnest -0.22
 
 <!-- Closers — question 10. -->
 
