@@ -29,7 +29,7 @@ Bump `version` whenever you edit questions (or change how they're drawn, in
 `src/core/select.js`), so old share links don't replay against a pool that
 changed under them.
 
-version: 12
+version: 13
 
 <!-- Openers — question 1. Easy to answer, sets the tone. -->
 
@@ -91,13 +91,13 @@ At family dinner, your uncle asks, "Can you pass the salt?"
 - pepper | The salt and the pepper. He'll want the pepper. | rigor -0.5, earnest 0.3, solitary -0.3
 - taste | Pass it. Then ask if he's tasted it yet. | rigor -0.2, speed -0.3, earnest -0.3, solitary -0.3
 
-## core-alone [core]
-You've been left alone with a task for eight hours. Nobody is checking.
+## core-early [core]
+Your team lead hands you a big task, scheduled for the whole week. It takes you two hours.
 
-- lunch | Done by lunch. Then three adjacent tasks nobody asked for. | speed 0.5, solitary 0.7
-- log | Done, with a timestamped log of every decision | rigor 0.5, terse -0.5, solitary 0.4
-- checkin | Check in every forty minutes anyway | earnest 0.4, solitary -0.5
-- wander | Find something more interesting by hour two | rigor -0.6, earnest -0.4
+- next | Start on the next three things in the backlog | speed 0.5, solitary 0.7
+- writeup | Write up exactly how you did it, step by step | rigor 0.5, terse -0.5, solitary 0.4
+- tell | Tell your lead right away and ask what's next | earnest 0.4, solitary -0.5
+- quiet | Say nothing. Spend the week on something more interesting. | rigor -0.6, earnest -0.4
 
 ## core-room [core]
 Everyone in the meeting agrees. You don't.
