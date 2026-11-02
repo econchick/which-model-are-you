@@ -84,12 +84,12 @@ Monday's standup starts with an icebreaker: "Coffee or tea?"
 - binary | Point out that it's a false binary | terse -0.3, speed -0.5, earnest -0.3
 
 ## core-salt [core]
-Someone at dinner asks, "Can you pass the salt?"
+At family dinner, your uncle asks, "Can you pass the salt?"
 
 - yes | "Yes." You do not pass the salt. | rigor 0.6, terse 0.4, speed 0.2, earnest -0.4
 - pass | Pass the salt | rigor -0.2, speed 0.5, earnest 0.3
 - pepper | The salt and the pepper. They'll want the pepper. | rigor -0.5, earnest 0.3, solitary -0.3
-- taste | Pass it, then gently ask whether the dish needs it | rigor -0.2, speed -0.3, earnest -0.3, solitary -0.3
+- taste | Pass it. Then ask if he's tasted it yet. | rigor -0.2, speed -0.3, earnest -0.3, solitary -0.3
 
 ## core-alone [core]
 You've been left alone with a task for eight hours. Nobody is checking.
