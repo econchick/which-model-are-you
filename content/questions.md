@@ -252,9 +252,9 @@ Pick a font.
 ## whim-hum [whimsy]
 Something under your desk has started humming.
 
-- fans | That's the fans. It's thinking. Let it think. | speed -0.22, solitary 0.28 | tags: local
+- fans | That's the fans. Just let them be. | speed -0.22, solitary 0.28 | tags: local
 - unplug | Unplug things one by one until it stops | rigor 0.28, terse 0.16
-- name | It has a name. Say hello. | earnest 0.28, solitary -0.22
+- name | Ask whoever's nearby if they hear it too | earnest 0.28, solitary -0.22
 - headphones | Headphones on. Not your problem. | terse 0.22, speed 0.16, earnest -0.22
 
 <!-- Closers — question 10. -->
