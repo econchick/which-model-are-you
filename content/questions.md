@@ -29,7 +29,7 @@ Bump `version` whenever you edit questions (or change how they're drawn, in
 `src/core/select.js`), so old share links don't replay against a pool that
 changed under them.
 
-version: 11
+version: 12
 
 <!-- Openers — question 1. Easy to answer, sets the tone. -->
 
@@ -75,13 +75,13 @@ Mid-argument, your friend suddenly says "you're absolutely right." You were abou
 - suspicious | Get suspicious. What do they want? | earnest -0.5, solitary 0.4
 - return | "No, YOU'RE absolutely right." | rigor -0.3, earnest 0.4, solitary -0.4
 
-## core-week [core]
-Sum up your week in one sentence.
+## core-standup [core]
+Monday's standup starts with an icebreaker: "Coffee or tea?"
 
-- seven | Seven words. Full stop. | terse 0.8, speed 0.3, solitary 0.2
-- semicolons | One sentence, technically, with eleven semicolons | rigor -0.3, terse -0.7, earnest -0.2
-- bottom | "Bottom line:" and three bullet points | rigor 0.5, terse 0.2, earnest 0.3
-- cannot | A week can't be one sentence, and here's why | terse -0.3, speed -0.5, earnest -0.3
+- coffee | "Coffee." | terse 0.8, speed 0.3, solitary 0.2
+- saga | Coffee before ten, tea after, and then there's the oat milk situation | rigor -0.3, terse -0.7, earnest -0.2
+- pass | "Coffee," then hand it to the next person by name | rigor 0.5, terse 0.2, earnest 0.3
+- binary | Point out that it's a false binary | terse -0.3, speed -0.5, earnest -0.3
 
 ## core-salt [core]
 Someone at dinner asks, "Can you pass the salt?"
