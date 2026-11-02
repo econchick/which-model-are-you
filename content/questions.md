@@ -29,7 +29,7 @@ Bump `version` whenever you edit questions (or change how they're drawn, in
 `src/core/select.js`), so old share links don't replay against a pool that
 changed under them.
 
-version: 13
+version: 14
 
 <!-- Openers — question 1. Easy to answer, sets the tone. -->
 
@@ -100,11 +100,11 @@ Your team lead hands you a big task, scheduled for the whole week. It takes you 
 - quiet | Say nothing. Spend the week on something more interesting. | rigor -0.6, earnest -0.4
 
 ## core-room [core]
-Everyone in the meeting agrees. You don't.
+Everyone in the meeting agrees to launch on Friday. You don't.
 
 - say | Say so plainly, once | terse 0.5, speed 0.3, earnest -0.3
-- spreadsheet | Come back tomorrow with a spreadsheet | rigor 0.5, speed -0.5, solitary 0.3
-- question | Ask the one question that un-agrees them | rigor -0.3, earnest -0.4, solitary -0.3
+- risks | Come back tomorrow with a list of everything that could go wrong | rigor 0.5, speed -0.5, solitary 0.3
+- question | Go full Socrates. Ask questions until they disagree with themselves. | rigor -0.3, earnest -0.4, solitary -0.3
 - fold | Agree. It's probably fine. | speed 0.4, earnest 0.5, solitary -0.2
 
 ## core-ten [core]
