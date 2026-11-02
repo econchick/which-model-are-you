@@ -239,7 +239,7 @@ A pigeon has been looking at you for a while now.
 - back | Look back. As equals. | earnest -0.28, solitary 0.22
 - crumb | Offer it a crumb, as a gesture | earnest 0.28, solitary -0.28 | tags: bread
 - leave | Leave. Something is happening and you're not part of it. | terse 0.16, speed 0.33
-- notes | Take notes | rigor 0.28, speed -0.22 | tags: log
+- notes | Start a log. "2:14pm. Still staring." | rigor 0.28, speed -0.22 | tags: log
 
 ## whim-font [whimsy]
 Pick a font. Don't think about it.
