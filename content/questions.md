@@ -29,7 +29,7 @@ Bump `version` whenever you edit questions (or change how they're drawn, in
 `src/core/select.js`), so old share links don't replay against a pool that
 changed under them.
 
-version: 20
+version: 21
 
 <!-- Openers — question 1. Easy to answer, sets the tone. -->
 
@@ -206,6 +206,8 @@ Choose an emoji. No context. No take-backs.
 
 - bread | 🍞 | speed -0.12, earnest 0.18, solitary -0.12 | tags: bread
 - ginger | 🫚 | rigor 0.12, earnest -0.22, solitary 0.16 | tags: ginger
+- goose | 🪿 | rigor -0.22, speed 0.16, earnest -0.16, solitary 0.12
+- clipboard | 📋 | rigor 0.2, terse 0.16, speed 0.12, earnest 0.12
 
 ## whim-sock [whimsy]
 One sock is missing. The laundry is finished.
