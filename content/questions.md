@@ -132,11 +132,11 @@ Something is broken, and you have a theory.
 - call | Get someone on a call and think out loud | terse -0.3, solitary -0.5
 
 ## core-weekend [core]
-Someone asks how your weekend was.
+A neighbor asks how your weekend was. The elevator ride is four floors.
 
 - fine | "Good, thanks." Move on. | terse 0.6, earnest -0.2
-- saga | The full saga, including the parts that went nowhere | terse -0.75, earnest 0.3, solitary -0.3
-- detail | One perfect detail, chosen carefully | rigor -0.35, terse 0.25, speed -0.2
+- saga | The full saga, continued into the hallway | terse -0.75, earnest 0.3, solitary -0.3
+- detail | One perfect detail, timed to the doors opening | rigor -0.35, terse 0.25, speed -0.2
 - return | Turn it around and ask about theirs | earnest -0.2, solitary -0.55 | tags: mirror
 
 ## core-yes-no [core]
