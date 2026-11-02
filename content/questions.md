@@ -263,7 +263,7 @@ Something under your desk has started humming.
 Last one. How would you rather be remembered?
 
 - right | As the one who was right | rigor 0.42, solitary 0.4
-- kind | As the one who was kind about it | earnest 0.6, solitary -0.5
+- kind | As the one who was kind | earnest 0.6, solitary -0.5
 - fast | As the one who actually finished | terse 0.3, speed 0.7
 - strange | As the one who was a bit strange | rigor -0.4, terse -0.3, earnest -0.6
 
