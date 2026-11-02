@@ -272,7 +272,7 @@ Last one. The advice you keep giving other people.
 
 - ship | "Just send it." | rigor -0.3, speed 0.7
 - check | "Check it one more time." | rigor 0.45, speed -0.3
-- ask | "Go and ask them." | earnest 0.4, solitary -0.7
+- ask | "Just ask them." | earnest 0.4, solitary -0.7
 - rest | "Put it down and come back to it." | terse 0.2, speed -0.5, earnest 0.4
 
 ## close-door-close [closer]
