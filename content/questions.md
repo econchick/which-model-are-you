@@ -29,7 +29,7 @@ Bump `version` whenever you edit questions (or change how they're drawn, in
 `src/core/select.js`), so old share links don't replay against a pool that
 changed under them.
 
-version: 14
+version: 15
 
 <!-- Openers — question 1. Easy to answer, sets the tone. -->
 
@@ -112,8 +112,8 @@ Explain what you do to a ten-year-old.
 
 - sandwich | One perfect analogy, involving a sandwich | rigor -0.5, terse 0.2, earnest 0.3
 - first | From first principles. They're ten; they have time. | rigor 0.4, terse -0.5, speed -0.5
-- short | "I help computers think." Done. | terse 0.7, speed 0.4
-- show | Let them have a go while you watch | rigor -0.2, speed -0.2, solitary -0.4
+- short | "I do stuff on a computer." Done. | terse 0.7, speed 0.4
+- guess | Ask what they think you do. Their version is better. | rigor -0.2, speed -0.2, solitary -0.4
 
 ## core-edit [core]
 A friend asks you to "lightly edit" their essay.
