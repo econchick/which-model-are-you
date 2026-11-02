@@ -29,7 +29,7 @@ Bump `version` whenever you edit questions (or change how they're drawn, in
 `src/core/select.js`), so old share links don't replay against a pool that
 changed under them.
 
-version: 17
+version: 18
 
 <!-- Openers — question 1. Easy to answer, sets the tone. -->
 
@@ -140,12 +140,12 @@ A neighbor asks how your weekend was. The elevator ride is four floors.
 - return | Turn it around and ask about theirs | earnest -0.2, solitary -0.55 | tags: mirror
 
 ## core-upset [core]
-A friend is upset, and you don't know why.
+Your friend has been quiet all through dinner. When you ask, they say they're "fine."
 
-- ask | Ask. Listen. Ask again. | speed -0.3, earnest 0.4, solitary -0.6
-- read | Work it out from what they're not saying | rigor -0.6, speed -0.2
-- fix | Offer three practical solutions | rigor 0.4, speed 0.4, solitary 0.2
-- sit | Sit with it. Quietly. For a while. | terse 0.4, speed -0.5, earnest 0.3
+- ask | Ask what's really going on. Listen. Ask again. | speed -0.3, earnest 0.4, solitary -0.6
+- read | Replay the whole evening in your head for clues | rigor -0.6, speed -0.2
+- fix | Suggest three things that might help, just in case | rigor 0.4, speed 0.4, solitary 0.2
+- sit | Stay after everyone leaves. No questions. | terse 0.4, speed -0.5, earnest 0.3
 
 ## core-plan [core]
 You're asked for a plan. Just a plan.
