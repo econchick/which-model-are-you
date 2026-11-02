@@ -242,12 +242,12 @@ A pigeon has been looking at you for a while now.
 - notes | Start a log. "2:14pm. Still staring." | rigor 0.28, speed -0.22 | tags: log
 
 ## whim-font [whimsy]
-Pick a font. Don't think about it.
+Pick a font.
 
-- serif | Something with serifs and opinions | rigor -0.22, terse -0.22 | tags: editor
-- mono | Monospace, always | rigor 0.28, solitary 0.22 | tags: terminal
-- hated | The one everyone hates. Unironically. | rigor -0.16, earnest 0.28
-- default | Whatever it was already set to | speed 0.28, earnest 0.16 | tags: default
+- serif | Garamond. It has opinions. | rigor -0.22, terse -0.22 | tags: editor
+- mono | Courier New. Monospace, always. | rigor 0.28, solitary 0.22 | tags: terminal
+- hated | Papyrus. Unironically. | rigor -0.16, earnest 0.28
+- default | Arial. It was already set to that. | speed 0.28, earnest 0.16 | tags: default
 
 ## whim-hum [whimsy]
 Something under your desk has started humming.
