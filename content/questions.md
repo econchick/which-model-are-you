@@ -29,7 +29,7 @@ Bump `version` whenever you edit questions (or change how they're drawn, in
 `src/core/select.js`), so old share links don't replay against a pool that
 changed under them.
 
-version: 16
+version: 17
 
 <!-- Openers — question 1. Easy to answer, sets the tone. -->
 
@@ -138,14 +138,6 @@ A neighbor asks how your weekend was. The elevator ride is four floors.
 - saga | The full saga, continued into the hallway | terse -0.75, earnest 0.3, solitary -0.3
 - detail | One perfect detail, timed to the doors opening | rigor -0.35, terse 0.25, speed -0.2
 - return | Turn it around and ask about theirs | earnest -0.2, solitary -0.55 | tags: mirror
-
-## core-yes-no [core]
-Someone asks you a yes-or-no question.
-
-- yes | Yes or no. As requested. | rigor 0.3, terse 0.8, speed 0.3, solitary 0.2
-- because | Yes — and here's the context that makes it a yes | terse -0.4, earnest 0.4
-- depends | "It depends," followed by a table | rigor 0.3, terse -0.6, speed -0.3
-- better | Answer the better question they should have asked | rigor -0.4, earnest -0.4, solitary 0.2
 
 ## core-upset [core]
 A friend is upset, and you don't know why.
