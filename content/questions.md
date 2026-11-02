@@ -29,7 +29,7 @@ Bump `version` whenever you edit questions (or change how they're drawn, in
 `src/core/select.js`), so old share links don't replay against a pool that
 changed under them.
 
-version: 19
+version: 20
 
 <!-- Openers — question 1. Easy to answer, sets the tone. -->
 
@@ -172,12 +172,12 @@ It's 11pm. You open a Wikipedia article about lighthouses.
 - bed | Close the laptop. Genuinely close it. | rigor 0.3, terse 0.5, earnest 0.3
 
 ## core-long [core]
-The thing you are making is taking much longer than you said.
+You said the bookshelf would take an hour to assemble. It's hour three and you're only halfway.
 
-- cut | Cut scope until it fits the promise | terse 0.5, speed 0.45
-- tell | Tell them early, in detail, with the reasons | terse -0.5, earnest 0.5, solitary -0.3
-- keep | Say nothing. Keep going. It will be worth it. | terse -0.3, speed -0.65, solitary 0.45
-- rescope | Renegotiate what you promised | rigor 0.3, solitary -0.4
+- cut | Skip the back panel. It's still a bookshelf. | terse 0.5, speed 0.45
+- tell | Narrate every setback to whoever's in the next room | terse -0.5, earnest 0.5, solitary -0.3
+- keep | Quick pee break, then dive back in. You're not stopping now. | terse -0.3, speed -0.65, solitary 0.45
+- rescope | Announce that it's officially a two-day project | rigor 0.3, solitary -0.4
 
 ## core-instructions [core]
 The recipe says to let it rest for 20 minutes.
