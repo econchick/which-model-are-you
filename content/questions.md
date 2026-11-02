@@ -189,12 +189,12 @@ The recipe says to let the lasagna rest for 20 minutes. It smells incredible.
 unlocks: improvise -> follow-improvise
 
 ## core-party [core]
-The party is good. It is 11pm.
+A friend's birthday party is going well. It's nearly midnight. What are you doing right now?
 
-- leave | Leave without saying goodbye | terse 0.4, solitary 0.7
-- kitchen | One long conversation in the kitchen | terse -0.5, speed -0.3, solitary -0.5
-- host | Introduce two people who should meet | earnest 0.4, solitary -0.7
-- stay | Still there at 2am. No regrets. | speed -0.4, earnest -0.3, solitary -0.3 | tags: nocturnal
+- leave | Slipping out without saying goodbye | terse 0.4, solitary 0.7
+- kitchen | Deep in one long conversation in the kitchen | terse -0.5, speed -0.3, solitary -0.5
+- host | Introducing two people who should meet | earnest 0.4, solitary -0.7
+- stay | Getting a second wind. You'll be here at 2am. | speed -0.4, earnest -0.3, solitary -0.3 | tags: nocturnal
 unlocks: leave -> follow-alone
 
 <!-- Whimsy — questions 5 and 9. They look arbitrary and are not: each
