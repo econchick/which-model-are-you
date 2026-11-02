@@ -144,8 +144,8 @@ Your friend has been quiet all through dinner. When you ask, they say they're "f
 
 - ask | Ask what's really going on. Listen. Ask again. | speed -0.3, earnest 0.4, solitary -0.6
 - read | Replay the whole evening in your head for clues | rigor -0.6, speed -0.2
-- fix | Suggest three things that might help, just in case | rigor 0.4, speed 0.4, solitary 0.2
-- sit | Stay after everyone leaves. No questions. | terse 0.4, speed -0.5, earnest 0.3
+- fix | Get the check and suggest an early night | rigor 0.4, speed 0.4, solitary 0.2
+- sit | Walk them home. Let them talk if they want to. | terse 0.4, speed -0.5, earnest 0.3
 
 ## core-plan [core]
 You're asked for a plan. Just a plan.
