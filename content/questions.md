@@ -164,7 +164,7 @@ In a meeting, your manager calls your idea "load-bearing."
 - adopt | Start calling everything "load-bearing" | terse -0.2, earnest -0.3, solitary -0.4
 
 ## core-rabbit-hole [core]
-It is late and you have found a rabbit hole.
+It's 11pm. You open a Wikipedia article about lighthouses.
 
 - down | Down. Obviously down. | speed -0.6, solitary 0.5 | tags: nocturnal
 - bookmark | Bookmark it for a version of you with more time | rigor 0.2, speed 0.4
