@@ -218,12 +218,12 @@ One sock is missing. Everything else is folded and put away.
 - drawer | The odd-sock drawer. It will turn up. | speed -0.22, earnest 0.22, solitary -0.12 | tags: longform
 
 ## whim-door [whimsy]
-A door in your house that was not there yesterday.
+There's a door in your hallway that wasn't there yesterday.
 
 - open | Open it | rigor -0.22, speed 0.28, earnest -0.12
-- measure | Measure the house from outside first | rigor 0.33, speed -0.22
-- witness | Get someone else to look at it with you | earnest 0.16, solitary -0.38
-- ignore | Live alongside it. Say nothing. | terse 0.28, earnest -0.22, solitary 0.33
+- measure | Knock. Then check the floor plan. | rigor 0.33, speed -0.22
+- witness | Get your dog to look at it with you. | earnest 0.16, solitary -0.38
+- ignore | Ignore it. Live and let live. | terse 0.28, earnest -0.22, solitary 0.33
 
 ## whim-dog [whimsy]
 Somewhere, a dog barks.
