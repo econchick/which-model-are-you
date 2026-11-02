@@ -148,12 +148,12 @@ Your friend has been quiet all through dinner. When you ask, they say they're "f
 - sit | Walk them home. Let them talk if they want to. | terse 0.4, speed -0.5, earnest 0.3
 
 ## core-plan [core]
-The group chat asks you to plan this summer's trip.
+The group chat asks you to plan this summer's trip. You:
 
-- plan | One shared doc: dates, budget, and a deadline to vote | rigor 0.5, terse 0.4
-- started | A plan, and you've already booked the flights | speed 0.5, earnest -0.2, solitary 0.6
-- three | Three itineraries, color-coded by budget | rigor 0.3, terse -0.6, speed -0.4
-- questions | Seven questions in the chat before you start | speed -0.4, earnest 0.3, solitary -0.4
+- plan | Make a shared doc with just dates | rigor 0.5, terse 0.4
+- started | Create a full itinerary, and you've already booked the flights, made 3 restaurant reservations, and booked a couple tours | speed 0.5, earnest -0.2, solitary 0.6
+- three | Write three itinerary proposals, color-coded by budget | rigor 0.3, terse -0.6, speed -0.4
+- questions | Follow up with a bunch of questions in the chat | speed -0.4, earnest 0.3, solitary -0.4
 
 ## core-load-bearing [core]
 Someone calls your idea "load-bearing."
