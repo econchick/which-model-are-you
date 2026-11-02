@@ -210,10 +210,10 @@ Choose an emoji. No context. No take-backs.
 - clipboard | 📋 | rigor 0.2, terse 0.16, speed 0.12, earnest 0.12
 
 ## whim-sock [whimsy]
-One sock is missing. The laundry is finished.
+One sock is missing. Everything else is folded and put away.
 
-- search | The machine is lying. Search it again. | rigor 0.28, speed -0.16, solitary 0.12
-- mismatch | Wear a mismatched pair. Forever, if needed. | rigor -0.28, earnest -0.22
+- search | The washing machine is lying. Search again. | rigor 0.28, speed -0.16, solitary 0.12
+- mismatch | Wear a mismatched pair. | rigor -0.28, earnest -0.22
 - bin | Bin the survivor. Clean break. | terse 0.33, speed 0.28
 - drawer | The odd-sock drawer. It will turn up. | speed -0.22, earnest 0.22, solitary -0.12 | tags: longform
 
