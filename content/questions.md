@@ -180,7 +180,7 @@ You said the bookshelf would take an hour to assemble. It's hour three and you'r
 - rescope | Announce that it's officially a two-day project | rigor 0.3, solitary -0.4
 
 ## core-instructions [core]
-The recipe says to let it rest for 20 minutes.
+The recipe says to let the lasagna rest for 20 minutes. It smells incredible.
 
 - obey | Twenty minutes. Timer on. | rigor 0.42, earnest 0.3
 - twelve | Twelve is basically twenty | rigor -0.5, speed 0.5
