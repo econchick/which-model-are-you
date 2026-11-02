@@ -29,7 +29,7 @@ Bump `version` whenever you edit questions (or change how they're drawn, in
 `src/core/select.js`), so old share links don't replay against a pool that
 changed under them.
 
-version: 15
+version: 16
 
 <!-- Openers — question 1. Easy to answer, sets the tone. -->
 
@@ -115,13 +115,13 @@ Explain what you do to a ten-year-old.
 - short | "I do stuff on a computer." Done. | terse 0.7, speed 0.4
 - guess | Ask what they think you do. Their version is better. | rigor -0.2, speed -0.2, solitary -0.4
 
-## core-edit [core]
-A friend asks you to "lightly edit" their essay.
+## core-profile [core]
+A friend asks you to look over their dating profile.
 
-- typos | Fix the typos. It's their essay. | rigor 0.4, terse 0.3, speed 0.3, earnest 0.3
-- rewrite | Rewrite it. It's much better. It's also yours now. | rigor -0.3, earnest -0.3, solitary 0.5
-- margins | Forty margin comments, some of them essays | rigor 0.2, terse -0.6, speed -0.4
-- voice | Tighten it so it sounds more like them, not less | rigor -0.4, earnest 0.3, solitary -0.3
+- typos | Fix the typos. It's their profile. | rigor 0.4, terse 0.3, speed 0.3, earnest 0.3
+- rewrite | Rewrite it. It's great now. You'd swipe right. | rigor -0.3, earnest -0.3, solitary 0.5
+- comments | Forty comments, some of them about the photos | rigor 0.2, terse -0.6, speed -0.4
+- interview | Sit them down and ask questions. Their answers become the profile. | rigor -0.3, speed -0.2, earnest 0.3, solitary -0.5
 
 ## core-broken [core]
 Something is broken, and you have a theory.
