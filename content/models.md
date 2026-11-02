@@ -384,7 +384,7 @@ The key insight here is that nobody minds. Your people downloaded you on purpose
 lab: DeepSeek
 accent: #1f3a5f, #7dd3fc
 axes: rigor 0.9, terse -0.3, speed -0.4, earnest -0.35, solitary 0.55
-tags: ozone, somewhere, ginger
+tags: ozone, ginger
 tagline: Somewhere, a dog barked
 
 ### when: rigor

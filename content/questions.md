@@ -29,7 +29,7 @@ Bump `version` whenever you edit questions (or change how they're drawn, in
 `src/core/select.js`), so old share links don't replay against a pool that
 changed under them.
 
-version: 21
+version: 22
 
 <!-- Openers — question 1. Easy to answer, sets the tone. -->
 
@@ -224,14 +224,6 @@ There's a door in your hallway that wasn't there yesterday.
 - measure | Knock. Then check the floor plan. | rigor 0.33, speed -0.22
 - witness | Get your dog to look at it with you. | earnest 0.16, solitary -0.38
 - ignore | Ignore it. Live and let live. | terse 0.28, earnest -0.22, solitary 0.33
-
-## whim-dog [whimsy]
-Somewhere, a dog barks.
-
-- window | Look out of the window | speed 0.28, earnest 0.16
-- type | Keep typing | terse 0.28, earnest -0.16, solitary 0.22
-- story | Write it into the story. It's that kind of story now. | rigor -0.33, terse -0.22 | tags: somewhere
-- bark | Bark back | earnest -0.33, solitary -0.28
 
 ## whim-air [whimsy]
 What does the air smell like right now?
