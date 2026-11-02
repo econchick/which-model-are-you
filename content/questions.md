@@ -29,7 +29,7 @@ Bump `version` whenever you edit questions (or change how they're drawn, in
 `src/core/select.js`), so old share links don't replay against a pool that
 changed under them.
 
-version: 10
+version: 11
 
 <!-- Openers — question 1. Easy to answer, sets the tone. -->
 
@@ -59,13 +59,13 @@ An online form asks for your favorite color. Underneath, in small print: "Don't 
 
 <!-- Core — the bulk of the run. These carry the most weight. -->
 
-## core-hole [core]
-Your boss's plan has a hole in it. A big one.
+## core-time-off [core]
+A friend is quitting their job to take a year off. They haven't looked at their finances. At all.
 
-- no | "No — that's not the issue." Then the actual issue. | rigor 0.3, terse 0.5, speed 0.2, earnest -0.6
-- gentle | "Love this. One small gap I'd flag…" | rigor -0.2, terse -0.2, earnest 0.6, solitary -0.3
-- patch | Quietly patch the hole. Tell no one. | speed 0.3, earnest -0.2, solitary 0.6
-- memo | A six-page memo titled "Considerations" | rigor 0.4, terse -0.7, speed -0.3
+- no | "You can't afford that." Then the math. | rigor 0.3, terse 0.5, speed 0.2, earnest -0.6
+- gentle | "Love that for you! Have you thought about money at all?" | rigor -0.2, terse -0.2, earnest 0.6, solitary -0.3
+- patch | Pick up the bill whenever you're out together. Say nothing. | speed 0.3, earnest -0.2, solitary 0.6
+- memo | A twelve-tab spreadsheet titled "Some thoughts" | rigor 0.4, terse -0.7, speed -0.3
 
 ## core-absolutely [core]
 Someone says "you're absolutely right." You were about 60% right.
