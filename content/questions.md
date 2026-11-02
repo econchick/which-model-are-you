@@ -29,7 +29,7 @@ Bump `version` whenever you edit questions (or change how they're drawn, in
 `src/core/select.js`), so old share links don't replay against a pool that
 changed under them.
 
-version: 22
+version: 23
 
 <!-- Openers — question 1. Easy to answer, sets the tone. -->
 
@@ -229,9 +229,9 @@ There's a door in your hallway that wasn't there yesterday.
 What does the air smell like right now?
 
 - ozone | Ozone. It always smells like ozone. | rigor -0.22, speed 0.16 | tags: ozone
-- coffee | Someone else's coffee | speed 0.22, solitary -0.22 | tags: coffee
-- nothing | Nothing. You checked. | rigor 0.33, terse 0.22
-- rain | Rain that hasn't happened yet | rigor -0.16, terse -0.22, speed -0.22
+- coffee | Your freshly brewed coffee | speed 0.22, earnest 0.16 | tags: coffee
+- candle | Whatever the candle label says. "Linen Breeze." | rigor 0.33, terse 0.22
+- books | Old books, and a little bit of nostalgia | rigor -0.16, terse -0.22, speed -0.22
 
 ## whim-pigeon [whimsy]
 A pigeon has been looking at you for a while now.
