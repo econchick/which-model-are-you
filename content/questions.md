@@ -88,7 +88,7 @@ At family dinner, your uncle asks, "Can you pass the salt?"
 
 - yes | "Yes." You do not pass the salt. | rigor 0.6, terse 0.4, speed 0.2, earnest -0.4
 - pass | Pass the salt | rigor -0.2, speed 0.5, earnest 0.3
-- pepper | The salt and the pepper. They'll want the pepper. | rigor -0.5, earnest 0.3, solitary -0.3
+- pepper | The salt and the pepper. He'll want the pepper. | rigor -0.5, earnest 0.3, solitary -0.3
 - taste | Pass it. Then ask if he's tasted it yet. | rigor -0.2, speed -0.3, earnest -0.3, solitary -0.3
 
 ## core-alone [core]
