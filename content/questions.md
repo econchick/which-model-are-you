@@ -156,11 +156,11 @@ The group chat asks you to plan this summer's trip. You:
 - questions | Follow up with a bunch of questions in the chat | speed -0.4, earnest 0.3, solitary -0.4
 
 ## core-load-bearing [core]
-Someone calls your idea "load-bearing."
+In a meeting, your manager calls your idea "load-bearing."
 
 - proud | Honestly? Proud. | rigor -0.2, speed 0.2, earnest 0.5
 - inspect | Inspect it for cracks immediately | rigor 0.5, speed -0.3
-- remove | Wonder what would happen if you pulled it out | rigor -0.3, speed -0.2, earnest -0.4, solitary 0.2
+- remove | Wonder what would happen if you killed the idea | rigor -0.3, speed -0.2, earnest -0.4, solitary 0.2
 - adopt | Start calling everything "load-bearing" | terse -0.2, earnest -0.3, solitary -0.4
 
 ## core-rabbit-hole [core]
