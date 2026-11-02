@@ -166,7 +166,7 @@ In a meeting, your manager calls your idea "load-bearing."
 ## core-rabbit-hole [core]
 It's 11pm. You open a Wikipedia article about lighthouses.
 
-- down | Down. Obviously down. | speed -0.6, solitary 0.5 | tags: nocturnal
+- down | Keep clicking links until you hit "Philosophy." It's 3am. | speed -0.6, solitary 0.5 | tags: nocturnal
 - bookmark | Bookmark it for a version of you with more time | rigor 0.2, speed 0.4
 - share | Send it to three people immediately | terse -0.2, speed 0.4, solitary -0.7
 - bed | Close the laptop. Genuinely close it. | rigor 0.3, terse 0.5, earnest 0.3
