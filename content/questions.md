@@ -231,7 +231,7 @@ What does the air smell like right now?
 - ozone | Ozone. It always smells like ozone. | rigor -0.22, speed 0.16 | tags: ozone
 - coffee | Your freshly brewed coffee | speed 0.22, earnest 0.16 | tags: coffee
 - candle | Whatever the candle label says. "Linen Breeze." | rigor 0.33, terse 0.22
-- books | Old books, and a little bit of nostalgia | rigor -0.16, terse -0.22, speed -0.22
+- fall | The first cold day of fall | rigor -0.16, terse -0.22, speed -0.22
 
 ## whim-pigeon [whimsy]
 A pigeon has been looking at you for a while now.
