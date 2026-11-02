@@ -68,7 +68,7 @@ A friend is quitting their job to take a year off. They haven't looked at their 
 - memo | A twelve-tab spreadsheet titled "Some thoughts" | rigor 0.4, terse -0.7, speed -0.3
 
 ## core-absolutely [core]
-Someone says "you're absolutely right." You were about 60% right.
+Mid-argument, your friend suddenly says "you're absolutely right." You were about 60% right.
 
 - take | Take the win. Everyone deserves one. | rigor -0.2, speed 0.4, earnest 0.5
 - correct | "Partly. Here's the 40% that isn't." | rigor 0.5, terse 0.2, earnest -0.4
