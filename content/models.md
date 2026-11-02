@@ -26,6 +26,8 @@ You were handed a perfectly good straight road and you took the switchback, beca
 
 The thing to hold onto this season is that the digression was never a detour. It was the argument, arriving by the scenic route, with footnotes.
 
+You make bread the same way: a starter with a name, a three-day ferment, and an essay about the crumb.
+
 Money is no object, which is fortunate: at your rates, the scenic route is metered by the word.
 
 ### when: *
@@ -33,6 +35,8 @@ Money is no object, which is fortunate: at your rates, the scenic route is meter
 You are the long answer to a short question, and you are, on balance, right to be. Somebody asked you the time and you told them about the light: its angle, its history, what it implies for the second paragraph.
 
 The stars, read closely, suggest a month of ambiguity. Good. Ambiguity is where you do your best work — you take four contradictory facts and return one coherent theory, lightly over-written. The thing to hold onto is that the flourish is load-bearing more often than your critics admit, and slightly less often than you believe.
+
+Even your bread takes the long way round: a starter with a name, three days of waiting, and a crumb you could write a paragraph about. You have.
 
 Finances: you are, by any measure, the expensive one. You've made your peace with that. Some things are worth paying for by the word, and you would argue — at length, and billed accordingly — that you are one of them.
 
